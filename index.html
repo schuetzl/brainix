@@ -1559,6 +1559,67 @@ dialog.kt-dlg::backdrop { background: rgba(10, 14, 18, .45); }
 #liga .so-tour { margin-bottom: 18px; }
 @media (max-width: 480px) { .so-act .btn { padding: 6px 8px; } }
 /*/BRX:sozial*/
+/*BRX:einstellungen*/
+/* ===== Einstellungen & Barrierefreiheit (Etappe 7) ===== */
+/* Akzentfarben (hell) */
+:root[data-accent="blue"]   { --accent: #2563EB; --accent-d: #1D4ED8; --accent2: #2563EB; --soft: #E3ECFD; }
+:root[data-accent="violet"] { --accent: #7C3AED; --accent-d: #6D28D9; --accent2: #7C3AED; --soft: #EEE7FD; }
+:root[data-accent="rose"]   { --accent: #DB2777; --accent-d: #BE185D; --accent2: #DB2777; --soft: #FCE7F1; }
+:root[data-accent="orange"] { --accent: #C2410C; --accent-d: #9A3412; --accent2: #C2410C; --soft: #FDEBDD; }
+:root[data-accent="green"]  { --accent: #15803D; --accent-d: #166534; --accent2: #15803D; --soft: #E1F3E7; }
+/* Akzentfarben (dunkel) */
+:root[data-theme="dark"][data-accent="blue"]   { --accent: #6EA1FF; --accent-d: #4F86F0; --accent-ink: #06142E; --soft: #17233A; }
+:root[data-theme="dark"][data-accent="violet"] { --accent: #A78BFA; --accent-d: #8B6CF0; --accent-ink: #160B33; --soft: #241B3D; }
+:root[data-theme="dark"][data-accent="rose"]   { --accent: #F472B6; --accent-d: #E05497; --accent-ink: #2E0A1C; --soft: #33182A; }
+:root[data-theme="dark"][data-accent="orange"] { --accent: #FB923C; --accent-d: #EA7A22; --accent-ink: #2B1103; --soft: #33210F; }
+:root[data-theme="dark"][data-accent="green"]  { --accent: #4ADE80; --accent-d: #2FC468; --accent-ink: #052E14; --soft: #16301F; }
+
+/* Hoher Kontrast */
+:root.set-hc { --muted: #3A414C; --line: #7D8696; --edge: #5F6878; --edge2: #4A525F; --ink: #000; --card2: #EDEFF2; }
+:root.set-hc[data-theme="dark"] { --muted: #D3DAE2; --line: #8A95A3; --edge: #9AA5B3; --edge2: #B5BFCB; --ink: #fff; --card2: #232A31; }
+.set-hc .gt, .set-hc .panel, .set-hc .choice, .set-hc .btn, .set-hc .field, .set-hc .kpi, .set-hc .trophy { border-width: 2px; }
+.set-hc :focus-visible { outline: 3px solid var(--accent) !important; outline-offset: 2px !important; }
+
+/* Weniger Animation */
+.set-rm *, .set-rm *::before, .set-rm *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+
+/* Farbenblind-freundlich (Okabe-Ito: Blau statt Grün, Orange statt Rot) + Zeichen */
+:root.set-cvd { --ok: #0072B2; --ok-d: #005A8C; --bad: #D55E00; --bad-d: #A84A00; }
+:root.set-cvd[data-theme="dark"] { --ok: #56B4E9; --ok-d: #8CCDF2; --bad: #E69F00; --bad-d: #F2BD4D; }
+.set-cvd .choice.ok::after { content: ' ✓'; font-weight: 900; }
+.set-cvd .choice.no::after { content: ' ✗'; font-weight: 900; }
+.set-cvd .mp-dot.p1, .set-cvd .mp-c4 i.p1 { background: #0072B2; }
+.set-cvd .mp-dot.p2, .set-cvd .mp-c4 i.p2 { background: #E69F00; }
+
+/* Kinder-Modus */
+.set-kids #t-freunde, .set-kids #soBell { display: none !important; }
+.set-kids .gt { min-height: 110px; }
+
+/* Dialog */
+.set-dlg { width: min(520px, calc(100vw - 32px)); }
+.set-body { padding: 22px 22px 18px; display: grid; gap: 10px; max-height: calc(100vh - 80px); overflow: auto; }
+.set-body h2 { margin: 0; }
+.set-body h3 { margin: 12px 0 0; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.set-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.set-l { font-weight: 600; display: grid; }
+.set-l small { font-weight: 500; color: var(--muted); font-size: .8rem; }
+.set-sw { cursor: pointer; }
+.set-sw input { width: 44px; height: 24px; appearance: none; -webkit-appearance: none; border-radius: 999px; background: var(--edge2, var(--line)); position: relative; cursor: pointer; flex: none; margin: 0; transition: background .15s; }
+.set-sw input::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: left .15s; box-shadow: 0 1px 2px rgba(0,0,0,.25); }
+.set-sw input:checked { background: var(--accent); }
+.set-sw input:checked::after { left: 23px; }
+.set-sw input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.set-body input[type=range] { flex: 1 1 160px; accent-color: var(--accent); }
+.set-keys { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+kbd { font-family: var(--f-mono, ui-monospace, monospace); font-size: .8rem; padding: 1px 6px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; background: var(--card2); }
+.set-btn { font-size: 1.05rem; }
+
+/* Tastatur & Screenreader */
+.skip { position: absolute; left: 12px; top: -60px; z-index: 2000; padding: 10px 14px; border-radius: 10px; background: var(--accent); color: var(--accent-ink, #fff); font-weight: 700; text-decoration: none; }
+.skip:focus { top: 12px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+/*/BRX:einstellungen*/
 </style>
 
 <div class="app" lang="de">
@@ -12587,5 +12648,226 @@ function soTourPanel(compact) {
   $('#quit').addEventListener('click', () => { SO.pending = null; SO.answer = null; SO.tour = null; if (S.duel && !S.duel.id) S.duel = null; });
 }
 /*/BRX:sozial*/
+/*BRX:einstellungen*/
+// ==================================================================
+//  Einstellungen & Barrierefreiheit (Etappe 7)
+//  Gespeichert in localStorage 'bwl-settings' (mit Konto synchronisiert).
+//  'bwl-theme' bleibt der Schlüssel für Hell/Dunkel (wie bisher).
+// ==================================================================
+const SET_DEF = { accent: 'teal', font: 100, contrast: false, motion: 'system', cvd: false, sound: true, vol: 50, kids: false };
+const SET_ACCENTS = [['teal', 'Petrol', '#0F766E'], ['blue', 'Blau', '#2563EB'], ['violet', 'Violett', '#7C3AED'], ['rose', 'Rosa', '#DB2777'], ['orange', 'Orange', '#C2410C'], ['green', 'Grün', '#15803D']];
+const setGet = () => Object.assign({}, SET_DEF, store.get('settings', {}) || {});
+function setSave(patch) { const s = { ...setGet(), ...patch }; store.set('settings', s); setApply(); return s; }
+const setReduce = () => { const m = setGet().motion; return m === 'reduce' || (m === 'system' && matchMedia('(prefers-reduced-motion: reduce)').matches); };
+function setTheme(v) {
+  store.set('theme', v);
+  const dark = v === 'dark' || (v === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  document.documentElement.dataset.themePref = v;
+  const tb = $('#themeBtn'); if (tb) { tb.setAttribute('aria-pressed', String(dark)); tb.title = dark ? 'Dunkel (klicken für Hell)' : 'Hell (klicken für Dunkel)'; }
+}
+function setApply() {
+  const s = setGet(), r = document.documentElement;
+  r.dataset.accent = s.accent;
+  r.classList.toggle('set-hc', !!s.contrast);
+  r.classList.toggle('set-rm', setReduce());
+  r.classList.toggle('set-cvd', !!s.cvd);
+  r.classList.toggle('set-kids', !!s.kids);
+  document.body.style.zoom = s.font === 100 ? '' : String(s.font / 100);
+}
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if ((store.get('theme', 'auto') || 'auto') === 'auto') setTheme('auto'); });
+matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', setApply);
+
+// ---------- Leise, eigene Töne (Web Audio, keine Dateien) ----------
+let setAc = null;
+function sfx(kind) {
+  const s = setGet(); if (!s.sound || !s.vol) return;
+  try {
+    setAc = setAc || new (window.AudioContext || window.webkitAudioContext)();
+    if (setAc.state === 'suspended') setAc.resume();
+    const ac = setAc, t0 = ac.currentTime, master = ac.createGain();
+    master.gain.value = 0.12 * (s.vol / 100); master.connect(ac.destination);
+    const tone = (f, at, dur, type = 'sine', g = 1) => {
+      const o = ac.createOscillator(), e = ac.createGain();
+      o.type = type; o.frequency.setValueAtTime(f, t0 + at);
+      e.gain.setValueAtTime(0, t0 + at); e.gain.linearRampToValueAtTime(g, t0 + at + 0.012); e.gain.exponentialRampToValueAtTime(0.0008, t0 + at + dur);
+      o.connect(e); e.connect(master); o.start(t0 + at); o.stop(t0 + at + dur + 0.02);
+    };
+    ({
+      ok: () => { tone(660, 0, .16); tone(990, .07, .2, 'sine', .7); },
+      bad: () => { tone(220, 0, .22, 'triangle', .8); tone(185, .08, .26, 'triangle', .6); },
+      tick: () => tone(1200, 0, .05, 'sine', .4),
+      click: () => tone(880, 0, .04, 'sine', .35),
+      win: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, i * .09, .28, 'sine', .8)),
+      level: () => [392, 523, 659, 784, 1047].forEach((f, i) => tone(f, i * .07, .3, 'triangle', .7)),
+      lose: () => [392, 330, 262].forEach((f, i) => tone(f, i * .12, .3, 'triangle', .6)),
+    }[kind] || (() => {}))();
+  } catch (e) {}
+}
+
+// ---------- Screenreader-Ansagen ----------
+let SET_FB = null;
+function setSay(text) {
+  let el = $('#setLive');
+  if (!el) { el = h('div', { id: 'setLive', class: 'sr-only', 'aria-live': 'assertive', 'aria-atomic': 'true' }); document.body.append(el); }
+  el.textContent = ''; setTimeout(() => { el.textContent = text; }, 30);
+}
+const setText = x => x == null ? '' : typeof x === 'string' || typeof x === 'number' ? String(x) : Array.isArray(x) ? x.map(setText).join(' ') : x.nodeType ? (x.textContent || (x.querySelector && x.querySelector('img') ? x.querySelector('img').alt : '') || x.alt || '') : '';
+
+// ---------- Einstellungs-Dialog ----------
+function setOpen() {
+  let dlg = $('#setDlg');
+  if (!dlg) { dlg = h('dialog', { class: 'kt-dlg set-dlg', id: 'setDlg', 'aria-labelledby': 'setTitle' }); document.body.append(dlg); }
+  const s = setGet(), theme = store.get('theme', 'auto') || 'auto';
+  const seg = (label, opts, val, fn) => h('div', { class: 'set-row' }, h('span', { class: 'set-l', id: 'l-' + label.replace(/\W/g, '') }, label),
+    h('div', { class: 'mp-seg', role: 'radiogroup', 'aria-labelledby': 'l-' + label.replace(/\W/g, '') }, opts.map(([k, n]) => h('button', { type: 'button', role: 'radio', 'aria-checked': String(String(val) === String(k)), onclick: () => { fn(k); setOpen(); } }, n))));
+  const sw = (label, val, fn, hint) => h('label', { class: 'set-row set-sw' }, h('span', { class: 'set-l' }, label, hint ? h('small', {}, hint) : null),
+    h('input', { type: 'checkbox', role: 'switch', checked: val, onchange: e => { fn(e.target.checked); setOpen(); } }));
+  const vol = h('input', { type: 'range', min: 0, max: 100, step: 10, value: s.vol, 'aria-label': 'Lautstärke', disabled: !s.sound, onchange: e => { setSave({ vol: +e.target.value }); sfx('ok'); } });
+  const file = h('input', { type: 'file', accept: '.json,application/json', hidden: true, onchange: e => setImport(e.target.files[0]) });
+  const body = h('div', { class: 'set-body' },
+    h('h2', { id: 'setTitle' }, 'Einstellungen'),
+    h('h3', {}, 'Aussehen'),
+    seg('Farbschema', [['auto', 'Auto'], ['light', 'Hell'], ['dark', 'Dunkel']], theme, v => setTheme(v)),
+    h('div', { class: 'set-row' }, h('span', { class: 'set-l', id: 'l-akz' }, 'Akzentfarbe'),
+      h('div', { class: 'kt-colors', role: 'radiogroup', 'aria-labelledby': 'l-akz' }, SET_ACCENTS.map(([k, n, c]) => h('button', { type: 'button', role: 'radio', 'aria-checked': String(s.accent === k), 'aria-pressed': String(s.accent === k), 'aria-label': n, title: n, style: 'background:' + c, onclick: () => { setSave({ accent: k }); setOpen(); } })))),
+    seg('Schriftgröße', [[90, 'Klein'], [100, 'Normal'], [112, 'Groß'], [125, 'Sehr groß']], s.font, v => setSave({ font: +v })),
+    sw('Hoher Kontrast', s.contrast, v => setSave({ contrast: v }), 'Kräftigere Linien und Texte'),
+    sw('Farbenblind-freundlich', s.cvd, v => setSave({ cvd: v }), 'Blau/Orange statt Grün/Rot, dazu ✓/✗'),
+    seg('Animationen', [['system', 'Wie System'], ['full', 'An'], ['reduce', 'Weniger']], s.motion, v => setSave({ motion: v })),
+    h('h3', {}, 'Ton'),
+    sw('Töne', s.sound, v => { setSave({ sound: v }); if (v) sfx('ok'); }, 'Leise Klänge bei richtig/falsch und Erfolgen'),
+    h('div', { class: 'set-row' }, h('span', { class: 'set-l' }, 'Lautstärke'), vol),
+    h('h3', {}, 'Spielen'),
+    seg('Standard-Schwierigkeit', Object.entries(DIFFS), S.diff, v => { S.diff = v; store.set('diff', v); try { renderDiff(); } catch (e) {} renderCards(); }),
+    sw('Kinder-Modus', s.kids, v => setKids(v), 'Leicht + ohne Zeitdruck, größere Schrift, ohne Freunde/Räume mit Fremden'),
+    h('h3', {}, 'Daten'),
+    h('p', { class: 'note' }, 'Sichere deinen kompletten Spielstand als Datei oder spiel ihn auf einem anderen Gerät ein.'),
+    h('div', { class: 'mp-row' }, h('button', { class: 'btn', type: 'button', onclick: setExport }, 'Spielstand exportieren'), h('button', { class: 'btn ghost', type: 'button', onclick: () => file.click() }, 'Importieren …'), file),
+    h('h3', {}, 'Tastatur'),
+    h('ul', { class: 'set-keys' }, [['1–4', 'Antwort wählen'], ['/', 'Suche'], ['← →', 'zwischen Reitern wechseln (im Reiter-Menü)'], ['Esc', 'Fenster schließen'], ['Tab', 'zum nächsten Element']].map(([k, d]) => h('li', {}, h('kbd', {}, k), ' ', d))),
+    h('div', { class: 'actions' }, h('button', { class: 'btn main', type: 'button', onclick: () => dlg.close() }, 'Fertig')));
+  const focusIdx = dlg.open && dlg.contains(document.activeElement) ? [...dlg.querySelectorAll('button,input')].indexOf(document.activeElement) : -1;
+  dlg.replaceChildren(h('button', { class: 'kt-x', type: 'button', 'aria-label': 'Schließen', onclick: () => dlg.close() }, '×'), body);
+  if (!dlg.open) dlg.showModal();
+  if (focusIdx >= 0) { const el = [...dlg.querySelectorAll('button,input')][focusIdx]; if (el) el.focus(); }
+}
+function setKids(on) {
+  if (!on) {
+    const a = 6 + Math.floor(Math.random() * 7), b = 6 + Math.floor(Math.random() * 7);
+    const ans = prompt(`Kinder-Modus ausschalten – kurze Frage für Erwachsene: Wie viel ist ${a} × ${b}?`);
+    if (ans === null || +ans !== a * b) { if (ans !== null) alert('Leider falsch – der Kinder-Modus bleibt an.'); return; }
+  }
+  const s = setGet();
+  if (on) {
+    store.set('kidsPrev', { diff: S.diff, relax: S.relax, font: s.font });
+    S.diff = 'l'; store.set('diff', 'l'); S.relax = true; store.set('relax', true);
+    setSave({ kids: true, font: Math.max(s.font, 112) });
+    if (!$('#v-freunde') || !$('#v-freunde').hidden) showTab('spiele');
+  } else {
+    const p = store.get('kidsPrev', null) || {};
+    S.diff = p.diff || 'm'; store.set('diff', S.diff); S.relax = !!p.relax; store.set('relax', S.relax);
+    setSave({ kids: false, font: p.font || 100 });
+  }
+  try { renderDiff(); } catch (e) {} renderCards(); renderLive();
+}
+function setExport() {
+  const keys = {};
+  for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.startsWith('bwl-') && k !== 'bwl-konto') keys[k] = localStorage.getItem(k); }
+  const data = { app: 'brainix', v: 1, at: new Date().toISOString(), keys };
+  const blob = new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' });
+  const a = h('a', { href: URL.createObjectURL(blob), download: `brainix-spielstand-${todayStr()}.json` });
+  document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast('💾', 'Spielstand exportiert', 'Die Datei liegt in deinen Downloads.');
+}
+async function setImport(f) {
+  if (!f) return;
+  try {
+    const d = JSON.parse(await f.text());
+    if (!d || d.app !== 'brainix' || !d.keys || typeof d.keys !== 'object') throw new Error('Keine Brainix-Datei');
+    const n = Object.keys(d.keys).filter(k => k.startsWith('bwl-')).length;
+    if (!confirm(`Spielstand vom ${new Date(d.at).toLocaleDateString('de-AT')} einspielen (${n} Einträge)? Dein aktueller Stand auf diesem Gerät wird ersetzt.`)) return;
+    for (const [k, v] of Object.entries(d.keys)) if (k.startsWith('bwl-') && k !== 'bwl-konto' && typeof v === 'string') localStorage.setItem(k, v);
+    if (KT.user) { const l = ktLink(); if (l) ktSetLink({ ...l, dirty: true }); }
+    location.reload();
+  } catch (e) { alert('Das ist keine gültige Brainix-Spielstand-Datei.'); }
+}
+
+// ---------- Tastatur & Screenreader ----------
+function setA11y() {
+  // Sprunglink + Hauptbereich
+  const main = document.querySelector('main');
+  if (main && !main.id) main.id = 'inhalt';
+  if (!$('#skipLink')) document.body.prepend(h('a', { id: 'skipLink', class: 'skip', href: '#inhalt', onclick: e => { e.preventDefault(); main.setAttribute('tabindex', '-1'); main.focus(); } }, 'Zum Inhalt springen'));
+  // Reiter: ARIA-Verknüpfung, Pfeiltasten, „roving tabindex“
+  const tabs = $('.tabs');
+  const sync = () => document.querySelectorAll('.tabs button').forEach(b => { const on = b.getAttribute('aria-selected') === 'true'; b.tabIndex = on ? 0 : -1; const p = $('#v-' + b.dataset.tab); if (p) { b.setAttribute('aria-controls', p.id); p.setAttribute('role', 'tabpanel'); p.setAttribute('aria-labelledby', b.id); } });
+  if (tabs && !tabs.dataset.kb) {
+    tabs.dataset.kb = '1';
+    tabs.addEventListener('keydown', e => {
+      const bs = [...document.querySelectorAll('.tabs button')].filter(b => !b.hidden), i = bs.indexOf(document.activeElement);
+      if (i < 0) return;
+      const j = e.key === 'ArrowRight' ? (i + 1) % bs.length : e.key === 'ArrowLeft' ? (i - 1 + bs.length) % bs.length : e.key === 'Home' ? 0 : e.key === 'End' ? bs.length - 1 : -1;
+      if (j < 0) return;
+      e.preventDefault(); bs[j].focus(); showTab(bs[j].dataset.tab);
+    });
+  }
+  sync();
+  const st0 = showTab;
+  showTab = function (t) { st0.apply(this, arguments); sync(); const b = document.querySelector(`.tabs button[data-tab="${t}"]`); if (b && t !== 'play') setSay((b.firstChild && b.firstChild.textContent || b.textContent).trim()); };
+  // Kopfzeile: verständliche Namen
+  const lab = (sel, txt) => { const el = $(sel); if (el && !el.getAttribute('aria-label')) el.setAttribute('aria-label', txt); };
+  lab('#stXp', 'Erfahrungspunkte – zum Profil'); lab('#stLvl', 'Level – zum Profil'); lab('#stStreak', 'Tage in Folge – zum Profil');
+  const hb = $('#hudB'); if (hb) hb.setAttribute('aria-hidden', 'true');
+  // Spielkacheln: Name + Beschreibung vorlesen
+  const gt0 = gameTile;
+  gameTile = function (g) {
+    const el = gt0.apply(this, arguments), btn = el.classList.contains('gt') ? el : el.querySelector('.gt');
+    if (btn) { btn.setAttribute('aria-label', g.t + (g.p ? '. ' + g.p : '')); const m = btn.querySelector('.gm'); if (m) m.setAttribute('aria-hidden', 'true'); }
+    return el;
+  };
+  // Antworten ansagen + Töne
+  const ask0 = askChoice;
+  askChoice = function (run, task) {
+    setTimeout(() => { const p = document.querySelector('#stage .prompt'); if (!p) return; const q = setText(task.prompt) || p.textContent; const fb = SET_FB && Date.now() - SET_FB.at < 1800 ? SET_FB.text + ' Nächste Frage: ' : ''; setSay(fb + q); }, 60);
+    let told = false;
+    const right = (task.choices || []).find(c => c.ok);
+    const tell = ok => { if (told || run.dead) return; told = true; sfx(ok ? 'ok' : 'bad'); const text = ok ? 'Richtig!' : 'Falsch.' + (right ? ' Richtig wäre: ' + setText(right.label || right.node) + '.' : ''); SET_FB = { text, at: Date.now() }; setSay(text); };
+    const p = ask0.apply(this, arguments);
+    // sofort reagieren, sobald eine Antwort gewählt ist (Klick oder Zifferntaste)
+    const btns = [...stage.querySelectorAll('.choice')];
+    btns.forEach((b, i) => b.addEventListener('click', () => tell(!!(task.choices[i] && task.choices[i].ok)), { once: true }));
+    const key = e => { const n = parseInt(e.key, 10); if (n >= 1 && n <= btns.length && e.target.tagName !== 'INPUT') tell(!!task.choices[n - 1].ok); };
+    document.addEventListener('keydown', key, true);
+    return p.then(ok => { document.removeEventListener('keydown', key, true); tell(ok); return ok; });
+  };
+  // Ergebnis-Bildschirm ansagen
+  const fin2 = finish;
+  finish = function (key, res) { const r = fin2.apply(this, arguments); setTimeout(() => { const sc = document.querySelector('#stage .result'); if (sc) setSay('Ergebnis: ' + sc.innerText.split('\n').filter(Boolean).slice(0, 4).join(', ')); }, 80); return r; };
+  // Level-Aufstieg und Erfolge hörbar
+  const gd0 = gameDone;
+  gameDone = function () { const L0 = lvlOf(P.xp); const xp = gd0.apply(this, arguments); if (lvlOf(P.xp) > L0) sfx('level'); return xp; };
+}
+
+// ---------- Einhängen ----------
+{
+  setTheme(store.get('theme', null) || 'auto');
+  setApply();
+  // Zahnrad neben Hell/Dunkel
+  if (!$('#setBtn')) $('#themeBtn').after(h('button', { class: 'themebtn set-btn', id: 'setBtn', type: 'button', 'aria-label': 'Einstellungen', title: 'Einstellungen', onclick: setOpen }, '⚙'));
+  // ◐ bleibt der schnelle Umschalter Hell ⇄ Dunkel
+  const tb = $('#themeBtn');
+  if (tb) tb.addEventListener('click', () => setTimeout(() => { const v = document.documentElement.getAttribute('data-theme'); store.set('theme', v); document.documentElement.dataset.themePref = v; tb.setAttribute('aria-pressed', String(v === 'dark')); }, 0));
+  setA11y();
+  // Kinder-Modus: keine Räume mit Fremden
+  const rl = renderLive;
+  renderLive = function () {
+    if (!setGet().kids) return rl.apply(this, arguments);
+    const box = $('#liveBox'); if (!box) return;
+    box.replaceChildren(h('p', { class: 'note' }, 'Im Kinder-Modus gibt es nur „Reihum“ an einem Gerät.'), h('div', { class: 'liverow' }, h('button', { class: 'btn main', type: 'button', onclick: mpLocalSetup }, 'Reihum an einem Gerät')));
+  };
+  renderCards();
+}
+/*/BRX:einstellungen*/
 })();
 </script>
