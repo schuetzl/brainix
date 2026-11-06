@@ -1777,6 +1777,57 @@ kbd { font-family: var(--f-mono, ui-monospace, monospace); font-size: .8rem; pad
 .ico-h { display: inline-block; width: 18px; height: 18px; vertical-align: -3px; margin-right: 8px; color: var(--accent); }
 .ico-n { display: inline-block; width: 14px; height: 14px; vertical-align: -2px; margin-right: 6px; }
 /*/BRX:icons*/
+/*BRX:design*/
+/* ===== Design A · „Ruhig plus“ ===== */
+/* Kategorie-Farben: --cb = Fläche, --cf = Symbol/Schrift (hell) */
+.ds-a [data-cat="wissen"]      { --cb: #E1F1EF; --cf: #0F766E; }
+.ds-a [data-cat="geo"]         { --cb: #E6EEFB; --cf: #2F5BD8; }
+.ds-a [data-cat="sprache"]     { --cb: #F1EAFB; --cf: #7C4BC4; }
+.ds-a [data-cat="logik"]       { --cb: #E8EAFB; --cf: #4650C8; }
+.ds-a [data-cat="zahlen"]      { --cb: #FBF1DE; --cf: #9A5B00; }
+.ds-a [data-cat="gedaechtnis"] { --cb: #FCE8F0; --cf: #B82A62; }
+.ds-a [data-cat="arcade"]      { --cb: #FDEDE2; --cf: #B54C16; }
+.ds-a [data-cat="brett"]       { --cb: #ECEEF1; --cf: #475569; }
+.ds-a [data-cat="schule"]      { --cb: #E4F4E8; --cf: #1E7A3E; }
+.ds-a [data-cat="pop"]         { --cb: #FAE8F7; --cf: #9E2C8A; }
+/* dunkel */
+:root.ds-a[data-theme="dark"] [data-cat="wissen"]      { --cb: #16302D; --cf: #3CC9B3; }
+:root.ds-a[data-theme="dark"] [data-cat="geo"]         { --cb: #172238; --cf: #86ABFF; }
+:root.ds-a[data-theme="dark"] [data-cat="sprache"]     { --cb: #251B38; --cf: #BCA2F4; }
+:root.ds-a[data-theme="dark"] [data-cat="logik"]       { --cb: #1C1F3A; --cf: #A3AAFF; }
+:root.ds-a[data-theme="dark"] [data-cat="zahlen"]      { --cb: #33270F; --cf: #F0B95A; }
+:root.ds-a[data-theme="dark"] [data-cat="gedaechtnis"] { --cb: #361A26; --cf: #F58AB4; }
+:root.ds-a[data-theme="dark"] [data-cat="arcade"]      { --cb: #36200F; --cf: #F59A5C; }
+:root.ds-a[data-theme="dark"] [data-cat="brett"]       { --cb: #22272E; --cf: #AEB8C5; }
+:root.ds-a[data-theme="dark"] [data-cat="schule"]      { --cb: #15301E; --cf: #6BD48F; }
+:root.ds-a[data-theme="dark"] [data-cat="pop"]         { --cb: #33182F; --cf: #EB8AD8; }
+
+/* Kacheln: etwas mehr Luft, weiche Karte, farbiges Symbolfeld */
+.ds-a .tiles { gap: 12px; }
+.ds-a .gt { border-radius: 16px; padding: 14px; border-color: color-mix(in srgb, var(--line) 85%, transparent); box-shadow: 0 1px 2px rgba(16, 24, 40, .04); transition: border-color .15s, box-shadow .15s, transform .15s; }
+.ds-a .gt:hover { border-color: var(--cf, var(--accent)); box-shadow: 0 6px 18px rgba(16, 24, 40, .07); transform: translateY(-1px); }
+.ds-a [data-cat] .gm, .ds-a .gtw[data-cat] .gm { background: var(--cb, var(--soft)); color: var(--cf, var(--accent)); border-radius: 11px; width: 36px; height: 36px; }
+.ds-a .gtw[data-cat] .favbtn.on { color: var(--hi, #E9B949); }
+.ds-a .cat[data-cat] .rowh h2 .ico-h { color: var(--cf); }
+.ds-a .cat { margin-bottom: 30px; }
+.ds-a .rowh { margin-bottom: 12px; }
+.ds-a .orcatnav a[data-cat] { border-color: color-mix(in srgb, var(--cf) 30%, var(--line)); }
+.ds-a .orcatnav a[data-cat] .ico-n { color: var(--cf); }
+.ds-a .orcatnav a[data-cat]:hover { background: var(--cb); color: var(--cf); border-color: var(--cf); }
+.ds-a #sheet[data-cat] .shhead .gm { background: var(--cb); color: var(--cf); }
+/* Startseite: Heute-Karten und Panels weicher */
+.ds-a .tc, .ds-a .panel { border-radius: 18px; box-shadow: 0 1px 2px rgba(16, 24, 40, .04); }
+.ds-a .tc { border-color: color-mix(in srgb, var(--line) 85%, transparent); }
+:root.ds-a[data-theme="dark"] .gt, :root.ds-a[data-theme="dark"] .tc, :root.ds-a[data-theme="dark"] .panel { box-shadow: none; }
+:root.ds-a[data-theme="dark"] .gt:hover { box-shadow: 0 6px 18px rgba(0, 0, 0, .35); }
+/* Hoher Kontrast: Farbflächen kräftiger umranden */
+.ds-a.set-hc .gtw[data-cat] .gm { box-shadow: inset 0 0 0 1.5px var(--cf); }
+/* Weniger Animation */
+.ds-a.set-rm .gt:hover { transform: none; }
+@media (prefers-reduced-motion: reduce) { .ds-a .gt:hover { transform: none; } }
+/* Zahnrad als Linien-Icon wie die übrigen Symbole */
+.set-btn svg { fill: none !important; stroke: currentColor; stroke-width: 2; }
+/*/BRX:design*/
 </style>
 
 <div class="app" lang="de">
@@ -14568,5 +14619,28 @@ const shyText = t => t.split(/(\s+|-)/).map(w => SHY[w] ? SHY[w].replace('-', '�
   renderCards();
 }
 /*/BRX:icons*/
+/*BRX:design*/
+// ==================================================================
+//  Design-Richtung A · „Ruhig plus“ (Etappe 11)
+//  Jede Kachel bekommt ihre Kategorie als data-cat → eigener, dezenter Farbton.
+// ==================================================================
+const DS_CAT = { 'Wissen & Quiz': 'wissen', 'Geografie': 'geo', 'Sprache & Wörter': 'sprache', 'Logik & Rätsel': 'logik', 'Zahlen & Mathe': 'zahlen', 'Gedächtnis & Reaktion': 'gedaechtnis', 'Arcade': 'arcade', 'Brett- & Duellspiele': 'brett', 'Schule (HTL)': 'schule', 'Musik, Film & Pop': 'pop' };
+const dsCatOf = t => DS_CAT[Object.keys(OR_CATS).find(c => OR_CATS[c].includes(t))] || 'wissen';
+{
+  document.documentElement.classList.add('ds-a');
+  const gt2 = gameTile;
+  gameTile = function (g) { const el = gt2.apply(this, arguments); el.dataset.cat = dsCatOf(g.t); return el; };
+  const rc2 = renderCards;
+  renderCards = function () {
+    rc2.apply(this, arguments);
+    document.querySelectorAll('#cards .cat').forEach(sec => { const h2 = sec.querySelector('.rowh h2'); if (!h2) return; const c = DS_CAT[h2.textContent.replace(/^★\s*/, '').trim()]; if (c) sec.dataset.cat = c; });
+    document.querySelectorAll('.orcatnav a').forEach(a => { const c = DS_CAT[a.textContent.trim()]; if (c) a.dataset.cat = c; });
+  };
+  // Spielblatt: Icon in Kategorie-Farbe
+  const fs0 = fillSheet;
+  fillSheet = function () { fs0.apply(this, arguments); const d = $('#sheet'); if (d && sheetGame) d.dataset.cat = dsCatOf(sheetGame.t); };
+  renderCards();
+}
+/*/BRX:design*/
 })();
 </script>
