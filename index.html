@@ -1526,6 +1526,39 @@ dialog.kt-dlg::backdrop { background: rgba(10, 14, 18, .45); }
 @keyframes prIn { from { opacity: 0; transform: translateX(-50%) translateY(24px) scale(.95); } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); } }
 @media (prefers-reduced-motion: reduce) { .prpop { animation: none; } .prpop.out { transition: none; } }
 /*/BRX:profil*/
+/*BRX:sozial*/
+/* ===== Sozial (Etappe 6) ===== */
+.so-list { display: grid; gap: 8px; }
+.so-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+.so-item.fresh { border-color: var(--accent); }
+.so-av { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-size: 1.3rem; background: var(--card2); flex: none; }
+.so-txt { flex: 1 1 auto; min-width: 0; display: grid; }
+.so-txt b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.so-txt small { color: var(--muted); font-size: .82rem; }
+.so-act { display: flex; gap: 6px; flex: none; }
+.so-act .btn { padding: 6px 10px; }
+.so-res { font-size: 1.2rem; font-weight: 800; flex: none; }
+.so-res.l { color: var(--bad-d, #E5484D); }
+.so-seg { margin-bottom: 8px; }
+.so-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.so-chips .mp-chip { cursor: pointer; font: inherit; font-weight: 600; color: var(--ink); }
+.so-group { border: 1px solid var(--line); border-radius: 14px; padding: 12px; margin-bottom: 12px; background: var(--paper2, var(--card2)); }
+.so-group h4 { margin: 0; }
+.so-code { display: inline-flex; align-items: center; gap: 8px; font-size: .9rem; color: var(--muted); }
+.so-code b { font-family: var(--f-mono, monospace); letter-spacing: .12em; color: var(--accent); font-size: 1.05rem; }
+.so-gforms { display: grid; gap: 8px; }
+.so-ok { color: var(--accent-d, var(--accent)); }
+.so-err { color: var(--bad-d, #E5484D); }
+.so-tour p { margin: 0 0 10px; }
+.so-arch { margin-top: 10px; }
+.so-arch summary { cursor: pointer; font-weight: 600; }
+.so-archw { margin: 8px 0; display: grid; gap: 4px; }
+.so-archw > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.so-bell { position: relative; font-size: 1rem; }
+.so-bell b { position: absolute; top: -4px; right: -4px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 999px; background: var(--bad, #E5484D); color: #fff; font-size: .68rem; display: grid; place-items: center; line-height: 1; }
+#liga .so-tour { margin-bottom: 18px; }
+@media (max-width: 480px) { .so-act .btn { padding: 6px 8px; } }
+/*/BRX:sozial*/
 </style>
 
 <div class="app" lang="de">
@@ -12198,5 +12231,361 @@ async function prPublic(name) {
   if (pn) { q.delete('profil'); history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : '') + location.hash); setTimeout(() => prPublic(pn), 200); }
 }
 /*/BRX:profil*/
+/*BRX:sozial*/
+// ==================================================================
+//  Sozial (Etappe 6): Freunde, Freunde-Rangliste, direkte Herausforderungen,
+//  Benachrichtigungen, Gruppen/Klassen, Wochen-Turnier (Supabase, Login nötig)
+// ==================================================================
+const SO = {
+  friends: [], prof: {}, meta: {}, chIn: [], chOut: [], groups: [], groupSel: null, groupRows: null, groupBoard: 'wxp', board: 'wxp',
+  pending: null, answer: null, tour: null, tourRows: null, tourArchive: null, myTour: null, rt: null, loading: false, loadedFor: null,
+};
+const SO_TOUR = ['flags_sprint', 'caps_sprint', 'shapes', 'math_sprint', 'dial', 'iso', 'cur', 'lang', 'greek', 'roman', 'prime', 'squares', 'units', 'morse', 'binclock'];
+const soSeen = () => +(store.get('notifSeen', 0) || 0);
+const soUid = () => (KT.user ? KT.user.id : null);
+const soName = id => (SO.prof[id] && SO.prof[id].username) || 'Unbekannt';
+const soAv = id => (SO.prof[id] && SO.prof[id].avatar) || '🙂';
+const soErr = e => ktErr(e).replace('Das hat nicht geklappt.', 'Hat nicht geklappt – bitte nochmal versuchen.');
+
+// ---------- ISO-Woche & Turnier-Spiel der Woche ----------
+function soIsoWeek(d = new Date()) {
+  const x = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const day = x.getUTCDay() || 7; x.setUTCDate(x.getUTCDate() + 4 - day);
+  const y0 = new Date(Date.UTC(x.getUTCFullYear(), 0, 1));
+  const w = Math.ceil(((x - y0) / 864e5 + 1) / 7);
+  return x.getUTCFullYear() + '-W' + String(w).padStart(2, '0');
+}
+const soWeekAgo = n => { const d = new Date(); d.setDate(d.getDate() - 7 * n); return soIsoWeek(d); };
+const soHash = s => { let h = 2166136261; for (const c of s) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
+function soTourOf(week) {
+  const list = SO_TOUR.filter(k => KEYS[k] && MODES[k]);
+  const h = soHash('brainix-turnier-' + week);
+  const b = list[h % list.length];
+  return { week, key: KEYS[b].nodiff ? b : b + '_m', seed: soHash('seed-' + week) };
+}
+const soWeekEnd = () => { const d = new Date(), day = (d.getDay() + 6) % 7, end = new Date(d.getFullYear(), d.getMonth(), d.getDate() + (7 - day)); const ms = end - d; const dd = Math.floor(ms / 864e5), hh = Math.floor(ms % 864e5 / 36e5); return dd ? `${dd} ${dd === 1 ? 'Tag' : 'Tage'} ${hh} h` : `${hh} h`; };
+
+// ---------- Daten laden ----------
+async function soLoad() {
+  const uid = soUid(); if (!uid || !KT.sb || SO.loading) return;
+  SO.loading = true;
+  try {
+    const sb = KT.sb;
+    const [fr, ci, co, gm] = await Promise.all([
+      sb.from('friends').select('*').or(`a.eq.${uid},b.eq.${uid}`),
+      sb.from('challenges').select('*').eq('to_id', uid).order('created_at', { ascending: false }).limit(30),
+      sb.from('challenges').select('*').eq('from_id', uid).order('created_at', { ascending: false }).limit(30),
+      sb.from('group_members').select('group_id').eq('user_id', uid),
+    ]);
+    SO.friends = fr.data || []; SO.chIn = ci.data || []; SO.chOut = co.data || [];
+    const gids = (gm.data || []).map(r => r.group_id);
+    SO.groups = gids.length ? ((await sb.from('groups').select('*').in('id', gids)).data || []).sort((a, b) => a.name.localeCompare(b.name, 'de')) : [];
+    const ids = new Set([uid]);
+    SO.friends.forEach(f => { ids.add(f.a); ids.add(f.b); });
+    SO.chIn.concat(SO.chOut).forEach(c => { ids.add(c.from_id); ids.add(c.to_id); });
+    await soProfiles([...ids]);
+    SO.loadedFor = uid;
+  } catch (e) {} finally { SO.loading = false; }
+  soBadge(); soRender();
+}
+async function soProfiles(ids) {
+  const need = ids.filter(Boolean);
+  if (!need.length) return;
+  const [pr, mt] = await Promise.all([
+    KT.sb.from('profiles').select('id,username,avatar,color,xp').in('id', need),
+    KT.sb.from('scores').select('user_id,data').eq('game_key', '_meta').in('user_id', need),
+  ]);
+  for (const p of pr.data || []) SO.prof[p.id] = p;
+  for (const m of mt.data || []) SO.meta[m.user_id] = m.data || {};
+}
+const soXp = id => Math.max((SO.prof[id] || {}).xp || 0, (SO.meta[id] || {}).xp || 0);
+const soWxp = id => { const m = SO.meta[id] || {}; return m.wk === weekId() ? (m.wxp || 0) : 0; };
+function soLive() {
+  const uid = soUid(); if (!uid || !KT.sb) return;
+  if (SO.rt) { try { KT.sb.removeChannel(SO.rt); } catch (e) {} SO.rt = null; }
+  let t = null; const again = () => { clearTimeout(t); t = setTimeout(soLoad, 400); };
+  SO.rt = KT.sb.channel('brx-sozial-' + uid)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'friends', filter: `b=eq.${uid}` }, p => { if (p.eventType === 'INSERT') toast('👋', 'Neue Freundschaftsanfrage', 'Schau unter „Freunde“.'); again(); })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'friends', filter: `a=eq.${uid}` }, p => { if (p.eventType === 'UPDATE') toast('🤝', 'Freundschaft angenommen!'); again(); })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'challenges', filter: `to_id=eq.${uid}` }, p => { if (p.eventType === 'INSERT') toast('⚔️', 'Neue Herausforderung!', 'Schau unter „Freunde“.'); again(); })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'challenges', filter: `from_id=eq.${uid}` }, p => { if (p.eventType === 'UPDATE' && p.new && p.new.to_res) toast('📬', 'Deine Herausforderung wurde gespielt', 'Ergebnis unter „Freunde“.'); again(); })
+    .subscribe();
+}
+
+// ---------- Benachrichtigungen ----------
+function soInbox() {
+  const uid = soUid(); if (!uid) return [];
+  const seen = soSeen(), items = [];
+  for (const f of SO.friends) if (f.status === 'pending' && f.b === uid) items.push({ kind: 'friend', at: Date.parse(f.created_at), f });
+  for (const c of SO.chIn) if (!c.to_res) items.push({ kind: 'chin', at: Date.parse(c.created_at), c });
+  for (const c of SO.chOut) if (c.to_res) items.push({ kind: 'chres', at: Date.parse(c.done_at || c.created_at), c, fresh: Date.parse(c.done_at || c.created_at) > seen });
+  for (const c of SO.chIn) if (c.to_res) items.push({ kind: 'chdone', at: Date.parse(c.done_at || c.created_at), c });
+  return items.sort((a, b) => b.at - a.at);
+}
+const soUnread = () => soInbox().filter(x => x.kind === 'friend' || x.kind === 'chin' || x.fresh).length;
+function soBadge() {
+  const n = soUnread();
+  const bell = $('#soBell'); if (bell) { bell.hidden = !KT.user; const b = bell.querySelector('b'); b.textContent = n; b.hidden = !n; bell.setAttribute('aria-label', n ? `${n} neue Benachrichtigungen` : 'Benachrichtigungen'); }
+  const tb = $('#soTabN'); if (tb) { tb.textContent = n; tb.hidden = !n; }
+}
+
+// ---------- Aktionen ----------
+async function soAddFriend(name, msgEl) {
+  const uid = soUid(); name = String(name || '').trim();
+  const say = (t, ok) => { if (msgEl) { msgEl.hidden = false; msgEl.textContent = t; msgEl.className = 'note ' + (ok ? 'so-ok' : 'so-err'); } };
+  if (!name) return;
+  const { data: p } = await KT.sb.from('profiles').select('id,username,avatar,color,xp').ilike('username', name.replace(/[%_]/g, '')).maybeSingle();
+  if (!p) return say(`„${name}“ gibt es nicht. Stimmt der Benutzername?`);
+  if (p.id === uid) return say('Das bist du selbst 🙂');
+  if (SO.friends.some(f => (f.a === p.id || f.b === p.id))) return say('Ihr seid schon befreundet oder es gibt schon eine Anfrage.');
+  const { error } = await KT.sb.from('friends').insert({ a: uid, b: p.id });
+  if (error) return say(soErr(error));
+  SO.prof[p.id] = p; say(`Anfrage an ${p.username} geschickt.`, true); soLoad();
+}
+async function soAccept(f) { const { error } = await KT.sb.from('friends').update({ status: 'accepted' }).eq('a', f.a).eq('b', f.b); if (error) toast('⚠️', soErr(error)); soLoad(); }
+async function soRemove(f, ask) { if (ask && !confirm(`${soName(f.a === soUid() ? f.b : f.a)} als Freund entfernen?`)) return; await KT.sb.from('friends').delete().eq('a', f.a).eq('b', f.b); soLoad(); }
+function soChallenge(fid) {
+  const dlg = $('#ktDlg'); if (!dlg) return;
+  let game = 'flags_sprint', d = S.diff || 'm';
+  const opts = h('div', { class: 'mp-row' });
+  const draw = () => opts.replaceChildren(mpSel(mpRaceList(), game, v => { game = v; draw(); }, 'Spiel'), KEYS[game] && KEYS[game].nodiff ? null : mpSel(Object.entries(DIFFS), d, v => { d = v; }, 'Schwierigkeit'));
+  draw();
+  const form = h('form', {}, h('h2', { id: 'ktTitle' }, `${soName(fid)} herausfordern`),
+    h('p', { class: 'kt-sub' }, 'Du spielst zuerst. Danach bekommt dein Freund genau dieselben Aufgaben – wer besser ist, gewinnt.'),
+    opts, h('button', { class: 'btn main', type: 'submit' }, 'Los, ich spiele vor'));
+  form.addEventListener('submit', e => {
+    e.preventDefault(); dlg.close();
+    const key = mpKeyOf(game, d), seed = newSeed();
+    SO.pending = { to: fid, key, seed }; SO.answer = null; SO.tour = null; S.duel = null;
+    if (S.relax) { S.relax = false; store.set('relax', false); try { renderDiff(); } catch (er) {} }
+    startMode(key, seed);
+  });
+  dlg.replaceChildren(h('button', { class: 'kt-x', type: 'button', 'aria-label': 'Schließen', onclick: () => dlg.close() }, '×'), form);
+  if (!dlg.open) dlg.showModal();
+}
+function soPlayChallenge(c) {
+  SO.answer = { id: c.id, key: c.game_key, seed: Number(c.seed) }; SO.pending = null; SO.tour = null;
+  if (S.relax) { S.relax = false; store.set('relax', false); try { renderDiff(); } catch (er) {} }
+  S.duel = { g: c.game_key, seed: Number(c.seed), s: c.from_res.s, t: c.from_res.t ?? 0, n: soName(c.from_id) };
+  startMode(c.game_key, Number(c.seed));
+}
+function soPlayTour() {
+  const T = soTourOf(soIsoWeek());
+  SO.tour = T; SO.pending = null; SO.answer = null; S.duel = null;
+  if (S.relax) { S.relax = false; store.set('relax', false); try { renderDiff(); } catch (er) {} }
+  startMode(T.key, T.seed);
+}
+async function soAfterFinish(key, res) {
+  const uid = soUid();
+  const clean = { s: res.s, ...(res.t != null ? { t: res.t } : {}) };
+  if (SO.pending && SO.pending.key === key) {
+    const P0 = SO.pending; SO.pending = null;
+    if (!uid) return;
+    const { error } = await KT.sb.from('challenges').insert({ from_id: uid, to_id: P0.to, game_key: key, seed: P0.seed, from_res: clean });
+    toast(error ? '⚠️' : '⚔️', error ? 'Herausforderung nicht gesendet' : `Herausforderung an ${soName(P0.to)} gesendet`, error ? soErr(error) : 'Du bekommst Bescheid, sobald gespielt wurde.');
+    soLoad();
+  } else if (SO.answer && SO.answer.key === key) {
+    const A = SO.answer; SO.answer = null;
+    if (!uid) return;
+    S.duel = null;
+    await KT.sb.from('challenges').update({ to_res: clean, done_at: new Date().toISOString() }).eq('id', A.id);
+    soLoad();
+  } else if (SO.tour && SO.tour.key === key) {
+    const T = SO.tour; SO.tour = null;
+    if (!uid) { toast('🏆', 'Turnier gespielt', 'Melde dich an, damit dein Ergebnis in die Turnier-Rangliste kommt.'); return; }
+    const { data: mine } = await KT.sb.from('tournament').select('s,t,tries').eq('week', T.week).eq('user_id', uid).maybeSingle();
+    const prev = mine ? { s: mine.s, ...(mine.t != null ? { t: mine.t } : {}) } : null;
+    if (!prev || better(key, clean, prev)) {
+      await KT.sb.from('tournament').upsert({ week: T.week, user_id: uid, game_key: key, s: clean.s, t: clean.t ?? null, data: clean, tries: (mine ? mine.tries : 0) + 1 });
+      toast('🏆', prev ? 'Neues Turnier-Bestergebnis!' : 'Im Wochen-Turnier eingetragen!', scoreText(key, clean));
+    } else {
+      await KT.sb.from('tournament').update({ tries: (mine.tries || 1) + 1 }).eq('week', T.week).eq('user_id', uid);
+      toast('🏆', 'Turnier gespielt', 'Dein bestes Ergebnis bleibt: ' + scoreText(key, prev));
+    }
+    SO.tourRows = null; soTourLoad();
+  }
+}
+async function soCreateGroup(name, msgEl) {
+  name = String(name || '').trim();
+  if (name.length < 2) { msgEl.hidden = false; msgEl.textContent = 'Name: mindestens 2 Zeichen.'; return; }
+  const { data, error } = await KT.sb.rpc('create_group', { gname: name.slice(0, 40) });
+  if (error) { msgEl.hidden = false; msgEl.textContent = soErr(error); return; }
+  SO.groupSel = data.id; toast('👥', `Gruppe „${data.name}“ erstellt`, 'Beitrittscode: ' + data.code); await soLoad(); soGroupLoad();
+}
+async function soJoinGroup(code, msgEl) {
+  const { data, error } = await KT.sb.rpc('join_group', { gcode: String(code || '').trim().toUpperCase() });
+  if (error) { msgEl.hidden = false; msgEl.textContent = /nicht gefunden/i.test(error.message) ? 'Diesen Code gibt es nicht.' : soErr(error); return; }
+  SO.groupSel = data.id; toast('👥', `Willkommen in „${data.name}“!`); await soLoad(); soGroupLoad();
+}
+async function soGroupLoad() {
+  const g = SO.groups.find(x => x.id === SO.groupSel); if (!g) { SO.groupRows = null; soRender(); return; }
+  const { data } = await KT.sb.from('group_members').select('user_id,joined_at').eq('group_id', g.id);
+  const ids = (data || []).map(r => r.user_id);
+  await soProfiles(ids);
+  SO.groupRows = { id: g.id, ids };
+  soRender();
+}
+async function soLeaveGroup(g) {
+  const own = g.owner === soUid();
+  if (!confirm(own ? `Gruppe „${g.name}“ für alle löschen?` : `Gruppe „${g.name}“ verlassen?`)) return;
+  if (own) await KT.sb.from('groups').delete().eq('id', g.id);
+  else await KT.sb.from('group_members').delete().eq('group_id', g.id).eq('user_id', soUid());
+  SO.groupSel = null; SO.groupRows = null; soLoad();
+}
+async function soTourLoad() {
+  const sb = KT.sb || await mpClient(); if (!sb) return;
+  const T = soTourOf(soIsoWeek());
+  const weeks = [1, 2, 3, 4, 5, 6, 7, 8].map(soWeekAgo);
+  const [cur, arc] = await Promise.all([
+    sb.from('tournament').select('user_id,s,t,tries').eq('week', T.week).limit(1000),
+    sb.from('tournament').select('week,user_id,game_key,s,t').in('week', weeks).limit(3000),
+  ]);
+  const ids = new Set([...(cur.data || []).map(r => r.user_id), ...(arc.data || []).map(r => r.user_id)]);
+  if (KT.sb) await soProfiles([...ids]);
+  else { const pr = await sb.from('profiles').select('id,username,avatar,color,xp').in('id', [...ids]); for (const p of pr.data || []) SO.prof[p.id] = p; }
+  const sortRows = (key, rows) => rows.map(r => ({ id: r.user_id, v: { s: r.s, ...(r.t != null ? { t: r.t } : {}) }, tries: r.tries })).sort((a, b) => better(key, a.v, b.v) ? -1 : better(key, b.v, a.v) ? 1 : 0);
+  SO.tourRows = { week: T.week, key: T.key, rows: sortRows(T.key, cur.data || []) };
+  SO.tourArchive = weeks.map(w => { const rs = (arc.data || []).filter(r => r.week === w); if (!rs.length) return null; const key = rs[0].game_key; return { week: w, key, rows: sortRows(key, rs).slice(0, 3) }; }).filter(Boolean);
+  soTourAward();
+  if (!$('#v-liga').hidden) renderLeague();
+  soRender();
+}
+// Abzeichen für Sieger und Podest der letzten Woche
+function soTourAward() {
+  const uid = soUid(); if (!uid || !SO.tourArchive) return;
+  const last = SO.tourArchive.find(a => a.week === soWeekAgo(1)); if (!last) return;
+  const pos = last.rows.findIndex(r => r.id === uid);
+  if (pos < 0 || P.flags['tw_' + last.week]) return;
+  P.flags['tw_' + last.week] = true;
+  if (pos === 0) { P.wins.tour = (P.wins.tour || 0) + 1; toast('👑', 'Du hast das Wochen-Turnier gewonnen!', keyLabel(last.key)); }
+  P.flags.tpod = true; saveP(); checkTrophies();
+}
+TROPHIES.push(
+  ['xtour', '👑', 'Turniersieger', 'Ein Wochen-Turnier gewonnen', () => (P.wins.tour || 0) >= 1],
+  ['xtpod', '🥉', 'Aufs Podest', 'Im Wochen-Turnier unter die Top 3', () => !!P.flags.tpod],
+  ['xfriend', '🤝', 'Gesellig', 'Einen Freund hinzugefügt', () => SO.friends.some(f => f.status === 'accepted')],
+  ['xgroup', '👥', 'Klassengemeinschaft', 'In einer Gruppe dabei', () => SO.groups.length > 0],
+);
+PR_GOLD.add('xtour'); PR_SILVER.add('xtpod');
+
+// ---------- Oberfläche: Reiter „Freunde“ ----------
+const soBtn = (txt, cls, fn, extra = {}) => h('button', { class: 'btn ' + cls, type: 'button', onclick: fn, ...extra }, txt);
+function soItem(x) {
+  const uid = soUid();
+  if (x.kind === 'friend') return h('div', { class: 'so-item' }, h('span', { class: 'so-av' }, soAv(x.f.a)), h('div', { class: 'so-txt' }, h('b', {}, soName(x.f.a)), h('small', {}, 'möchte mit dir befreundet sein')),
+    h('div', { class: 'so-act' }, soBtn('Annehmen', 'main', () => soAccept(x.f)), soBtn('Ablehnen', 'ghost', () => soRemove(x.f))));
+  const c = x.c, key = c.game_key, other = c.from_id === uid ? c.to_id : c.from_id;
+  const fr = c.from_res, tr = c.to_res;
+  if (x.kind === 'chin') return h('div', { class: 'so-item' }, h('span', { class: 'so-av' }, soAv(c.from_id)), h('div', { class: 'so-txt' }, h('b', {}, `${soName(c.from_id)} fordert dich heraus`), h('small', {}, `${keyLabel(key)} · zu schlagen: ${scoreText(key, fr, true)}`)),
+    h('div', { class: 'so-act' }, soBtn('Spielen', 'main', () => soPlayChallenge(c))));
+  const mine = c.from_id === uid ? fr : tr, theirs = c.from_id === uid ? tr : fr;
+  const win = better(key, mine, theirs), draw = !win && !better(key, theirs, mine);
+  return h('div', { class: 'so-item' + (x.fresh ? ' fresh' : '') }, h('span', { class: 'so-av' }, soAv(other)),
+    h('div', { class: 'so-txt' }, h('b', {}, `${draw ? 'Unentschieden' : win ? 'Gewonnen' : 'Verloren'} gegen ${soName(other)}`), h('small', {}, `${keyLabel(key)} · du ${scoreText(key, mine, true)} – ${scoreText(key, theirs, true)}`)),
+    h('span', { class: 'so-res ' + (draw ? 'd' : win ? 'w' : 'l') }, draw ? '=' : win ? '🏆' : '✗'));
+}
+function soBoard(ids, mode, setMode, label) {
+  const rows = ids.map(id => ({ id, n: soName(id), av: soAv(id), xp: soXp(id), w: soWxp(id), me: id === soUid() }))
+    .map(r => r.me ? { ...r, xp: Math.max(r.xp, P.xp), w: weekXp() } : r)
+    .sort((a, b) => mode === 'wxp' ? b.w - a.w || b.xp - a.xp : b.xp - a.xp);
+  return h('div', {},
+    h('div', { class: 'mp-seg so-seg', role: 'radiogroup', 'aria-label': label }, [['wxp', 'Diese Woche'], ['xp', 'Gesamt']].map(([k, n]) => h('button', { type: 'button', role: 'radio', 'aria-checked': String(mode === k), onclick: () => setMode(k) }, n))),
+    h('table', { class: 'lb' }, h('tbody', {}, rows.map((r, i) => h('tr', { class: r.me ? 'me' : '' }, h('td', { class: 'r' }, i + 1), h('td', {}, r.av + ' ' + r.n + (r.me ? ' (du)' : '')),
+      h('td', { class: 's' }, `Lv ${lvlOf(r.xp)}`), h('td', { class: 's' }, mode === 'wxp' ? `${fmtNum(r.w)} XP` : `${fmtNum(r.xp)} XP`))))));
+}
+function soRender() {
+  const box = $('#soBox'); if (!box) return;
+  if (box.contains(document.activeElement) && document.activeElement.tagName === 'INPUT' && document.activeElement.value) return;
+  const uid = soUid();
+  if (!uid) {
+    box.replaceChildren(h('div', { class: 'panel prpanel' }, h('h3', {}, 'Freunde, Gruppen & Turnier'),
+      h('p', {}, 'Mit einem Konto kannst du Freunde hinzufügen, sie direkt herausfordern, mit deiner Klasse eine eigene Rangliste haben und beim Wochen-Turnier mitspielen.'),
+      h('div', { class: 'actions' }, KT.sb ? soBtn('Anmelden', 'main', () => ktOpen('login')) : null, KT.sb ? soBtn('Registrieren', 'ghost', () => ktOpen('register')) : h('p', { class: 'note' }, 'Dafür braucht es die Online-Version und Internet.'))));
+    return;
+  }
+  const inbox = soInbox().slice(0, 12);
+  const accepted = SO.friends.filter(f => f.status === 'accepted').map(f => f.a === uid ? f.b : f.a);
+  const outgoing = SO.friends.filter(f => f.status === 'pending' && f.a === uid);
+  const fIn = h('input', { class: 'field', placeholder: 'Benutzername', 'aria-label': 'Benutzername des Freundes', autocomplete: 'off', maxlength: 20 });
+  const fMsg = h('p', { class: 'note', hidden: true, 'aria-live': 'polite' });
+  fIn.addEventListener('keydown', e => { if (e.key === 'Enter') soAddFriend(fIn.value, fMsg); });
+  const friendRow = id => { const f = SO.friends.find(x => x.a === id || x.b === id);
+    return h('div', { class: 'so-item' }, h('span', { class: 'so-av' }, soAv(id)), h('div', { class: 'so-txt' }, h('b', {}, soName(id)), h('small', {}, `Level ${lvlOf(soXp(id))} · ${fmtNum(soWxp(id))} XP diese Woche`)),
+      h('div', { class: 'so-act' }, soBtn('⚔️', 'main', () => soChallenge(id), { title: 'Herausfordern', 'aria-label': soName(id) + ' herausfordern' }),
+        h('a', { class: 'btn ghost', href: location.pathname + '?profil=' + encodeURIComponent(soName(id)), title: 'Profil ansehen', 'aria-label': 'Profil von ' + soName(id) }, '👤'),
+        soBtn('✕', 'ghost', () => soRemove(f, true), { title: 'Entfernen', 'aria-label': soName(id) + ' entfernen' }))); };
+  const gName = h('input', { class: 'field', placeholder: 'Name, z. B. 4AHITM', 'aria-label': 'Name der neuen Gruppe', maxlength: 40 });
+  const gCode = h('input', { class: 'field', placeholder: 'Code, z. B. A1B2C3', 'aria-label': 'Beitrittscode', maxlength: 6, autocapitalize: 'characters' });
+  const gMsg = h('p', { class: 'note so-err', hidden: true, 'aria-live': 'polite' });
+  const g = SO.groups.find(x => x.id === SO.groupSel);
+  const groupView = g ? h('div', { class: 'so-group' },
+    h('div', { class: 'prhead' }, h('h4', {}, g.name), h('span', { class: 'so-code' }, 'Code ', h('b', {}, g.code),
+      soBtn('Kopieren', 'ghost', async e => { try { await navigator.clipboard.writeText(`Tritt meiner Brainix-Gruppe „${g.name}“ bei: Code ${g.code} – ${location.origin + location.pathname}`); e.currentTarget.textContent = 'Kopiert ✓'; } catch (er) { prompt('Code:', g.code); } }))),
+    SO.groupRows && SO.groupRows.id === g.id ? soBoard(SO.groupRows.ids, SO.groupBoard, m => { SO.groupBoard = m; soRender(); }, 'Gruppen-Rangliste') : h('p', { class: 'note' }, 'Lade Mitglieder …'),
+    h('div', { class: 'actions' }, soBtn(g.owner === uid ? 'Gruppe löschen' : 'Gruppe verlassen', 'ghost', () => soLeaveGroup(g)))) : null;
+  box.replaceChildren(
+    h('div', { class: 'panel prpanel' }, h('h3', {}, 'Benachrichtigungen'),
+      inbox.length ? h('div', { class: 'so-list' }, inbox.map(soItem)) : h('p', { class: 'note' }, 'Nichts Neues. Fordere doch einen Freund heraus!')),
+    h('div', { class: 'cols' },
+      h('div', { class: 'panel prpanel' }, h('h3', {}, `Freunde · ${accepted.length}`),
+        h('div', { class: 'mp-row' }, fIn, soBtn('Hinzufügen', 'main', () => soAddFriend(fIn.value, fMsg))), fMsg,
+        accepted.length ? h('div', { class: 'so-list' }, accepted.map(friendRow)) : h('p', { class: 'note' }, 'Noch keine Freunde. Füge jemanden über den Benutzernamen hinzu.'),
+        outgoing.length ? h('p', { class: 'note' }, 'Angefragt: ' + outgoing.map(f => soName(f.b)).join(', ')) : null),
+      h('div', { class: 'panel prpanel' }, h('h3', {}, 'Freunde-Rangliste'), soBoard([uid, ...accepted], SO.board, m => { SO.board = m; soRender(); }, 'Freunde-Rangliste'))),
+    h('div', { class: 'panel prpanel' }, h('h3', {}, 'Gruppen & Klassen'),
+      SO.groups.length ? h('div', { class: 'so-chips' }, SO.groups.map(x => h('button', { type: 'button', class: 'mp-chip' + (x.id === SO.groupSel ? ' me' : ''), 'aria-pressed': String(x.id === SO.groupSel), onclick: () => { SO.groupSel = x.id; SO.groupRows = null; soRender(); soGroupLoad(); } }, '👥 ' + x.name))) : h('p', { class: 'note' }, 'Erstelle eine Gruppe für deine Klasse oder tritt mit einem Code bei.'),
+      groupView,
+      h('div', { class: 'so-gforms' },
+        h('div', { class: 'mp-row' }, gName, soBtn('Gruppe erstellen', 'main', () => soCreateGroup(gName.value, gMsg))),
+        h('div', { class: 'mp-row' }, gCode, soBtn('Beitreten', '', () => soJoinGroup(gCode.value, gMsg)))), gMsg),
+    soTourPanel(true));
+  if (!$('#v-freunde').hidden && soUnread()) { store.set('notifSeen', Date.now()); setTimeout(soBadge, 50); }
+}
+function soTourPanel(compact) {
+  const T = soTourOf(soIsoWeek()), R = SO.tourRows && SO.tourRows.week === T.week ? SO.tourRows : null;
+  if (!R && !compact) soTourLoad();
+  const uid = soUid(), myPos = R ? R.rows.findIndex(r => r.id === uid) : -1;
+  return h('div', { class: 'panel prpanel so-tour' },
+    h('div', { class: 'prhead' }, h('h3', {}, '🏆 Wochen-Turnier'), h('span', { class: 'note' }, `noch ${soWeekEnd()}`)),
+    h('p', {}, h('b', {}, keyLabel(T.key)), ' – diese Woche spielen alle dieselben Aufgaben. Dein bestes Ergebnis zählt, jeden Montag kommt ein neues Spiel.'),
+    h('div', { class: 'actions' }, soBtn('Turnier spielen', 'main', soPlayTour), myPos >= 0 ? h('span', { class: 'note' }, `Du bist auf Platz ${myPos + 1} von ${R.rows.length}`) : null),
+    R ? (R.rows.length ? h('table', { class: 'lb' }, h('tbody', {}, R.rows.slice(0, compact ? 5 : 20).map((r, i) => h('tr', { class: r.id === uid ? 'me' : '' }, h('td', { class: 'r' }, ['🥇', '🥈', '🥉'][i] || i + 1), h('td', {}, soAv(r.id) + ' ' + soName(r.id)), h('td', { class: 's' }, scoreText(R.key, r.v, true))))))
+      : h('p', { class: 'note' }, 'Noch niemand hat gespielt – hol dir Platz 1!')) : h('p', { class: 'note' }, 'Lade Rangliste …'),
+    !compact && SO.tourArchive && SO.tourArchive.length ? h('details', { class: 'so-arch' }, h('summary', {}, 'Archiv der letzten Wochen'),
+      ...SO.tourArchive.map(a => h('div', { class: 'so-archw' }, h('b', {}, `${a.week.replace('-W', ' · Woche ')} – ${keyLabel(a.key)}`), h('div', {}, a.rows.map((r, i) => h('span', { class: 'prbadge' }, ['🥇', '🥈', '🥉'][i] + ' ' + soName(r.id) + ' (' + scoreText(a.key, r.v, true) + ')')))))) : null);
+}
+
+// ---------- Einhängen ----------
+{
+  // Reiter + Abschnitt
+  const tabs = $('.tabs'), after = $('#t-duelle');
+  if (tabs && !$('#t-freunde')) {
+    const tb = h('button', { role: 'tab', id: 't-freunde', 'data-tab': 'freunde', 'aria-selected': 'false', type: 'button' }, 'Freunde', h('span', { class: 'n', id: 'soTabN', hidden: true }));
+    tb.addEventListener('click', () => showTab('freunde'));
+    after ? after.after(tb) : tabs.append(tb);
+    $('#v-duelle').after(h('section', { id: 'v-freunde', hidden: true }, h('div', { id: 'soBox' })));
+  }
+  const st0 = showTab;
+  showTab = function (t) {
+    st0.apply(this, arguments);
+    const sec = $('#v-freunde'); if (sec) sec.hidden = t !== 'freunde';
+    if (t === 'freunde') { soRender(); soLoad(); if (!SO.tourRows) soTourLoad(); }
+  };
+  // Glocke in der Kopfzeile
+  if (!$('#soBell')) $('#themeBtn').before(h('button', { class: 'themebtn so-bell', id: 'soBell', type: 'button', hidden: true, 'aria-label': 'Benachrichtigungen', title: 'Benachrichtigungen', onclick: () => showTab('freunde') }, '🔔', h('b', { hidden: true })));
+  // Ergebnis nach jeder Runde prüfen (Herausforderung / Turnier)
+  const fin1 = finish;
+  finish = function (key, res, seed) { const r = fin1.apply(this, arguments); if (!(MP.race && MP.race.key === key)) soAfterFinish(key, res).catch(() => {}); return r; };
+  // Turnier oben in der Liga
+  const rl0 = renderLeague;
+  renderLeague = function () { rl0.apply(this, arguments); const box = $('#liga'); if (box) box.prepend(soTourPanel(false)); };
+  // Anmelden/Abmelden beobachten
+  const kr0 = ktRender;
+  ktRender = function () { kr0.apply(this, arguments); const uid = soUid(); if (uid && SO.loadedFor !== uid) { SO.loadedFor = uid; soLoad(); soLive(); soTourLoad(); } if (!uid && SO.loadedFor) { SO.loadedFor = null; SO.friends = []; SO.chIn = []; SO.chOut = []; SO.groups = []; if (SO.rt && KT.sb) { try { KT.sb.removeChannel(SO.rt); } catch (e) {} SO.rt = null; } } soBadge(); soRender(); };
+  setInterval(() => { if (soUid() && !document.hidden) soLoad(); }, 120000);
+  // Abgebrochene Runde: offene Herausforderung/Turnier-Runde verwerfen
+  $('#quit').addEventListener('click', () => { SO.pending = null; SO.answer = null; SO.tour = null; if (S.duel && !S.duel.id) S.duel = null; });
+}
+/*/BRX:sozial*/
 })();
 </script>
