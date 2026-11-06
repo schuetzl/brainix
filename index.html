@@ -1464,6 +1464,24 @@ dialog.kt-dlg::backdrop { background: rgba(10, 14, 18, .45); }
 @media (max-width: 420px) { .mp-ans { min-height: 100px; } .mp-pch { padding: 10px; font-size: .95rem; } }
 @media (prefers-reduced-motion: reduce) { .mp-ans:active { transform: none; } }
 /*/BRX:mp*/
+/*BRX:ordnung*/
+/* ===== Ordnung (Etappe 4) ===== */
+.gtw { position: relative; display: grid; min-width: 0; }
+.gtw > .gt { width: 100%; height: 100%; min-width: 0; box-sizing: border-box; }
+.favbtn { position: absolute; top: 6px; right: 6px; width: 30px; height: 30px; border: 0; border-radius: 8px; background: transparent; color: var(--muted); font-size: 1.1rem; line-height: 1; cursor: pointer; display: grid; place-items: center; padding: 0; }
+.favbtn:hover { background: var(--card2); color: var(--ink); }
+.favbtn.on { color: var(--hi, #E9B949); }
+.favbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.ortools { display: flex; justify-content: flex-end; margin: -6px 0 14px; }
+.ortools label { display: inline-flex; align-items: center; gap: 8px; font-size: .85rem; color: var(--muted); font-weight: 600; }
+.ortools select { width: auto; padding: 6px 10px; }
+.orcatnav { display: flex; gap: 6px; overflow-x: auto; padding: 2px 0 10px; margin: 0 0 14px; scrollbar-width: thin; }
+.orcatnav a { flex: none; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--ink); text-decoration: none; font-size: .85rem; font-weight: 600; white-space: nowrap; }
+.orcatnav a:hover { border-color: var(--accent); color: var(--accent); }
+.orfavempty .note { margin: 0; }
+.cat { scroll-margin-top: 12px; }
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+/*/BRX:ordnung*/
 </style>
 
 <div class="app" lang="de">
@@ -11795,5 +11813,112 @@ let mpHub0 = null;
   }
 }
 /*/BRX:mp*/
+/*BRX:ordnung*/
+// ==================================================================
+//  Ordnung (Etappe 4): neue Kategorien, Favoriten, Suche, Sortierung
+//  Favoriten liegen in localStorage 'bwl-favs' und werden mit dem Konto
+//  synchronisiert (wie alle bwl-*-Schlüssel).
+// ==================================================================
+const OR_CATS = {
+  'Wissen & Quiz': ['Tagesquiz', 'Allgemeinwissen', 'Wer bin ich?', 'Fakt oder Fake', 'Schätzfragen', 'Fermi-Schätzen', 'Größenvergleich', 'Blind-Ranking', 'Zeitstrahl', 'Weltall', 'Dinosaurier', 'Hunderassen', 'Tier-Duell'],
+  'Geografie': ['Flaggen', 'Hauptstädte', 'Länder-Umrisse', 'Weltkarte', 'Kartenquiz', 'Grenzen-Route', 'Größer oder kleiner?', 'Zeitzonen', 'Vorwahlen', 'Länderkürzel', 'Währungen', 'Autokennzeichen', 'Flaggen malen'],
+  'Sprache & Wörter': ['Wordle', 'Connections', 'Kreuzworträtsel', 'Galgenmännchen', 'Wortspot', 'Wortwärme', 'Diktat', 'Sprachen erkennen', 'Alphabete'],
+  'Logik & Rätsel': ['Sudoku', 'Nonogramm', 'Minesweeper', 'Mastermind', 'Puzzles', '2048', 'Zahlenrätsel'],
+  'Zahlen & Mathe': ['Kopfrechnen', 'Zahlen-Sprints', 'Zähl-Becher', 'Pi', 'Doomsday'],
+  'Gedächtnis & Reaktion': ['Memory', 'Zahlengedächtnis', 'Farben merken', 'Farbgedächtnis', 'Reaktionstest'],
+  'Arcade': ['Snake', 'Blockfall', 'Flappy Brain', 'Wüstenlauf', 'Abpraller'],
+  'Brett- & Duellspiele': ['Schach', 'Vier gewinnt', 'Schiffe versenken'],
+  'Schule (HTL)': ['Binär & Hex', 'Zahlen & Codes', 'Periodensystem', 'Maßeinheiten', 'Vokabeln Englisch', 'Zehnfinger'],
+  'Musik, Film & Pop': ['Song-Raten', 'Cover-Raten', 'Filmposter-Raten', 'Marvel-Quiz'],
+};
+const OR_SORTS = [['cat', 'Nach Kategorie'], ['az', 'A–Z'], ['recent', 'Zuletzt gespielt'], ['most', 'Meistgespielt']];
+// Suche findet „Länder“ bei „länder“, „laender“ und „lander“
+const orNorm = t => String(t || '').toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss').normalize('NFD').replace(/[̀-ͯ]/g, '');
+const orNorm2 = t => String(t || '').toLowerCase().replace(/ß/g, 'ss').normalize('NFD').replace(/[̀-ͯ]/g, '');
+const orFavs = () => { const f = store.get('favs', []); return Array.isArray(f) ? f : []; };
+const orIsFav = t => orFavs().includes(t);
+function orToggleFav(t) {
+  const f = orFavs(), on = !f.includes(t);
+  store.set('favs', on ? [...f, t] : f.filter(x => x !== t));
+  renderCards();
+  const live = $('#kxLiveOr'); if (live) live.textContent = on ? `${t} zu Favoriten hinzugefügt` : `${t} aus Favoriten entfernt`;
+}
+const orCatOf = t => Object.keys(OR_CATS).find(c => OR_CATS[c].includes(t)) || 'Weitere';
+function orHaystack(g) {
+  const modes = (g.modes || []).map(m => m[1]).join(' ');
+  const raw = [g.t, g.p, orCatOf(g.t), modes].join(' ');
+  return orNorm(raw) + ' ' + orNorm2(raw);
+}
+// Kachel mit Stern: Hülle (div) um den bestehenden Kachel-Knopf, Stern als eigener Knopf daneben
+const orTile0 = gameTile;
+gameTile = function (g) {
+  const fav = orIsFav(g.t);
+  return h('div', { class: 'gtw' }, orTile0(g),
+    h('button', { class: 'favbtn' + (fav ? ' on' : ''), type: 'button', 'aria-pressed': String(fav), 'aria-label': (fav ? 'Aus Favoriten entfernen: ' : 'Zu Favoriten: ') + g.t, title: fav ? 'Aus Favoriten entfernen' : 'Zu Favoriten',
+      onclick: e => { e.stopPropagation(); orToggleFav(g.t); } }, fav ? '★' : '☆'));
+};
+function orSection(title, games, id, extra) {
+  return h('section', { class: 'cat', id }, h('div', { class: 'rowh' }, h('h2', {}, title), h('small', {}, games.length + (games.length === 1 ? ' Spiel' : ' Spiele')), extra || null),
+    h('div', { class: 'tiles' }, games.map(gameTile)));
+}
+const orSlug = c => 'cat-' + orNorm(c).replace(/[^a-z0-9]+/g, '-');
+renderCards = function () {
+  const box = $('#cards'), q = orNorm(S.q.trim()), sort = store.get('sort', 'cat');
+  const all = GAMES.filter(g => g && g.t);
+  const tools = $('#orTools');
+  if (tools) {
+    const sel = tools.querySelector('select');
+    if (sel && sel.value !== sort) sel.value = sort;
+  }
+  let secs = [];
+  if (q) {
+    const words = q.split(/\s+/).filter(Boolean);
+    const hit = all.filter(g => { const hs = orHaystack(g); return words.every(w => hs.includes(w)); })
+      .sort((a, b) => (orNorm(b.t).includes(words[0]) - orNorm(a.t).includes(words[0])) || a.t.localeCompare(b.t, 'de'));
+    secs = hit.length ? [orSection(`Suche: „${S.q.trim()}“`, hit, 'cat-suche')] : [h('p', { class: 'nores' }, 'Kein Spiel gefunden. Tipp: Suche nach Thema, z. B. „Länder“, „Zahlen“ oder „Wörter“.')];
+  } else {
+    const favs = orFavs().map(t => all.find(g => g.t === t)).filter(Boolean);
+    secs.push(favs.length ? orSection('★ Favoriten', favs, 'cat-favoriten')
+      : h('section', { class: 'cat orfavempty', id: 'cat-favoriten' }, h('div', { class: 'rowh' }, h('h2', {}, '★ Favoriten')), h('p', { class: 'note' }, 'Tippe auf den Stern ☆ bei einem Spiel, dann steht es hier ganz oben.')));
+    if (sort === 'cat') {
+      const names = Object.keys(OR_CATS);
+      const rest = all.filter(g => !names.some(c => OR_CATS[c].includes(g.t)));
+      const groups = names.map(c => ({ c, gs: OR_CATS[c].map(t => all.find(g => g.t === t)).filter(Boolean) })).filter(x => x.gs.length).concat(rest.length ? [{ c: 'Weitere', gs: rest }] : []);
+      secs.push(h('nav', { class: 'orcatnav', 'aria-label': 'Kategorien' }, groups.map(({ c }) => h('a', { href: '#' + orSlug(c), onclick: e => { e.preventDefault(); const el = document.getElementById(orSlug(c)); if (el) el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); } }, c))));
+      secs.push(...groups.map(({ c, gs }) => orSection(c, gs, orSlug(c))));
+    } else {
+      const recent = store.get('recent', []) || [];
+      const plays = n => (P.plays && P.plays[n]) || 0;
+      const list = all.slice().sort((a, b) => {
+        if (sort === 'az') return a.t.localeCompare(b.t, 'de');
+        if (sort === 'recent') { const ia = recent.indexOf(a.t), ib = recent.indexOf(b.t); if (ia !== ib) return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib); return plays(b.t) - plays(a.t) || a.t.localeCompare(b.t, 'de'); }
+        return plays(b.t) - plays(a.t) || a.t.localeCompare(b.t, 'de');
+      });
+      secs.push(orSection(OR_SORTS.find(s => s[0] === sort)[1], list, 'cat-alle'));
+    }
+  }
+  box.replaceChildren(...secs);
+  for (const id of ['#hero', '#recent', '#homeQuests']) { const el = $(id); if (el) el.hidden = !!q; }
+  if (sheetGame) fillSheet();
+};
+{
+  // Die alten CATS bleiben für die Tagesaufgaben bestehen; angezeigt werden OR_CATS.
+  // Sortier-Auswahl neben der Suche
+  const sb = $('.searchbox');
+  if (sb && !$('#orTools')) {
+    const sel = h('select', { class: 'field', 'aria-label': 'Spiele sortieren', onchange: e => { store.set('sort', e.target.value); renderCards(); } },
+      OR_SORTS.map(([k, n]) => h('option', { value: k, selected: k === store.get('sort', 'cat') }, n)));
+    sb.after(h('div', { class: 'ortools', id: 'orTools' }, h('label', {}, 'Sortieren', sel)));
+    $('#search').setAttribute('placeholder', 'Spiel suchen (Name, Thema, Kategorie) …');
+    $('#search').setAttribute('aria-label', 'Spiel suchen nach Name, Beschreibung oder Kategorie');
+  }
+  if (!$('#kxLiveOr')) document.body.append(h('div', { id: 'kxLiveOr', class: 'sr-only', 'aria-live': 'polite' }));
+  // „/“ springt in die Suche
+  document.addEventListener('keydown', e => {
+    if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || '') && !$('#v-spiele').hidden) { e.preventDefault(); $('#search').focus(); }
+  });
+  renderCards();
+}
+/*/BRX:ordnung*/
 })();
 </script>
