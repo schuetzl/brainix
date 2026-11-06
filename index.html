@@ -1612,7 +1612,7 @@ dialog.kt-dlg::backdrop { background: rgba(10, 14, 18, .45); }
 .set-body input[type=range] { flex: 1 1 160px; accent-color: var(--accent); }
 .set-keys { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
 kbd { font-family: var(--f-mono, ui-monospace, monospace); font-size: .8rem; padding: 1px 6px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; background: var(--card2); }
-.set-btn { font-size: 1.05rem; }
+.set-btn { display: grid; place-items: center; }
 
 /* Tastatur & Screenreader */
 .skip { position: absolute; left: 12px; top: -60px; z-index: 2000; padding: 10px 14px; border-radius: 10px; background: var(--accent); color: var(--accent-ink, #fff); font-weight: 700; text-decoration: none; }
@@ -1620,6 +1620,22 @@ kbd { font-family: var(--f-mono, ui-monospace, monospace); font-size: .8rem; pad
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 /*/BRX:einstellungen*/
+/*BRX:pwa*/
+/* ===== PWA (Etappe 8) ===== */
+.pwa-card { display: flex; align-items: center; gap: 12px; padding: 12px 14px; margin: 0 0 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); position: relative; flex-wrap: wrap; }
+.pwa-ico { width: 40px; height: 40px; border-radius: 11px; background: var(--accent); display: grid; place-items: center; flex: none; }
+.pwa-ico::after { content: ''; width: 14px; height: 14px; border-radius: 50%; background: var(--accent-ink, #fff); }
+.pwa-txt { flex: 1 1 180px; display: grid; min-width: 0; padding-right: 26px; }
+.pwa-txt small { color: var(--muted); }
+.pwa-x { position: absolute; top: 4px; right: 4px; }
+.pwa-bar, .pwa-off { position: fixed; left: 50%; transform: translateX(-50%); z-index: 1100; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center;
+  width: min(560px, calc(100vw - 24px)); padding: 10px 14px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.18); font-weight: 600; font-size: .9rem; }
+.pwa-bar { bottom: 16px; background: var(--card); color: var(--ink); border: 2px solid var(--accent); }
+.pwa-bar .btn { padding: 6px 12px; }
+.pwa-off { position: sticky; top: 0; left: auto; transform: none; width: auto; border-radius: 0; box-shadow: none; padding: 6px 12px; font-size: .82rem; background: var(--ink); color: var(--paper); text-align: center; }
+.pwa-steps { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+@media (display-mode: standalone) { .pwa-card { display: none; } }
+/*/BRX:pwa*/
 </style>
 
 <div class="app" lang="de">
@@ -12854,7 +12870,7 @@ function setA11y() {
   setTheme(store.get('theme', null) || 'auto');
   setApply();
   // Zahnrad neben Hell/Dunkel
-  if (!$('#setBtn')) $('#themeBtn').after(h('button', { class: 'themebtn set-btn', id: 'setBtn', type: 'button', 'aria-label': 'Einstellungen', title: 'Einstellungen', onclick: setOpen }, '⚙'));
+  if (!$('#setBtn')) $('#themeBtn').after(h('button', { class: 'themebtn set-btn', id: 'setBtn', type: 'button', 'aria-label': 'Einstellungen', title: 'Einstellungen', onclick: setOpen, html: '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>' }));
   // ◐ bleibt der schnelle Umschalter Hell ⇄ Dunkel
   const tb = $('#themeBtn');
   if (tb) tb.addEventListener('click', () => setTimeout(() => { const v = document.documentElement.getAttribute('data-theme'); store.set('theme', v); document.documentElement.dataset.themePref = v; tb.setAttribute('aria-pressed', String(v === 'dark')); }, 0));
@@ -12869,5 +12885,142 @@ function setA11y() {
   renderCards();
 }
 /*/BRX:einstellungen*/
+/*BRX:pwa*/
+// ==================================================================
+//  PWA (Etappe 8): installierbar, offline spielbar, Sync nach Rückkehr ins Netz
+//  Braucht neben index.html: sw.js, manifest.webmanifest, Icons (Ordner pwa/).
+// ==================================================================
+const PWA = { prompt: null, reg: null, installed: matchMedia('(display-mode: standalone)').matches || navigator.standalone === true, waiting: null };
+const pwaWeb = /^https?:$/.test(location.protocol);
+const pwaIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+// ---------- Kopf-Tags + Service Worker ----------
+function pwaHead() {
+  const add = (tag, attrs) => { if (!document.head.querySelector(`${tag}[${Object.keys(attrs)[0]}="${Object.values(attrs)[0]}"]`)) document.head.append(Object.assign(document.createElement(tag), attrs)); };
+  add('meta', { name: 'theme-color', content: '#0F766E' });
+  add('meta', { name: 'apple-mobile-web-app-capable', content: 'yes' });
+  add('meta', { name: 'mobile-web-app-capable', content: 'yes' });
+  add('meta', { name: 'apple-mobile-web-app-title', content: 'Brainix' });
+  add('meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'default' });
+  if (!pwaWeb) return;
+  add('link', { rel: 'manifest', href: 'manifest.webmanifest' });
+  add('link', { rel: 'apple-touch-icon', href: 'apple-touch-icon.png' });
+  add('link', { rel: 'icon', href: 'favicon-32.png', type: 'image/png' });
+}
+async function pwaRegister() {
+  if (!pwaWeb || !('serviceWorker' in navigator)) return;
+  try {
+    PWA.reg = await navigator.serviceWorker.register('sw.js');
+    const watch = w => { if (!w) return; w.addEventListener('statechange', () => { if (w.state === 'installed' && navigator.serviceWorker.controller) pwaUpdateReady(w); }); };
+    if (PWA.reg.waiting && navigator.serviceWorker.controller) pwaUpdateReady(PWA.reg.waiting);
+    PWA.reg.addEventListener('updatefound', () => watch(PWA.reg.installing));
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (PWA.waiting && !reloaded) { reloaded = true; location.reload(); } });
+    setInterval(() => { if (!document.hidden && navigator.onLine) PWA.reg.update().catch(() => {}); }, 30 * 60 * 1000);
+  } catch (e) {}
+}
+function pwaUpdateReady(w) {
+  PWA.waiting = w;
+  if ($('#pwaUpd')) return;
+  const bar = h('div', { class: 'pwa-bar', id: 'pwaUpd', role: 'status' }, h('span', {}, '✨ Neue Brainix-Version verfügbar'),
+    h('button', { class: 'btn main', type: 'button', onclick: () => { w.postMessage('skipWaiting'); bar.remove(); } }, 'Aktualisieren'),
+    h('button', { class: 'btn ghost', type: 'button', 'aria-label': 'Später', onclick: () => bar.remove() }, 'Später'));
+  document.body.append(bar);
+}
+
+// ---------- Installieren ----------
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); PWA.prompt = e; pwaRender(); });
+window.addEventListener('appinstalled', () => { PWA.prompt = null; PWA.installed = true; store.set('pwaHide', true); toast('📲', 'Brainix ist installiert!', 'Du findest es jetzt bei deinen Apps.'); pwaRender(); });
+async function pwaInstall() {
+  if (PWA.prompt) { PWA.prompt.prompt(); try { await PWA.prompt.userChoice; } catch (e) {} PWA.prompt = null; pwaRender(); return; }
+  const dlg = $('#ktDlg'); if (!dlg) return;
+  const steps = pwaIOS
+    ? ['Öffne Brainix in Safari.', 'Tippe unten auf „Teilen“ (Quadrat mit Pfeil ↑).', 'Wähle „Zum Home-Bildschirm“ und dann „Hinzufügen“.']
+    : ['Öffne das Browser-Menü (⋮ oben rechts).', 'Wähle „App installieren“ bzw. „Zum Startbildschirm hinzufügen“.', 'Bestätige mit „Installieren“.'];
+  dlg.replaceChildren(h('button', { class: 'kt-x', type: 'button', 'aria-label': 'Schließen', onclick: () => dlg.close() }, '×'),
+    h('form', { method: 'dialog' }, h('h2', { id: 'ktTitle' }, 'Brainix als App'), h('p', { class: 'kt-sub' }, 'Dann startet Brainix wie eine App vom Home-Bildschirm – und Einzelspieler geht auch ohne Internet.'),
+      h('ol', { class: 'pwa-steps' }, steps.map(s => h('li', {}, s))), h('button', { class: 'btn main', type: 'submit' }, 'Alles klar')));
+  if (!dlg.open) dlg.showModal();
+}
+function pwaRender() {
+  const card = $('#pwaCard');
+  const show = pwaWeb && !PWA.installed && !store.get('pwaHide', false) && (PWA.prompt || pwaIOS);
+  if (!show) { if (card) card.remove(); return; }
+  const el = h('div', { class: 'pwa-card', id: 'pwaCard' }, h('span', { class: 'pwa-ico', 'aria-hidden': 'true' }),
+    h('div', { class: 'pwa-txt' }, h('b', {}, 'Brainix als App installieren'), h('small', {}, 'Startet vom Home-Bildschirm und funktioniert auch offline.')),
+    h('button', { class: 'btn main', type: 'button', onclick: pwaInstall }, 'Installieren'),
+    h('button', { class: 'kt-x pwa-x', type: 'button', 'aria-label': 'Hinweis ausblenden', onclick: () => { store.set('pwaHide', true); pwaRender(); } }, '×'));
+  if (card) card.replaceWith(el); else { const hero = $('#hero'); if (hero) hero.before(el); }
+}
+
+// ---------- Offline / Online ----------
+function pwaNet() {
+  const off = !navigator.onLine;
+  document.documentElement.classList.toggle('is-offline', off);
+  let b = $('#pwaOff');
+  if (off && !b) { b = h('div', { class: 'pwa-off', id: 'pwaOff', role: 'status' }, '📴 Offline – Einzelspieler geht weiter, Fortschritt wird später synchronisiert.'); document.body.prepend(b); }
+  if (!off && b) b.remove();
+}
+// Warteschlange für Ergebnisse, die online eingetragen werden müssen (Turnier, Herausforderungen)
+const pwaOutbox = () => store.get('outbox', []) || [];
+function pwaQueue(item) { const q = pwaOutbox(); q.push(item); store.set('outbox', q.slice(-20)); toast('📴', 'Offline gespeichert', 'Wird eingetragen, sobald du wieder online bist.'); }
+async function pwaFlush() {
+  if (!navigator.onLine || !KT.user || !KT.sb) return;
+  const q = pwaOutbox(); if (!q.length) return;
+  store.set('outbox', []);
+  for (const it of q) {
+    try {
+      if (it.kind === 'tour') SO.tour = it.ctx; else if (it.kind === 'pending') SO.pending = it.ctx; else if (it.kind === 'answer') SO.answer = it.ctx;
+      await soAfterFinish(it.key, it.res);
+    } catch (e) { const r = pwaOutbox(); r.push(it); store.set('outbox', r); }
+  }
+}
+async function pwaBackOnline() {
+  pwaNet();
+  if (!KT.user || !KT.sb) { if (pwaWeb && !KT.sb) ktInit(); return; }
+  const l = ktLink();
+  if (l && l.uid === KT.user.id && l.dirty) await ktPush(true);
+  if (S.db && S.remoteBest) pushScores();
+  await pwaFlush();
+  ktLoadScores(); if (typeof soLoad === 'function') soLoad();
+  toast('🔄', 'Wieder online', 'Dein Fortschritt ist synchronisiert.');
+}
+window.addEventListener('offline', pwaNet);
+window.addEventListener('online', () => setTimeout(pwaBackOnline, 800));
+
+// ---------- Einhängen ----------
+{
+  pwaHead(); pwaRegister(); pwaNet();
+  // Offline beendete Turnier-/Herausforderungs-Runden merken statt verlieren
+  const fin3 = finish;
+  finish = function (key, res, seed) {
+    if (!navigator.onLine) {
+      const clean = { s: res.s, ...(res.t != null ? { t: res.t } : {}) };
+      if (SO.tour && SO.tour.key === key) { pwaQueue({ kind: 'tour', key, res: clean, ctx: SO.tour }); SO.tour = null; }
+      else if (SO.pending && SO.pending.key === key) { pwaQueue({ kind: 'pending', key, res: clean, ctx: SO.pending }); SO.pending = null; }
+      else if (SO.answer && SO.answer.key === key) { pwaQueue({ kind: 'answer', key, res: clean, ctx: SO.answer }); SO.answer = null; }
+    }
+    return fin3.apply(this, arguments);
+  };
+  // Mehrspieler-Räume brauchen Internet
+  const mc0 = mpCreate, mj0 = mpJoin;
+  mpCreate = function () { if (!navigator.onLine) { toast('📴', 'Offline', 'Räume brauchen Internet. „Reihum“ geht auch offline.'); return; } return mc0.apply(this, arguments); };
+  mpJoin = function () { if (!navigator.onLine) { toast('📴', 'Offline', 'Räume brauchen Internet. „Reihum“ geht auch offline.'); return; } return mj0.apply(this, arguments); };
+  // Installieren auch in den Einstellungen
+  const so0 = setOpen;
+  setOpen = function () {
+    so0.apply(this, arguments);
+    const body = $('#setDlg .set-body'); if (!body || !pwaWeb || PWA.installed) return;
+    const last = body.querySelector('.actions');
+    last.before(h('h3', {}, 'App'), h('div', { class: 'mp-row' }, h('button', { class: 'btn', type: 'button', onclick: () => { $('#setDlg').close(); pwaInstall(); } }, '📲 Brainix installieren'), h('span', { class: 'note' }, 'Startet wie eine App, Einzelspieler auch offline.')));
+  };
+  // Zahnrad neu verdrahten, damit es die erweiterte Fassung öffnet
+  const gb = $('#setBtn'); if (gb) { const n = gb.cloneNode(true); n.addEventListener('click', () => setOpen()); gb.replaceWith(n); }
+  pwaRender();
+  // Hash-Kürzel aus dem App-Menü (#spiele, #duelle)
+  if (/^#(spiele|duelle)$/.test(location.hash)) setTimeout(() => showTab(location.hash.slice(1)), 100);
+  if (navigator.onLine) setTimeout(pwaFlush, 4000);
+}
+/*/BRX:pwa*/
 })();
 </script>
