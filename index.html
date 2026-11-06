@@ -1482,6 +1482,50 @@ dialog.kt-dlg::backdrop { background: rgba(10, 14, 18, .45); }
 .cat { scroll-margin-top: 12px; }
 .sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 /*/BRX:ordnung*/
+/*BRX:profil*/
+/* ===== Profil & Erfolge (Etappe 5) ===== */
+.prpanel { margin: 0 0 18px; }
+.prpanel h3 { margin: 0 0 10px; }
+.prhead { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.prhead h3 { margin: 0; }
+.prseg { flex: 0 0 auto; }
+.prtotal { flex: 1 1 140px; max-width: 260px; }
+.prchart { width: 100%; height: auto; display: block; }
+.prchart .bar { fill: color-mix(in srgb, var(--accent) 55%, transparent); }
+.prchart .bar.today { fill: var(--accent); }
+.prchart .goalline { stroke: var(--hi, #E9B949); stroke-dasharray: 4 4; stroke-width: 1.5; }
+.prchart .lbl { fill: var(--muted); font-size: 11px; font-family: inherit; }
+.prbest td.s { white-space: nowrap; }
+.prtroph .trophy { position: relative; font: inherit; color: inherit; cursor: default; display: grid; justify-items: center; gap: 2px; }
+.prtroph button.trophy { cursor: pointer; }
+.prtroph button.trophy:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.prtroph .trophy.shown { box-shadow: 0 0 0 2px var(--accent); }
+.prtroph .trophy.shown::after { content: '🪟'; position: absolute; top: 6px; right: 8px; font-size: .8rem; }
+.trophy.tier-gold:not(.locked) { border-color: #D9A93B; }
+.trophy.tier-silver:not(.locked) { border-color: #A7B0BA; }
+.trophy.tier-bronze:not(.locked) { border-color: #C08457; }
+.prbar { width: 100%; height: 6px; border-radius: 999px; background: var(--card2); overflow: hidden; margin-top: 6px; }
+.prbar i { display: block; height: 100%; background: var(--accent); border-radius: inherit; }
+.prnum { font-size: .72rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.prshow, .prmini { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 4px 0 12px; }
+.prbadge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 999px; font-size: .85rem; font-weight: 600; border: 1.5px solid var(--line); background: var(--card2); }
+.prbadge.tier-gold { border-color: #D9A93B; }
+.prbadge.tier-silver { border-color: #A7B0BA; }
+.prbadge.tier-bronze { border-color: #C08457; }
+.prpublic { width: min(720px, 100%); margin: 0 auto; }
+/* Popup für neue Abzeichen */
+.prpop { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 1000; display: flex; gap: 14px; align-items: center; padding: 14px 20px 14px 14px;
+  background: var(--card); color: var(--ink); border: 2px solid var(--accent); border-radius: 18px; box-shadow: 0 16px 40px rgba(0,0,0,.22); width: min(420px, calc(100vw - 32px)); cursor: pointer;
+  animation: prIn .35s cubic-bezier(.2, .9, .3, 1.2); }
+.prpop.out { opacity: 0; transform: translateX(-50%) translateY(12px); transition: .25s; }
+.prpop.tier-gold { border-color: #D9A93B; } .prpop.tier-silver { border-color: #A7B0BA; } .prpop.tier-bronze { border-color: #C08457; }
+.prpop-ico { font-size: 2.6rem; width: 64px; height: 64px; display: grid; place-items: center; border-radius: 16px; background: var(--soft, var(--card2)); flex: none; }
+.prpop small { display: block; font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; font-weight: 700; }
+.prpop b { display: block; font-size: 1.1rem; }
+.prpop span { font-size: .88rem; color: var(--muted); }
+@keyframes prIn { from { opacity: 0; transform: translateX(-50%) translateY(24px) scale(.95); } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); } }
+@media (prefers-reduced-motion: reduce) { .prpop { animation: none; } .prpop.out { transition: none; } }
+/*/BRX:profil*/
 </style>
 
 <div class="app" lang="de">
@@ -10570,7 +10614,10 @@ async function ktSaveScores(body) {
     const sig = JSON.stringify(v); if (KT.sent[k] === sig) continue;
     rows.push({ user_id: uid, game_key: k, s: v.s, t: typeof v.t === 'number' ? v.t : null, data: v });
   }
-  rows.push({ user_id: uid, game_key: '_meta', s: body.xp || 0, t: null, data: { xp: body.xp, lvl: body.lvl, streak: body.streak, day: body.day, wk: body.wk, wxp: body.wxp, at: body.at } });
+  const st = Object.assign({ sec: 0, ans: 0, ok: 0 }, store.get('stats', {}) || {});
+  rows.push({ user_id: uid, game_key: '_meta', s: body.xp || 0, t: null, data: { xp: body.xp, lvl: body.lvl, streak: body.streak, day: body.day, wk: body.wk, wxp: body.wxp, at: body.at,
+    games: P.games, correct: P.correct, bestStreak: P.bestStreak, sec: Math.round(st.sec || 0), acc: st.ans >= 20 ? Math.round(100 * st.ok / st.ans) : null,
+    troph: Object.keys(P.troph || {}), show: (store.get('showcase', []) || []).slice(0, 3) } });
   const { error } = await KT.sb.from('scores').upsert(rows);
   if (error) { ktSyncState('warn'); return; }
   for (const r of rows) if (r.game_key !== '_meta') KT.sent[r.game_key] = JSON.stringify(r.data);
@@ -11920,5 +11967,236 @@ renderCards = function () {
   renderCards();
 }
 /*/BRX:ordnung*/
+/*BRX:profil*/
+// ==================================================================
+//  Profil & Statistiken, Erfolge (Etappe 5)
+//  Neue Daten in localStorage 'bwl-stats' und 'bwl-showcase' (mit Konto synchronisiert).
+// ==================================================================
+const PR = { buf: 0, bufDay: null, bufGame: null, lastInput: Date.now(), game: null, chart: store.get('prChart', 'xp'), allBest: false, popQ: Promise.resolve() };
+const prStats = () => Object.assign({ sec: 0, days: {}, games: {}, ans: 0, ok: 0 }, store.get('stats', {}) || {});
+function prSave(st) {
+  const keep = new Set(); for (let i = 0; i < 70; i++) { const d = new Date(); d.setDate(d.getDate() - i); keep.add(dayStr(d)); }
+  for (const k of Object.keys(st.days)) if (!keep.has(k)) delete st.days[k];
+  store.set('stats', st);
+}
+const prAcc = st => (st.ans ? Math.round(100 * st.ok / st.ans) : null);
+const prDur = s => { s = Math.round(s || 0); const hh = Math.floor(s / 3600), mm = Math.floor(s % 3600 / 60); return hh ? `${hh} h ${mm} min` : mm ? `${mm} min` : `${s} s`; };
+
+// ---------- Erfassung: Spielzeit ----------
+// Alle 15 s: Läuft gerade ein Spiel, ist das Fenster sichtbar und gab es in den letzten 2 Minuten eine Eingabe? Dann zählt die Zeit.
+['pointerdown', 'keydown', 'touchstart'].forEach(ev => document.addEventListener(ev, () => { PR.lastInput = Date.now(); }, { passive: true, capture: true }));
+function prFlush() {
+  if (!PR.buf) return;
+  const st = prStats();
+  st.sec += PR.buf; st.days[PR.bufDay] = (st.days[PR.bufDay] || 0) + PR.buf;
+  if (PR.bufGame) st.games[PR.bufGame] = (st.games[PR.bufGame] || 0) + PR.buf;
+  PR.buf = 0; prSave(st); checkTrophies();
+}
+setInterval(() => {
+  const playing = !$('#v-play').hidden && !document.hidden && Date.now() - PR.lastInput < 120000;
+  if (!playing) return;
+  const d = todayStr();
+  if (PR.buf && (PR.bufDay !== d || PR.bufGame !== PR.game)) prFlush();
+  PR.bufDay = d; PR.bufGame = PR.game; PR.buf += 15;
+  if (PR.buf >= 60) prFlush();
+}, 15000);
+document.addEventListener('visibilitychange', () => { if (document.hidden) prFlush(); });
+{
+  const op0 = openPlay;
+  openPlay = function (title, d) { prFlush(); PR.game = String(title || '').split(' · ')[0]; return op0.apply(this, arguments); };
+  const st0 = showTab;
+  showTab = function (t) { if (t !== 'play') prFlush(); return st0.apply(this, arguments); };
+  // ---------- Erfassung: Genauigkeit bei Auswahlfragen ----------
+  const ask0 = askChoice;
+  askChoice = function (run, task) {
+    return ask0.apply(this, arguments).then(ok => { if (!run.dead) { const st = prStats(); st.ans++; if (ok) st.ok++; prSave(st); } return ok; });
+  };
+}
+
+// ---------- Erfolge ----------
+const PR_CATS_DONE = () => Object.values(OR_CATS).filter(list => list.some(t => P.plays[t])).length;
+const PR_GOALDAYS = () => Object.values(P.days).filter(v => v >= GOAL).length;
+TROPHIES.push(
+  ['xt1', '⏱️', 'Eine Stunde', '1 Stunde gespielt', () => prStats().sec >= 3600],
+  ['xt10', '⌛', 'Zehn Stunden', '10 Stunden gespielt', () => prStats().sec >= 36000],
+  ['xt50', '🕰️', 'Langer Atem', '50 Stunden gespielt', () => prStats().sec >= 180000],
+  ['xacc', '🎯', 'Treffsicher', 'Mind. 90 % richtig bei 200 Auswahlfragen', () => prStats().ans >= 200 && prAcc(prStats()) >= 90],
+  ['xg500', '🎰', 'Fünfhundert Runden', '500 Runden gespielt', () => P.games >= 500],
+  ['xc5000', '🦉', 'Wissensriese', '5000 richtige Antworten', () => P.correct >= 5000],
+  ['xl30', '🚀', 'Level 30', 'Level 30 erreicht', () => lvlOf(P.xp) >= 30],
+  ['xl50', '👑', 'Level 50', 'Level 50 erreicht', () => lvlOf(P.xp) >= 50],
+  ['xxp', '💰', 'XP-Millionär light', '10.000 XP gesammelt', () => P.xp >= 10000],
+  ['xs100', '💎', 'Hundert Tage', '100 Tage in Folge gespielt', () => P.bestStreak >= 100],
+  ['xd50', '📚', 'Stammgast', 'An 50 Tagen gespielt', () => Object.keys(P.days).length >= 50],
+  ['xgoal7', '🏹', 'Zielstrebig', 'An 7 Tagen das Tagesziel erreicht', () => PR_GOALDAYS() >= 7],
+  ['xrec25', '🏅', 'Rekordsammler', '25 eigene Rekorde', () => Object.keys(S.best).length >= 25],
+  ['xrec50', '🎖️', 'Rekordmaschine', '50 eigene Rekorde', () => Object.keys(S.best).length >= 50],
+  ['xvar50', '🌍', 'Weltenbummler der Spiele', '50 verschiedene Spiele probiert', () => Object.keys(P.plays).length >= 50],
+  ['xcats', '🧩', 'Vielseitig', 'In allen 10 Kategorien gespielt', () => PR_CATS_DONE() >= 10],
+  ['xfav', '⭐', 'Sammler', '5 Favoriten markiert', () => (store.get('favs', []) || []).length >= 5],
+  ['xacct', '☁️', 'Gesichert', 'Ein Konto erstellt', () => !!KT.user],
+  ['xmpw5', '🥇', 'Raum-Champion', '5 Mehrspieler-Spiele gewonnen', () => (P.wins.mp || 0) >= 5],
+  ['xshow', '🪟', 'Vitrine', 'Abzeichen in die Vitrine gestellt', () => (store.get('showcase', []) || []).length >= 1],
+);
+// Fortschritt [jetzt, Ziel] für zählbare Erfolge
+const PR_PROG = {
+  first: () => [P.games, 1], g25: () => [P.games, 25], g100: () => [P.games, 100], xg500: () => [P.games, 500],
+  c100: () => [P.correct, 100], c1000: () => [P.correct, 1000], xc5000: () => [P.correct, 5000],
+  s3: () => [P.bestStreak, 3], s7: () => [P.bestStreak, 7], s30: () => [P.bestStreak, 30], xs100: () => [P.bestStreak, 100],
+  l5: () => [lvlOf(P.xp), 5], l10: () => [lvlOf(P.xp), 10], l20: () => [lvlOf(P.xp), 20], xl30: () => [lvlOf(P.xp), 30], xl50: () => [lvlOf(P.xp), 50],
+  var10: () => [Object.keys(P.plays).length, 10], var25: () => [Object.keys(P.plays).length, 25], xvar50: () => [Object.keys(P.plays).length, 50],
+  rec10: () => [Object.keys(S.best).length, 10], xrec25: () => [Object.keys(S.best).length, 25], xrec50: () => [Object.keys(S.best).length, 50],
+  xt1: () => [Math.floor(prStats().sec / 60), 60], xt10: () => [Math.floor(prStats().sec / 60), 600], xt50: () => [Math.floor(prStats().sec / 60), 3000],
+  xxp: () => [P.xp, 10000], xd50: () => [Object.keys(P.days).length, 50], xgoal7: () => [PR_GOALDAYS(), 7], xcats: () => [PR_CATS_DONE(), 10],
+  xfav: () => [(store.get('favs', []) || []).length, 5], xmpw5: () => [P.wins.mp || 0, 5], goal: () => [Math.max(0, ...Object.values(P.days)), GOAL],
+};
+const PR_GOLD = new Set(['c1000', 's30', 'l20', 'xt50', 'xc5000', 'xl50', 'xs100', 'xrec50', 'xcats', 'xacc', 'xg500', 'xxp', 'var25', 'xvar50', 'quiz10']);
+const PR_SILVER = new Set(['g100', 's7', 'l10', 'rec10', 'xt10', 'xl30', 'xd50', 'xgoal7', 'xrec25', 'xmpw5', 'livewin', 'wordle2', 'qs5', 'who']);
+const prTier = id => PR_GOLD.has(id) ? 'gold' : PR_SILVER.has(id) ? 'silver' : 'bronze';
+const PR_TIER_NAME = { gold: 'Gold', silver: 'Silber', bronze: 'Bronze' };
+
+function prPopup(ico, name, desc, id) {
+  PR.popQ = PR.popQ.then(() => new Promise(res => {
+    const close = () => { el.classList.add('out'); setTimeout(() => { el.remove(); res(); }, 250); };
+    const el = h('div', { class: 'prpop tier-' + prTier(id), role: 'status', 'aria-live': 'polite', onclick: close },
+      h('div', { class: 'prpop-ico' }, ico),
+      h('div', {}, h('small', {}, 'Abzeichen freigeschaltet · ' + PR_TIER_NAME[prTier(id)]), h('b', {}, name), h('span', {}, desc)));
+    document.body.append(el);
+    if (typeof sfx === 'function') try { sfx('win'); } catch (e) {}
+    setTimeout(close, 4200);
+  }));
+}
+checkTrophies = function () {
+  for (const [id, ico, name, desc, test] of TROPHIES) {
+    if (P.troph[id]) continue;
+    let ok = false; try { ok = !!test(); } catch (e) {}
+    if (ok) { P.troph[id] = Date.now(); saveP(); prPopup(ico, name, desc, id); }
+  }
+};
+
+// ---------- Profil-Ansicht ----------
+function prChart(days = 30) {
+  const st = prStats(), rows = [];
+  for (let i = days - 1; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); const k = dayStr(d); rows.push({ d, k, xp: P.days[k] || 0, min: Math.round((st.days[k] || 0) / 60) }); }
+  const key = PR.chart === 'min' ? 'min' : 'xp', unit = key === 'min' ? 'min' : 'XP';
+  const max = Math.max(key === 'xp' ? GOAL : 10, ...rows.map(r => r[key]));
+  const W = 600, H = 160, bw = W / days;
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H + 22}`); svg.setAttribute('class', 'prchart'); svg.setAttribute('role', 'img');
+  const total = rows.reduce((s, r) => s + r[key], 0), active = rows.filter(r => r[key] > 0).length;
+  svg.setAttribute('aria-label', `Letzte ${days} Tage: ${fmtNum(total)} ${unit} an ${active} Tagen`);
+  const ns = (tag, attrs, txt) => { const e = document.createElementNS('http://www.w3.org/2000/svg', tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); if (txt != null) e.textContent = txt; return e; };
+  if (key === 'xp') { const gy = H - H * GOAL / max; svg.append(ns('line', { x1: 0, x2: W, y1: gy, y2: gy, class: 'goalline' }), ns('text', { x: W - 2, y: gy - 4, 'text-anchor': 'end', class: 'lbl' }, 'Tagesziel')); }
+  rows.forEach((r, i) => {
+    const bh = r[key] ? Math.max(3, H * r[key] / max) : 0;
+    const g = ns('g', {});
+    g.append(ns('rect', { x: i * bw + 2, y: H - bh, width: bw - 4, height: bh, rx: 3, class: 'bar' + (r.k === todayStr() ? ' today' : '') }));
+    g.append(ns('title', {}, `${r.d.toLocaleDateString('de-AT', { weekday: 'short', day: 'numeric', month: 'numeric' })}: ${r[key]} ${unit}`));
+    if (i % 7 === (days - 1) % 7) g.append(ns('text', { x: i * bw + bw / 2, y: H + 16, 'text-anchor': 'middle', class: 'lbl' }, r.d.toLocaleDateString('de-AT', { day: 'numeric', month: 'numeric' })));
+    svg.append(g);
+  });
+  const seg = h('div', { class: 'mp-seg prseg', role: 'radiogroup', 'aria-label': 'Diagramm zeigt' },
+    [['xp', 'XP'], ['min', 'Spielzeit']].map(([k, n]) => h('button', { type: 'button', role: 'radio', 'aria-checked': String(PR.chart === k), onclick: () => { PR.chart = k; store.set('prChart', k); renderProfile(); } }, n)));
+  return h('div', { class: 'panel prpanel' }, h('div', { class: 'prhead' }, h('h3', {}, 'Letzte 30 Tage'), seg), svg,
+    h('p', { class: 'note' }, `${fmtNum(total)} ${unit} an ${active} von ${days} Tagen · Ø ${fmtNum(Math.round(total / days))} ${unit} pro Tag`));
+}
+function prBestPanel() {
+  const keys = Object.keys(S.best).filter(validKey).sort((a, b) => keyLabel(a).localeCompare(keyLabel(b), 'de'));
+  const shown = PR.allBest ? keys : keys.slice(0, 10);
+  return h('div', { class: 'panel prpanel' }, h('h3', {}, `Bestwerte · ${keys.length}`),
+    keys.length ? h('table', { class: 'lb prbest' }, h('tbody', {}, shown.map(k => h('tr', {}, h('td', {}, keyLabel(k)), h('td', { class: 's' }, scoreText(k, S.best[k], true))))))
+      : h('p', { class: 'note' }, 'Spiel einen Modus mit Wertung, dann stehen hier deine Bestwerte.'),
+    keys.length > 10 ? h('button', { class: 'btn ghost', type: 'button', onclick: () => { PR.allBest = !PR.allBest; renderProfile(); } }, PR.allBest ? 'Weniger zeigen' : `Alle ${keys.length} zeigen`) : null);
+}
+function prTrophyPanel() {
+  const show = store.get('showcase', []) || [];
+  const got = TROPHIES.filter(t => P.troph[t[0]]).length;
+  const toggle = id => {
+    const s = (store.get('showcase', []) || []).filter(x => P.troph[x]);
+    const next = s.includes(id) ? s.filter(x => x !== id) : [...s, id].slice(-3);
+    store.set('showcase', next); checkTrophies(); renderProfile(); if (S.db && S.remoteBest) pushScores();
+  };
+  const sorted = TROPHIES.slice().sort((a, b) => (!!P.troph[b[0]] - !!P.troph[a[0]]) || ((PR_PROG[b[0]] ? PR_PROG[b[0]]()[0] / PR_PROG[b[0]]()[1] : 0) - (PR_PROG[a[0]] ? PR_PROG[a[0]]()[0] / PR_PROG[a[0]]()[1] : 0)));
+  return h('div', { class: 'panel prpanel' },
+    h('div', { class: 'prhead' }, h('h3', {}, `Abzeichen · ${got} von ${TROPHIES.length}`), h('div', { class: 'goalbar prtotal', role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': TROPHIES.length, 'aria-valuenow': got, 'aria-label': 'Abzeichen gesammelt' }, h('i', { style: `width:${100 * got / TROPHIES.length}%` }))),
+    h('p', { class: 'note' }, 'Tippe auf ein freigeschaltetes Abzeichen, um es in deine Vitrine zu stellen (max. 3) – die sehen auch andere in deinem Profil.'),
+    h('div', { class: 'trophies prtroph' }, sorted.map(([id, ico, name, desc]) => {
+      const on = !!P.troph[id], pr = !on && PR_PROG[id] ? PR_PROG[id]() : null;
+      const pct = pr ? Math.min(100, Math.round(100 * pr[0] / pr[1])) : 0;
+      return h(on ? 'button' : 'div', { class: `trophy tier-${prTier(id)}` + (on ? '' : ' locked') + (show.includes(id) ? ' shown' : ''), type: on ? 'button' : null, title: desc, 'aria-pressed': on ? String(show.includes(id)) : null, onclick: on ? () => toggle(id) : null },
+        h('span', { class: 'ico' }, ico), h('b', {}, name),
+        h('small', {}, on ? `${PR_TIER_NAME[prTier(id)]} · ${new Date(P.troph[id]).toLocaleDateString('de-AT')}` : desc),
+        pr ? h('div', { class: 'prbar', role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': pr[1], 'aria-valuenow': Math.min(pr[0], pr[1]), 'aria-label': name + ' Fortschritt' }, h('i', { style: `width:${pct}%` })) : null,
+        pr ? h('small', { class: 'prnum' }, `${fmtNum(Math.min(pr[0], pr[1]))} / ${fmtNum(pr[1])}`) : null);
+    })));
+}
+const prLink = () => location.origin + location.pathname + '?profil=' + encodeURIComponent(KT.prof ? KT.prof.username : '');
+function prSharePanel() {
+  const st = prStats(), acc = prAcc(st);
+  const show = (store.get('showcase', []) || []).map(id => TROPHIES.find(t => t[0] === id)).filter(Boolean);
+  const kpis = [
+    ['⏱️', prDur(st.sec), 'Spielzeit'], ['🎯', acc == null ? '–' : acc + ' %', `Genauigkeit (${fmtNum(st.ans)} Fragen)`],
+    ['📅', Object.keys(P.days).length, Object.keys(P.days).length === 1 ? 'Tag gespielt' : 'Tage gespielt'], ['🏹', PR_GOALDAYS(), PR_GOALDAYS() === 1 ? 'Tag mit Tagesziel' : 'Tage mit Tagesziel'],
+  ];
+  const share = KT.user && KT.prof
+    ? h('div', { class: 'mp-row' }, h('button', { class: 'btn main', type: 'button', onclick: async e => {
+      const b = e.currentTarget;
+      if (navigator.share) { try { await navigator.share({ title: 'Mein Brainix-Profil', url: prLink() }); return; } catch (err) {} }
+      try { await navigator.clipboard.writeText(prLink()); b.textContent = 'Link kopiert ✓'; setTimeout(() => { b.textContent = 'Profil teilen'; }, 1800); } catch (err) { prompt('Link kopieren:', prLink()); }
+    } }, 'Profil teilen'), h('a', { class: 'btn ghost', href: prLink(), target: '_blank', rel: 'noopener' }, 'Vorschau'))
+    : h('p', { class: 'note' }, 'Melde dich oben an, dann bekommst du einen Link zu deinem Profil zum Teilen.');
+  return h('div', { class: 'panel prpanel' }, h('h3', {}, 'Statistik'),
+    h('div', { class: 'kpis' }, kpis.map(([i, v, l]) => h('div', { class: 'kpi' }, h('span', { class: 'ico' }, i), h('div', {}, h('b', {}, v), h('span', {}, l))))),
+    show.length ? h('div', { class: 'prshow' }, h('span', { class: 'note' }, 'Vitrine'), ...show.map(t => h('span', { class: 'prbadge tier-' + prTier(t[0]), title: t[3] }, t[1], ' ', t[2]))) : null,
+    share);
+}
+{
+  const rp0 = renderProfile;
+  renderProfile = function () {
+    prFlush();
+    rp0.apply(this, arguments);
+    const box = $('#profile'); if (!box) return;
+    const old = box.querySelector('.trophies'); const oldPanel = old && old.closest('.panel');
+    if (oldPanel) oldPanel.replaceWith(prTrophyPanel());
+    const cols = box.querySelector('.cols');
+    const add = [prSharePanel(), prChart(), prBestPanel()];
+    if (cols) cols.before(...add); else box.append(...add);
+    // Spielername-Feld ist bei Konto der Benutzername (im Konto änderbar)
+    if (KT.user) { const nb = box.querySelector('input[aria-label="Spielername"]'); if (nb) { nb.readOnly = true; nb.title = 'Benutzername – änderbar unter „Profil bearbeiten“'; } }
+  };
+}
+
+// ---------- Öffentliches Profil (?profil=Name) ----------
+async function prPublic(name) {
+  openPlay('Profil');
+  stage.replaceChildren(h('p', { class: 'mp-wait' }, 'Lade Profil …'));
+  const sb = await mpClient();
+  if (!sb) { stage.replaceChildren(h('p', { class: 'note' }, 'Profile kann man nur mit Internet ansehen.')); return; }
+  const { data: p } = await sb.from('profiles').select('id,username,avatar,color,xp,created_at').ilike('username', name.replace(/[%_]/g, '')).maybeSingle();
+  if (!p) { stage.replaceChildren(h('div', { class: 'mp-box' }, h('h3', {}, 'Profil nicht gefunden'), h('p', { class: 'note' }, `„${name}“ gibt es (noch) nicht.`), h('div', { class: 'actions' }, h('button', { class: 'btn main', type: 'button', onclick: () => showTab('spiele') }, 'Zu den Spielen')))); return; }
+  const { data: sc } = await sb.from('scores').select('game_key,s,t,data').eq('user_id', p.id).limit(500);
+  const meta = ((sc || []).find(r => r.game_key === '_meta') || {}).data || {};
+  const best = (sc || []).filter(r => r.game_key !== '_meta' && validKey(r.game_key)).map(r => ({ k: r.game_key, v: { ...(r.data || {}), s: r.s, ...(r.t != null ? { t: r.t } : {}) } }));
+  const xp = Math.max(p.xp || 0, meta.xp || 0), L = lvlOf(xp), a = lvlStart(L), b = lvlStart(L + 1);
+  const troph = new Set(meta.troph || []), show = (meta.show || []).map(id => TROPHIES.find(t => t[0] === id)).filter(Boolean);
+  const kpis = [['⭐', `Level ${L}`, lvlName(L)], ['💰', fmtNum(xp), 'XP'], ['🔥', meta.streak || 0, 'Tage in Folge'], ['🏆', meta.bestStreak || 0, 'längste Serie'],
+    ['🎮', fmtNum(meta.games || 0), 'Runden'], ['⏱️', prDur(meta.sec || 0), 'Spielzeit'], ['🎯', meta.acc != null ? meta.acc + ' %' : '–', 'Genauigkeit'], ['🎖️', troph.size, 'Abzeichen']];
+  const mine = KT.user && KT.user.id === p.id;
+  stage.replaceChildren(h('div', { class: 'prpublic' },
+    h('div', { class: 'panel prpanel' },
+      h('div', { class: 'prof' }, h('div', { class: 'bigav', style: `background:color-mix(in srgb, ${p.color || '#0f766e'} 22%, transparent);font-size:2.2rem` }, p.avatar || '🦊'),
+        h('div', {}, h('h2', { style: 'margin:0' }, p.username), h('div', { class: 'note', style: 'font-weight:700;margin-top:4px' }, `Level ${L} · ${lvlName(L)} · dabei seit ${new Date(p.created_at).toLocaleDateString('de-AT', { month: 'long', year: 'numeric' })}`),
+          h('div', { class: 'lvlbar' }, h('i', { style: `width:${Math.min(100, 100 * (xp - a) / (b - a))}%` })))),
+      show.length ? h('div', { class: 'prshow' }, h('span', { class: 'note' }, 'Vitrine'), ...show.map(t => h('span', { class: 'prbadge tier-' + prTier(t[0]), title: t[3] }, t[1], ' ', t[2]))) : null,
+      h('div', { class: 'kpis' }, kpis.map(([i, v, l]) => h('div', { class: 'kpi' }, h('span', { class: 'ico' }, i), h('div', {}, h('b', {}, v), h('span', {}, l)))))),
+    best.length ? h('div', { class: 'panel prpanel' }, h('h3', {}, `Bestwerte · ${best.length}`), h('table', { class: 'lb prbest' }, h('tbody', {}, best.sort((x, y) => keyLabel(x.k).localeCompare(keyLabel(y.k), 'de')).slice(0, 15).map(r => h('tr', {}, h('td', {}, keyLabel(r.k)), h('td', { class: 's' }, scoreText(r.k, r.v, true))))))) : null,
+    troph.size ? h('div', { class: 'panel prpanel' }, h('h3', {}, 'Abzeichen'), h('div', { class: 'prmini' }, TROPHIES.filter(t => troph.has(t[0])).map(t => h('span', { class: 'prbadge tier-' + prTier(t[0]), title: t[3] }, t[1], ' ', t[2])))) : null,
+    h('div', { class: 'actions' }, h('button', { class: 'btn main', type: 'button', onclick: () => { showTab('spiele'); renderCards(); } }, mine ? 'Zurück' : 'Selbst Brainix spielen'))));
+}
+{
+  const q = new URLSearchParams(location.search), pn = q.get('profil');
+  if (pn) { q.delete('profil'); history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : '') + location.hash); setTimeout(() => prPublic(pn), 200); }
+}
+/*/BRX:profil*/
 })();
 </script>
