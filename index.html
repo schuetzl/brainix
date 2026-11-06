@@ -1656,6 +1656,127 @@ kbd { font-family: var(--f-mono, ui-monospace, monospace); font-size: .8rem; pad
 .kt-dlg textarea.field { font: inherit; width: 100%; box-sizing: border-box; resize: vertical; background: var(--paper); color: var(--ink); border: 1px solid var(--edge2, var(--line)); border-radius: 10px; padding: 10px 12px; }
 .kt-dlg select.field { width: 100%; }
 /*/BRX:sicherheit*/
+/*BRX:spiele_a*/
+/* ===== Neue Spiele 10a ===== */
+.prompt .hl-card { display: inline-grid; place-items: center; min-width: 90px; min-height: 120px; padding: 10px 16px; border: 2px solid var(--edge2, var(--line)); border-radius: 14px; background: var(--card); margin: 6px auto; }
+.prompt .at-q, .prompt .yr-q, .prompt .ohm-q { font-size: clamp(1.15rem, 4.2vw, 1.6rem); line-height: 1.3; }
+.sky-svg { width: min(320px, 80vw); margin: 8px auto 0; color: var(--ink); }
+.sky-svg svg { width: 100%; height: auto; display: block; fill: currentColor; }
+.sky-svg .cut, .sky-svg .cut * { fill: var(--card); }
+.gt .sky-svg, .gm .sky-svg { width: 100%; margin: 0; }
+.gt-box { display: inline-flex; align-items: center; gap: 0; margin: 10px auto; font-family: var(--f-mono, monospace); }
+.gt-in { padding: 8px 12px; text-align: right; font-weight: 700; }
+.gt-sym { display: grid; place-items: center; width: 70px; height: 80px; border: 3px solid var(--ink); border-radius: 6px; font-size: 1.5rem; font-weight: 800; background: var(--card); }
+.gt-name { padding: 8px 12px; color: var(--muted); font-weight: 700; }
+.gt-tt { margin: 8px auto; border-collapse: collapse; font-family: var(--f-mono, monospace); }
+.gt-tt td, .gt-tt th { border: 1px solid var(--line); padding: 4px 14px; text-align: center; }
+.gt-expr { font-size: clamp(1rem, 4vw, 1.4rem) !important; }
+.code-src { text-align: left; margin: 10px auto; padding: 12px 16px; border-radius: 12px; background: var(--card2); border: 1px solid var(--line); font-size: .95rem; line-height: 1.5; width: fit-content; max-width: 100%; overflow-x: auto; white-space: pre; }
+/*/BRX:spiele_a*/
+/*BRX:spiele_b*/
+/* ===== Neue Spiele 10b (Rätsel) ===== */
+.pz-wrap { width: min(560px, 100%); margin: 0 auto; display: grid; gap: 12px; justify-items: center; align-content: start; }
+.pz-wrap > .note { text-align: center; margin: 0; }
+.pz-grid { display: grid; grid-template-columns: repeat(var(--cols), 1fr); width: min(100%, calc(var(--cols) * 58px)); gap: 0; border: 2px solid var(--ink); border-radius: 6px; overflow: hidden; background: var(--card); }
+.pz-c { position: relative; aspect-ratio: 1; border: 1px solid var(--line); background: var(--card); color: var(--ink); font: 700 clamp(1rem, 4.6vw, 1.5rem) var(--f-display); padding: 0; cursor: pointer; display: grid; place-items: center; }
+.pz-c.fixed { background: var(--card2); cursor: default; }
+.pz-c.sel { background: var(--soft, var(--card2)); box-shadow: inset 0 0 0 2px var(--accent); }
+.pz-c.bad .v { color: var(--bad-d, #C0392B); }
+.pz-grid.won .pz-c { background: color-mix(in srgb, var(--ok, #1E9E5A) 14%, var(--card)); }
+.pz-lab { position: absolute; top: 2px; left: 4px; font-size: .62rem; font-weight: 700; color: var(--muted); line-height: 1; }
+.pz-c { border-radius: 0; margin: 0; box-shadow: none; }
+.pz-c.kkc { border: 1px solid color-mix(in srgb, var(--line) 80%, transparent); }
+.pz-c.kk-t { border-top: 2.5px solid var(--ink); } .pz-c.kk-l { border-left: 2.5px solid var(--ink); } .pz-c.kk-r { border-right: 2.5px solid var(--ink); } .pz-c.kk-b { border-bottom: 2.5px solid var(--ink); }
+.pz-pad { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.pz-pad .btn { min-width: 44px; padding: 8px 10px; }
+.pz-msg { min-height: 1.4em; margin: 0; font-weight: 600; text-align: center; }
+/* Futoshiki: Zeichen zwischen den Feldern */
+.pz-grid.fu { border: 0; background: transparent; width: min(100%, calc(var(--cols) * 40px)); }
+.pz-grid.fu .pz-c { border: 2px solid var(--edge2, var(--line)); border-radius: 8px; }
+.fu-s { display: grid; place-items: center; font-weight: 800; color: var(--accent); font-size: 1rem; aspect-ratio: 1; }
+/* Kakuro */
+.ka-b { position: relative; aspect-ratio: 1; background: var(--ink); border: 1px solid var(--ink); }
+.ka-b.clue { background: linear-gradient(to top right, var(--ink) calc(50% - 1px), var(--muted) 50%, var(--ink) calc(50% + 1px)); }
+.ka-b small { position: absolute; color: var(--paper); font-size: clamp(.55rem, 2.4vw, .78rem); font-weight: 700; }
+.ka-d { left: 4px; bottom: 2px; } .ka-a { right: 4px; top: 2px; }
+/* Hashi */
+.hs-svg { width: min(100%, 460px); height: auto; touch-action: manipulation; }
+.hs-dot { fill: var(--line); }
+.hs-br { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+.hs-isl { cursor: pointer; outline: none; }
+.hs-isl circle { fill: var(--card); stroke: var(--ink); stroke-width: 2.5; }
+.hs-isl text { font: 700 17px var(--f-display, sans-serif); fill: var(--ink); pointer-events: none; }
+.hs-isl.sel circle, .hs-isl:focus-visible circle { fill: var(--soft, var(--card2)); stroke: var(--accent); stroke-width: 4; }
+.hs-isl.done circle { fill: color-mix(in srgb, var(--ok, #1E9E5A) 22%, var(--card)); }
+.hs-isl.over circle { stroke: var(--bad, #D8453F); }
+/* Flood-It */
+.fl-grid { display: grid; grid-template-columns: repeat(var(--n), 1fr); width: min(100%, 420px); aspect-ratio: 1; border-radius: 8px; overflow: hidden; }
+.fl-grid i { display: block; transition: background .15s; }
+.fl-btns { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.fl-b { width: 48px; height: 48px; border-radius: 12px; border: 2px solid rgba(0,0,0,.15); color: #fff; font-weight: 800; cursor: pointer; text-shadow: 0 1px 2px rgba(0,0,0,.4); }
+/* Code knacken */
+.ck-slot { display: flex; gap: 8px; }
+.ck-d { width: 46px; height: 56px; display: grid; place-items: center; border: 2px dashed var(--line); border-radius: 10px; font: 800 1.6rem var(--f-mono, monospace); color: var(--muted); }
+.ck-d.on { border-style: solid; border-color: var(--accent); color: var(--ink); }
+.ck-list { margin: 0; padding-left: 26px; width: min(300px, 100%); display: grid; gap: 4px; }
+.ck-list li { display: flex; justify-content: space-between; gap: 12px; }
+.ck-g { font-weight: 700; letter-spacing: .15em; }
+.ck-fb { color: var(--accent); letter-spacing: .1em; }
+/* Logikgitter */
+.lg-clues { margin: 0; padding-left: 22px; display: grid; gap: 4px; justify-self: stretch; }
+.lg-tab { border-collapse: collapse; width: 100%; }
+.lg-tab th, .lg-tab td { padding: 6px; text-align: left; border-bottom: 1px solid var(--line); }
+.lg-tab tr.bad th { color: var(--bad-d, #C0392B); }
+.lg-tab select { width: 100%; }
+/*/BRX:spiele_b*/
+/*BRX:spiele_c*/
+/* ===== Neue Spiele 10c ===== */
+.an-out { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; min-height: 56px; }
+.an-s { width: 40px; height: 50px; border-bottom: 3px solid var(--line); display: grid; place-items: center; font: 800 1.5rem var(--f-display); }
+.an-s.on { border-color: var(--accent); }
+.an-tiles { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.an-t { width: 48px; height: 52px; border-radius: 10px; border: 2px solid var(--edge2, var(--line)); border-bottom-width: 4px; background: var(--card); color: var(--ink); font: 800 1.4rem var(--f-display); }
+.an-t:disabled { opacity: .25; }
+.ld-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.ld-list li { display: flex; gap: 4px; justify-content: center; }
+.ld-c { width: 40px; height: 44px; display: grid; place-items: center; border: 2px solid var(--line); border-radius: 8px; font: 800 1.3rem var(--f-mono, monospace); background: var(--card); }
+.ld-c.ch { border-color: var(--accent); color: var(--accent); }
+.ld-list li.goal .ld-c { border-style: dashed; color: var(--muted); }
+.ld-list li.cur .ld-c { background: var(--soft, var(--card2)); }
+.ss-cmd { font: 800 clamp(1.3rem, 5vw, 1.9rem) var(--f-display); text-align: center; min-height: 2.6em; width: 100%; display: grid; place-items: center; }
+.ss-cmd.ss-on { color: var(--accent); }
+.ss-bar { width: min(420px, 100%); height: 8px; border-radius: 999px; background: var(--card2); overflow: hidden; }
+.ss-bar i { display: block; height: 100%; width: 100%; background: var(--accent); }
+.ss-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: min(420px, 100%); }
+.ss-b { min-height: 90px; border: 0; border-radius: 16px; color: #fff; font: 800 1.2rem var(--f-display); text-shadow: 0 1px 2px rgba(0,0,0,.3); }
+.sc-grid { display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 6px; width: min(100%, 420px); }
+.sc-c { aspect-ratio: 1; border: 2px solid var(--edge2, var(--line)); border-radius: 10px; background: var(--card); color: var(--ink); font: 800 clamp(1rem, 5vw, 1.6rem) var(--f-display); }
+.sc-c.ok { background: var(--soft, var(--card2)); color: var(--muted); border-color: var(--line); }
+.sc-c.no { border-color: var(--bad, #D8453F); }
+.prompt .stroop-w { font-size: clamp(2.4rem, 12vw, 4.4rem); letter-spacing: .04em; }
+.kim-area { display: grid; gap: 12px; justify-items: center; width: 100%; }
+.kim-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 420px; }
+.kim-i { width: 56px; height: 56px; display: grid; place-items: center; font-size: 2rem; border-radius: 12px; background: var(--card2); }
+.kim-i.gone { color: var(--muted); font-weight: 800; border: 2px dashed var(--line); background: transparent; }
+.kim-opts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: min(420px, 100%); }
+.kim-opts .choice { font-size: 1.8rem; justify-content: center; }
+.rh-dots { display: flex; gap: 12px; justify-content: center; min-height: 28px; }
+.rh-dots i { width: 22px; height: 22px; border-radius: 50%; background: var(--card2); border: 2px solid var(--line); transition: transform .1s, background .1s; }
+.rh-dots i.on { background: var(--accent); transform: scale(1.3); }
+.rh-dots i.hit { border-color: var(--accent); }
+.rh-pad { width: min(320px, 100%); height: 160px; border-radius: 24px; border: 0; background: var(--accent); color: var(--accent-ink, #fff); font: 800 1.3rem var(--f-display); letter-spacing: .1em; touch-action: manipulation; user-select: none; }
+.rh-pad:active { transform: scale(.98); }
+.rh-pad:disabled { opacity: .45; }
+/*/BRX:spiele_c*/
+/*BRX:icons*/
+/* ===== SVG-Icons (Etappe 11) ===== */
+.gt b { hyphens: manual; -webkit-hyphens: manual; overflow-wrap: normal; word-break: normal; }
+.ico-svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; display: block; }
+.gm .ico-svg { width: 20px; height: 20px; }
+.shhead .gm .ico-svg { width: 24px; height: 24px; }
+.ico-h { display: inline-block; width: 18px; height: 18px; vertical-align: -3px; margin-right: 8px; color: var(--accent); }
+.ico-n { display: inline-block; width: 14px; height: 14px; vertical-align: -2px; margin-right: 6px; }
+/*/BRX:icons*/
 </style>
 
 <div class="app" lang="de">
@@ -13219,5 +13340,1233 @@ function secDelete() {
   if (q.has('datenschutz')) { q.delete('datenschutz'); history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : '') + location.hash); setTimeout(secPrivacy, 150); }
 }
 /*/BRX:sicherheit*/
+/*BRX:spiele_a*/
+// ==================================================================
+//  Neue Spiele 10a: Höher oder tiefer, Österreich-Quiz, Jahreszahl raten,
+//  Stadt-Silhouette, Gebirge/Flüsse/Meere, HTL (Logikgatter, Ohm, Code, Subnetting)
+// ==================================================================
+// Hilfen
+function gaChoices(r, correct, pool, n = 4) {
+  const out = [correct], seen = new Set([String(correct)]);
+  for (const x of shuffle(r, pool)) { if (out.length >= n) break; if (!seen.has(String(x))) { seen.add(String(x)); out.push(x); } }
+  return shuffle(r, out).map(x => ({ label: String(x), ok: String(x) === String(correct) }));
+}
+const gaQ = (sub, big, cls = 'big') => [h('div', { class: 'sub' }, sub), big != null ? h('div', { class: cls }, big) : null];
+const gaEx = (...k) => () => h('div', { class: 'explain' }, ...k);
+const gaDe = (x, dec = 2) => Number(x.toFixed(dec)).toLocaleString('de-AT', { maximumFractionDigits: dec });
+
+// ---------- Höher oder tiefer ----------
+function hiloGame(seed, d) {
+  const max = d === 's' ? 100 : 13;
+  let cur = null;
+  const name = v => max === 13 ? ({ 1: 'Ass', 11: 'Bube', 12: 'Dame', 13: 'König' }[v] || String(v)) : String(v);
+  mcGame({ key: fullKey('hilo', d), title: 'Höher oder tiefer', seed, d, mode: 'streak', gen: r => {
+    if (cur == null) cur = randInt(r, 1, max);
+    const next = randInt(r, 1, max), now = cur; cur = next;
+    const pUp = (max - now) / (max - 1), hint = d === 'l' ? h('div', { class: 'note' }, `Chance „höher“: ${Math.round(pUp * 100)} %`) : null;
+    return { prompt: [h('div', { class: 'sub' }, 'Ist die nächste Karte höher oder tiefer?'), h('div', { class: 'big hl-card' }, name(now)), hint],
+      choices: [{ label: '⬆ Höher', ok: next >= now }, { label: '⬇ Tiefer', ok: next <= now }],
+      timeout: d === 's' ? 4000 : 0,
+      explain: gaEx('Nächste Karte: ', h('b', {}, name(next)), next === now ? ' – gleich, zählt beides.' : ''), explainWait: 900, alwaysExplain: true };
+  } });
+}
+
+// ---------- Österreich-Quiz ----------
+// [Schwierigkeit 1–3, Frage, richtige Antwort, Ablenker …]
+const AT_Q = [
+  [1, 'Was ist die Hauptstadt von Österreich?', 'Wien', 'Salzburg', 'Graz', 'Linz'],
+  [1, 'Wie viele Bundesländer hat Österreich?', '9', '8', '10', '7'],
+  [1, 'Landeshauptstadt von Kärnten?', 'Klagenfurt', 'Villach', 'Spittal an der Drau', 'Wolfsberg'],
+  [1, 'Landeshauptstadt der Steiermark?', 'Graz', 'Leoben', 'Bruck an der Mur', 'Kapfenberg'],
+  [1, 'Landeshauptstadt von Tirol?', 'Innsbruck', 'Kufstein', 'Lienz', 'Kitzbühel'],
+  [1, 'Landeshauptstadt von Oberösterreich?', 'Linz', 'Wels', 'Steyr', 'Braunau'],
+  [1, 'Landeshauptstadt von Salzburg?', 'Salzburg', 'Hallein', 'Zell am See', 'Bischofshofen'],
+  [2, 'Landeshauptstadt von Niederösterreich?', 'St. Pölten', 'Wiener Neustadt', 'Krems', 'Baden'],
+  [2, 'Landeshauptstadt des Burgenlands?', 'Eisenstadt', 'Neusiedl am See', 'Oberwart', 'Mattersburg'],
+  [2, 'Landeshauptstadt von Vorarlberg?', 'Bregenz', 'Dornbirn', 'Feldkirch', 'Bludenz'],
+  [1, 'Wie heißt der höchste Berg Österreichs?', 'Großglockner', 'Wildspitze', 'Dachstein', 'Zugspitze'],
+  [2, 'Wie hoch ist der Großglockner ungefähr?', '3798 m', '2962 m', '4478 m', '3330 m'],
+  [1, 'Welcher Fluss fließt durch Wien?', 'Donau', 'Inn', 'Mur', 'Drau'],
+  [1, 'Welcher Fluss fließt durch Graz?', 'Mur', 'Drau', 'Enns', 'Salzach'],
+  [2, 'Welcher Fluss fließt durch Villach?', 'Drau', 'Gail', 'Mur', 'Inn'],
+  [1, 'Welcher Fluss fließt durch Innsbruck?', 'Inn', 'Lech', 'Salzach', 'Donau'],
+  [1, 'Welcher Fluss fließt durch die Stadt Salzburg?', 'Salzach', 'Saalach', 'Enns', 'Traun'],
+  [2, 'An welchem See liegt Klagenfurt?', 'Wörthersee', 'Ossiacher See', 'Millstätter See', 'Faaker See'],
+  [2, 'An welchem See liegt Bregenz?', 'Bodensee', 'Attersee', 'Traunsee', 'Wolfgangsee'],
+  [3, 'Welcher ist der größte See, der ganz in Österreich liegt?', 'Attersee', 'Traunsee', 'Wörthersee', 'Mondsee'],
+  [2, 'Welcher große See liegt zum Teil in Ungarn?', 'Neusiedler See', 'Bodensee', 'Plattensee', 'Attersee'],
+  [2, 'An wie viele Länder grenzt Österreich?', '8', '6', '7', '9'],
+  [1, 'Welches Land grenzt NICHT an Österreich?', 'Polen', 'Slowenien', 'Liechtenstein', 'Slowakei'],
+  [1, 'Welches Bundesland ist flächenmäßig das größte?', 'Niederösterreich', 'Steiermark', 'Tirol', 'Oberösterreich'],
+  [1, 'Welches Bundesland ist flächenmäßig das kleinste?', 'Wien', 'Vorarlberg', 'Burgenland', 'Salzburg'],
+  [2, 'Wann ist der österreichische Nationalfeiertag?', '26. Oktober', '1. Mai', '15. August', '12. November'],
+  [2, 'In welchem Jahr wurde der Staatsvertrag unterzeichnet?', '1955', '1945', '1918', '1995'],
+  [2, 'Seit wann ist Österreich Mitglied der EU?', '1995', '1989', '2002', '1973'],
+  [1, 'In welcher Stadt wurde Wolfgang Amadeus Mozart geboren?', 'Salzburg', 'Wien', 'Linz', 'Innsbruck'],
+  [2, 'Wie beginnt die Bundeshymne?', 'Land der Berge, Land am Strome', 'Gott erhalte Franz den Kaiser', 'Österreich, du edles Land', 'Hoch vom Dachstein an'],
+  [2, 'Welche Farben hat die österreichische Flagge?', 'Rot-Weiß-Rot', 'Rot-Gelb-Rot', 'Weiß-Rot-Weiß', 'Rot-Weiß-Grün'],
+  [2, 'Welches Kfz-Kennzeichen steht für Wien?', 'W', 'WI', 'V', 'WN'],
+  [2, 'Welches Kfz-Kennzeichen steht für die Stadt Villach?', 'VI', 'VL', 'V', 'VK'],
+  [2, 'Welches Kfz-Kennzeichen steht für Klagenfurt (Stadt)?', 'K', 'KL', 'KF', 'KT'],
+  [1, 'Welche Währung hat Österreich heute?', 'Euro', 'Schilling', 'Franken', 'Krone'],
+  [2, 'Bis wann war der Schilling Bargeld in Österreich?', '2002', '1999', '1995', '2008'],
+  [3, 'Welche Stadt war zweimal von den Osmanen belagert (1529 und 1683)?', 'Wien', 'Graz', 'Linz', 'Salzburg'],
+  [3, 'Wie heißen die beiden Kammern des Parlaments?', 'Nationalrat und Bundesrat', 'Bundestag und Bundesrat', 'Senat und Kammer', 'Landtag und Nationalrat'],
+  [2, 'Welches Gebirge prägt den Großteil Österreichs?', 'Alpen', 'Karpaten', 'Pyrenäen', 'Dinariden'],
+  [3, 'In welchem Bundesland liegt der Großglockner (an der Grenze)?', 'Kärnten und Tirol', 'Salzburg und Steiermark', 'Tirol und Vorarlberg', 'Kärnten und Salzburg'],
+  [3, 'Welche Stadt ist die zweitgrößte Österreichs?', 'Graz', 'Linz', 'Salzburg', 'Innsbruck'],
+  [3, 'Welche Republik wurde 1918 ausgerufen?', 'Deutschösterreich', 'Österreich-Ungarn', 'Ostmark', 'Zweite Republik'],
+  [2, 'Wie heißt der berühmte Ball in der Wiener Staatsoper?', 'Opernball', 'Kaiserball', 'Philharmonikerball', 'Hofburgball'],
+  [3, 'Wer gewann 2014 den Song Contest für Österreich?', 'Conchita Wurst', 'Udo Jürgens', 'Cesár Sampson', 'Nathan Trent'],
+  [3, 'Wer gewann 1966 den Song Contest für Österreich?', 'Udo Jürgens', 'Falco', 'Peter Alexander', 'Rainhard Fendrich'],
+];
+function austriaGame(seed, d) {
+  const maxLvl = { l: 1, m: 2, s: 3 }[d];
+  const pool = AT_Q.filter(q => q[0] <= maxLvl);
+  let order = null;
+  mcGame({ key: fullKey('austria', d), title: 'Österreich-Quiz', seed, d, seconds: 60, gen: (r, i) => {
+    if (!order || i % pool.length === 0) order = shuffle(r, pool);
+    const [, q, ok, ...wrong] = order[i % pool.length];
+    return { prompt: gaQ('Österreich', q, 'big at-q'), choices: shuffle(r, [ok, ...wrong].map(x => ({ label: x, ok: x === ok }))) };
+  } });
+}
+
+// ---------- Jahreszahl raten ----------
+const YEARS = [
+  ['Erste Mondlandung (Apollo 11)', 1969], ['Fall der Berliner Mauer', 1989], ['Bau der Berliner Mauer', 1961], ['Beginn der Französischen Revolution', 1789],
+  ['Kolumbus erreicht Amerika', 1492], ['Ende des Zweiten Weltkriegs', 1945], ['Beginn des Ersten Weltkriegs', 1914], ['Ende des Ersten Weltkriegs', 1918],
+  ['Österreich tritt der EU bei', 1995], ['Euro-Bargeld wird eingeführt', 2002], ['Österreichischer Staatsvertrag', 1955], ['Erstes iPhone wird vorgestellt', 2007],
+  ['Untergang der Titanic', 1912], ['Luthers 95 Thesen', 1517], ['Mozart wird geboren', 1756], ['Mozart stirbt', 1791], ['Beethoven wird geboren', 1770],
+  ['Gründung der Vereinten Nationen (UNO)', 1945], ['Eroberung Konstantinopels durch die Osmanen', 1453], ['Erster Motorflug der Brüder Wright', 1903],
+  ['Oktoberrevolution in Russland', 1917], ['Reaktorunglück von Tschernobyl', 1986], ['Anschläge vom 11. September', 2001], ['Start von Sputnik 1', 1957],
+  ['Deutsche Wiedervereinigung', 1990], ['Gründung von Google', 1998], ['Start der Wikipedia', 2001], ['Gründung von Facebook', 2004], ['Start von YouTube', 2005],
+  ['Angriff auf Pearl Harbor', 1941], ['Schlacht bei Waterloo', 1815], ['Unabhängigkeitserklärung der USA', 1776], ['Magna Carta', 1215],
+  ['Schlacht bei Hastings', 1066], ['Kaiserkrönung Karls des Großen', 800], ['Ende des Weströmischen Reichs', 476], ['Zweite Türkenbelagerung Wiens', 1683],
+  ['Erste Türkenbelagerung Wiens', 1529], ['Revolutionen in Europa („Märzrevolution“)', 1848], ['Österreichisch-Ungarischer Ausgleich', 1867],
+  ['Anschluss Österreichs an das Deutsche Reich', 1938], ['Ausrufung der Republik Deutschösterreich', 1918], ['Ermordung von John F. Kennedy', 1963],
+  ['Bell erhält das Patent auf das Telefon', 1876], ['Fleming entdeckt das Penicillin', 1928], ['Darwins „Über die Entstehung der Arten“', 1859],
+  ['Einstein veröffentlicht die spezielle Relativitätstheorie', 1905], ['Brexit-Abstimmung im Vereinigten Königreich', 2016], ['Ende der Sowjetunion', 1991],
+  ['Atombombe auf Hiroshima', 1945], ['Beginn des Dreißigjährigen Kriegs', 1618], ['Ende des Dreißigjährigen Kriegs (Westfälischer Friede)', 1648],
+  ['Wiener Kongress endet', 1815], ['Erste Fußball-WM', 1930], ['Erste Olympische Spiele der Neuzeit (Athen)', 1896],
+];
+function yearsGame(seed, d) {
+  const span = { l: [15, 120], m: [3, 25], s: [1, 6] }[d];
+  mcGame({ key: fullKey('years', d), title: 'Jahreszahl raten', seed, d, seconds: 60, gen: r => {
+    const [ev, y] = pick(r, YEARS), opts = new Set([y]);
+    while (opts.size < 4) { const o = y + (r() < .5 ? -1 : 1) * randInt(r, span[0], span[1]); if (o > 0 && o <= 2026) opts.add(o); }
+    return { prompt: gaQ('In welchem Jahr?', ev, 'big yr-q'), choices: shuffle(r, [...opts]).map(v => ({ label: String(v), ok: v === y })) };
+  } });
+}
+
+// ---------- Stadt-Silhouette (einfache SVG-Umrisse bekannter Bauwerke) ----------
+const SKY = [
+  ['Paris', 'Eiffelturm', '<path d="M100 6 L104 40 L110 70 L126 114 L114 114 Q100 86 86 114 L74 114 L90 70 L96 40 Z M94 50 h12 v4 h-12z M88 74 h24 v4 h-24z"/>'],
+  ['London', 'Big Ben', '<path d="M88 114 V42 h24 v72 Z M86 42 L100 12 L114 42 Z M97 6 h6 v8 h-6z"/><circle cx="100" cy="54" r="7" class="cut"/>'],
+  ['New York', 'Freiheitsstatue', '<path d="M86 114 h28 l-4-14 h-20 Z M92 100 L94 58 L88 50 L94 46 L98 32 L104 46 L110 50 L106 58 L108 100 Z M106 46 L114 14 L118 14 L112 48 Z"/><circle cx="116" cy="10" r="4"/><path d="M93 30 l7-8 l7 8 Z"/>'],
+  ['Rom', 'Kolosseum', '<path d="M30 114 V54 Q100 34 170 54 V114 Z"/><g class="cut"><rect x="40" y="70" width="10" height="16" rx="5"/><rect x="58" y="66" width="10" height="16" rx="5"/><rect x="76" y="64" width="10" height="16" rx="5"/><rect x="94" y="63" width="10" height="16" rx="5"/><rect x="112" y="64" width="10" height="16" rx="5"/><rect x="130" y="66" width="10" height="16" rx="5"/><rect x="148" y="70" width="10" height="16" rx="5"/><rect x="40" y="94" width="10" height="20" rx="5"/><rect x="76" y="92" width="10" height="22" rx="5"/><rect x="112" y="92" width="10" height="22" rx="5"/><rect x="148" y="94" width="10" height="20" rx="5"/></g>'],
+  ['Pisa', 'Schiefer Turm', '<g transform="rotate(5 100 114)"><rect x="86" y="24" width="28" height="90" rx="3"/><rect x="90" y="14" width="20" height="12" rx="2"/></g><g class="cut" transform="rotate(5 100 114)"><rect x="86" y="40" width="28" height="2"/><rect x="86" y="56" width="28" height="2"/><rect x="86" y="72" width="28" height="2"/><rect x="86" y="88" width="28" height="2"/></g>'],
+  ['Kairo (Gizeh)', 'Pyramiden', '<path d="M20 114 L70 50 L120 114 Z M90 114 L134 62 L178 114 Z M150 114 L170 92 L190 114 Z"/>'],
+  ['Sydney', 'Opernhaus', '<path d="M20 114 h160 v-8 h-160 Z M40 106 Q60 40 92 106 Z M78 106 Q100 30 130 106 Z M118 106 Q140 50 166 106 Z"/>'],
+  ['Wien', 'Riesenrad im Prater', '<circle cx="100" cy="56" r="44" fill="none" stroke="currentColor" stroke-width="5"/><path d="M100 56 L64 114 h8 L100 66 L128 114 h8 Z" /><g stroke="currentColor" stroke-width="2"><line x1="100" y1="12" x2="100" y2="100"/><line x1="56" y1="56" x2="144" y2="56"/><line x1="69" y1="25" x2="131" y2="87"/><line x1="131" y1="25" x2="69" y2="87"/></g><g><rect x="96" y="6" width="8" height="8"/><rect x="52" y="52" width="8" height="8"/><rect x="140" y="52" width="8" height="8"/><rect x="65" y="21" width="8" height="8"/><rect x="127" y="21" width="8" height="8"/></g>'],
+  ['Berlin', 'Brandenburger Tor', '<path d="M40 50 h120 v10 h-120 Z M44 40 h112 v10 h-112 Z M86 24 h28 v16 h-28 Z"/><g><rect x="46" y="60" width="8" height="54"/><rect x="66" y="60" width="8" height="54"/><rect x="86" y="60" width="8" height="54"/><rect x="106" y="60" width="8" height="54"/><rect x="126" y="60" width="8" height="54"/><rect x="146" y="60" width="8" height="54"/></g>'],
+  ['Dubai', 'Burj Khalifa', '<path d="M99 2 h2 L102 20 L104 20 L105 40 L108 40 L109 62 L113 62 L114 86 L120 86 L122 114 L78 114 L80 86 L86 86 L87 62 L91 62 L92 40 L95 40 L96 20 L98 20 Z"/>'],
+  ['Seattle', 'Space Needle', '<path d="M97 4 h6 v20 h-6z M70 30 Q100 18 130 30 L122 38 L78 38 Z M84 38 L96 114 h8 L116 38 h-6 L100 100 L90 38 Z"/>'],
+  ['Moskau', 'Basilius-Kathedrale', '<path d="M50 114 V80 h100 v34 Z"/><path d="M90 80 V46 h20 v34 Z M100 18 Q114 32 110 46 h-20 Q86 32 100 18 Z M99 8 h2 v10 h-2z"/><path d="M58 80 V60 h16 v20 Z M66 40 Q76 50 74 60 h-16 Q56 50 66 40 Z M126 80 V60 h16 v20 Z M134 40 Q144 50 142 60 h-16 Q124 50 134 40 Z"/>'],
+  ['Rio de Janeiro', 'Christusstatue', '<path d="M10 114 Q100 64 190 114 Z"/><path d="M96 82 L94 46 L60 42 L60 38 L96 34 L97 26 h6 L104 34 L140 38 L140 42 L106 46 L104 82 Z"/><circle cx="100" cy="21" r="5"/>'],
+  ['Agra', 'Taj Mahal', '<path d="M40 114 V74 h120 v40 Z M76 74 V58 h48 v16 Z M76 58 Q76 30 100 22 Q124 30 124 58 Z M99 12 h2 v10 h-2z"/><path d="M24 114 V50 h6 v64 Z M170 114 V50 h6 v64 Z"/><circle cx="27" cy="48" r="4"/><circle cx="173" cy="48" r="4"/><rect x="92" y="88" width="16" height="26" rx="8" class="cut"/>'],
+  ['Toronto', 'CN Tower', '<path d="M99 2 h2 v30 h-2z M96 32 h8 L106 52 L112 54 L112 60 L104 62 L106 114 h-12 L96 62 L88 60 L88 54 L94 52 Z"/>'],
+  ['Brüssel', 'Atomium', '<g stroke="currentColor" stroke-width="5"><line x1="100" y1="20" x2="100" y2="100"/><line x1="60" y1="40" x2="140" y2="80"/><line x1="140" y1="40" x2="60" y2="80"/><line x1="60" y1="40" x2="100" y2="20"/><line x1="140" y1="40" x2="100" y2="20"/><line x1="60" y1="80" x2="100" y2="100"/><line x1="140" y1="80" x2="100" y2="100"/><line x1="100" y1="100" x2="88" y2="114"/><line x1="100" y1="100" x2="112" y2="114"/></g><circle cx="100" cy="20" r="9"/><circle cx="60" cy="40" r="9"/><circle cx="140" cy="40" r="9"/><circle cx="100" cy="60" r="9"/><circle cx="60" cy="80" r="9"/><circle cx="140" cy="80" r="9"/><circle cx="100" cy="100" r="9"/>'],
+];
+function skySvg(markup) { const s = h('div', { class: 'sky-svg', 'aria-hidden': 'true' }); s.innerHTML = `<svg viewBox="0 0 200 118" role="img">${markup}<rect x="0" y="114" width="200" height="4"/></svg>`; return s; }
+function skylineGame(seed, d) {
+  mcGame({ key: fullKey('skyline', d), title: 'Stadt-Silhouette', seed, d, seconds: 60, gen: r => {
+    const [city, what, svg] = pick(r, SKY);
+    const prompt = [h('div', { class: 'sub' }, 'Welche Stadt zeigt dieser Umriss?'), skySvg(svg), d === 'l' ? h('div', { class: 'note' }, 'Tipp: ' + what) : null];
+    return { prompt, choices: gaChoices(r, city, SKY.map(s => s[0]), d === 's' ? 6 : 4), explain: gaEx(h('b', {}, what), ' steht in ', h('b', {}, city), '.'), explainWait: 1600 };
+  } });
+}
+
+// ---------- Gebirge, Flüsse, Meere ----------
+const GEO_RIVER = [ // [Frage, Antwort, Ablenker-Pool-Kategorie]
+  ['Welcher Fluss fließt durch London?', 'Themse'], ['Welcher Fluss fließt durch Paris?', 'Seine'], ['Welcher Fluss fließt durch Rom?', 'Tiber'],
+  ['Welcher Fluss fließt durch Berlin?', 'Spree'], ['Welcher Fluss fließt durch Prag?', 'Moldau'], ['Welcher Fluss fließt durch Budapest?', 'Donau'],
+  ['Welcher Fluss fließt durch Warschau?', 'Weichsel'], ['Welcher Fluss fließt durch Lissabon (Mündung)?', 'Tejo'], ['Welcher Fluss fließt durch Kairo?', 'Nil'],
+  ['Welcher Fluss fließt durch Sankt Petersburg?', 'Newa'], ['Welcher Fluss fließt durch Köln?', 'Rhein'], ['Welcher Fluss fließt durch Dresden?', 'Elbe'],
+  ['Welcher Fluss fließt durch Bagdad?', 'Tigris'], ['Welcher Fluss fließt durch Belgrad?', 'Donau'], ['Welcher Fluss fließt durch Lyon?', 'Rhône'],
+  ['Welcher Fluss fließt durch Bratislava?', 'Donau'], ['Welcher Fluss fließt durch Florenz?', 'Arno'], ['Welcher Fluss fließt durch Hamburg?', 'Elbe'],
+  ['In welches Meer mündet die Donau?', 'Schwarzes Meer'], ['In welches Meer mündet der Rhein?', 'Nordsee'], ['In welches Meer mündet die Elbe?', 'Nordsee'],
+  ['In welches Meer mündet die Wolga?', 'Kaspisches Meer'], ['In welches Meer mündet die Rhône?', 'Mittelmeer'], ['In welches Meer mündet der Po?', 'Adria'],
+  ['In welches Meer mündet der Nil?', 'Mittelmeer'], ['In welches Meer mündet die Weichsel?', 'Ostsee'], ['In welches Meer mündet der Dnepr?', 'Schwarzes Meer'],
+  ['Welcher ist der längste Fluss Europas?', 'Wolga'],
+];
+const GEO_RIVERS_ALL = ['Themse', 'Seine', 'Tiber', 'Spree', 'Moldau', 'Donau', 'Weichsel', 'Tejo', 'Nil', 'Newa', 'Rhein', 'Elbe', 'Tigris', 'Rhône', 'Arno', 'Wolga', 'Oder', 'Loire', 'Po', 'Ebro', 'Main', 'Inn'];
+const GEO_MOUNT = [
+  ['In welchem Gebirge liegt der Mont Blanc?', 'Alpen'], ['In welchem Gebirge liegt der Mount Everest?', 'Himalaya'], ['In welchem Gebirge liegt der Aconcagua?', 'Anden'],
+  ['In welchem Gebirge liegt der Elbrus?', 'Kaukasus'], ['In welchem Gebirge liegt das Matterhorn?', 'Alpen'], ['In welchem Gebirge liegt die Zugspitze?', 'Alpen'],
+  ['In welchem Gebirge liegt der Brocken?', 'Harz'], ['In welchem Gebirge liegt die Schneekoppe?', 'Riesengebirge'], ['In welchem Gebirge liegt der K2?', 'Karakorum'],
+  ['Welches Gebirge trennt Frankreich und Spanien?', 'Pyrenäen'], ['Welches Gebirge gilt als Grenze zwischen Europa und Asien?', 'Ural'],
+  ['Welches Gebirge zieht sich durch Rumänien und die Slowakei?', 'Karpaten'], ['Welches Gebirge liegt im Westen Nordamerikas?', 'Rocky Mountains'],
+  ['Welcher ist der höchste Berg der Erde?', 'Mount Everest'], ['Welcher ist der höchste Berg Afrikas?', 'Kilimandscharo'], ['Welcher ist der höchste Berg Südamerikas?', 'Aconcagua'],
+  ['Welcher ist der höchste Berg Nordamerikas?', 'Denali'], ['Welcher ist der höchste Berg der Alpen?', 'Mont Blanc'], ['Welcher ist der höchste Berg Deutschlands?', 'Zugspitze'],
+  ['Welcher ist der höchste Berg Österreichs?', 'Großglockner'], ['Welcher ist der höchste Berg der Antarktis?', 'Mount Vinson'],
+];
+const GEO_MOUNT_ALL = ['Alpen', 'Himalaya', 'Anden', 'Kaukasus', 'Harz', 'Riesengebirge', 'Karakorum', 'Pyrenäen', 'Ural', 'Karpaten', 'Rocky Mountains', 'Apenninen', 'Atlas', 'Mount Everest', 'Kilimandscharo', 'Aconcagua', 'Denali', 'Mont Blanc', 'Zugspitze', 'Großglockner', 'Mount Vinson', 'Matterhorn', 'Elbrus', 'K2', 'Fuji'];
+const GEO_SEA = [
+  ['An welchem Meer liegt Venedig?', 'Adria'], ['An welchem Meer liegt Triest?', 'Adria'], ['An welchem Meer liegt Dubrovnik?', 'Adria'],
+  ['An welchem Meer liegt Stockholm?', 'Ostsee'], ['An welchem Meer liegt Kiel?', 'Ostsee'], ['An welchem Meer liegt Helsinki?', 'Ostsee'],
+  ['An welchem Meer liegt Odessa?', 'Schwarzes Meer'], ['An welchem Meer liegt Warna?', 'Schwarzes Meer'], ['An welchem Meer liegt Marseille?', 'Mittelmeer'],
+  ['An welchem Meer liegt Barcelona?', 'Mittelmeer'], ['An welchem Meer liegt Alexandria?', 'Mittelmeer'], ['An welchem Meer liegt Baku?', 'Kaspisches Meer'],
+  ['An welchem Meer liegt Eilat?', 'Rotes Meer'], ['An welchem Meer liegt Dschidda?', 'Rotes Meer'], ['An welchem Meer liegt Athen (Piräus)?', 'Ägäis'],
+  ['Welcher ist der größte Ozean?', 'Pazifik'], ['Welcher Ozean liegt zwischen Europa und Amerika?', 'Atlantik'], ['Welcher Ozean liegt zwischen Afrika und Australien?', 'Indischer Ozean'],
+  ['Welcher ist der größte See der Erde?', 'Kaspisches Meer'], ['Wo liegt der tiefste Punkt der Meere?', 'Marianengraben'], ['Welches Meer ist so salzig, dass man darin treibt?', 'Totes Meer'],
+  ['Welche Meerenge trennt Europa und Afrika?', 'Straße von Gibraltar'], ['Welche Meerenge trennt in Istanbul Europa und Asien?', 'Bosporus'],
+];
+const GEO_SEA_ALL = ['Adria', 'Ostsee', 'Nordsee', 'Schwarzes Meer', 'Mittelmeer', 'Kaspisches Meer', 'Rotes Meer', 'Ägäis', 'Pazifik', 'Atlantik', 'Indischer Ozean', 'Arktischer Ozean', 'Marianengraben', 'Totes Meer', 'Straße von Gibraltar', 'Bosporus', 'Ärmelkanal', 'Tyrrhenisches Meer', 'Karibik'];
+function geoGame(kind) {
+  const [list, all, title] = { r: [GEO_RIVER, GEO_RIVERS_ALL, 'Flüsse'], b: [GEO_MOUNT, GEO_MOUNT_ALL, 'Gebirge & Berge'], m: [GEO_SEA, GEO_SEA_ALL, 'Meere & Ozeane'] }[kind];
+  return (seed, d) => mcGame({ key: fullKey('geo_' + kind, d), title: 'Gebirge, Flüsse, Meere · ' + title, seed, d, seconds: d === 'l' ? 90 : 60, gen: r => {
+    const [q, a] = pick(r, list);
+    return { prompt: gaQ(title, q, 'big at-q'), choices: gaChoices(r, a, all, d === 's' ? 6 : 4) };
+  } });
+}
+
+// ---------- HTL: Logikgatter ----------
+const GATES = { AND: (a, b) => a & b, OR: (a, b) => a | b, XOR: (a, b) => a ^ b, NAND: (a, b) => 1 - (a & b), NOR: (a, b) => 1 - (a | b), XNOR: (a, b) => 1 - (a ^ b) };
+const GATE_SYM = { AND: '&', OR: '≥1', XOR: '=1', NAND: '&̅', NOR: '≥1̅', XNOR: '=1̅', NOT: '1̅' };
+function gatesGame(seed, d) {
+  const names = d === 'l' ? ['AND', 'OR', 'NOT'] : Object.keys(GATES).concat('NOT');
+  mcGame({ key: fullKey('gates', d), title: 'Logikgatter', seed, d, seconds: 60, gen: r => {
+    if (d !== 'l' && r() < .35) {
+      // Wahrheitstabelle → welches Gatter?
+      const g = pick(r, Object.keys(GATES));
+      const rows = [[0, 0], [0, 1], [1, 0], [1, 1]].map(([a, b]) => h('tr', {}, h('td', {}, a), h('td', {}, b), h('td', {}, h('b', {}, GATES[g](a, b)))));
+      return { prompt: [h('div', { class: 'sub' }, 'Welches Gatter hat diese Wahrheitstabelle?'), h('table', { class: 'gt-tt' }, h('tr', {}, h('th', {}, 'A'), h('th', {}, 'B'), h('th', {}, 'Q')), ...rows)],
+        choices: gaChoices(r, g, Object.keys(GATES)) };
+    }
+    if (d === 's' && r() < .5) {
+      // zwei Gatter hintereinander: Q = G2(G1(A,B), C)
+      const g1 = pick(r, Object.keys(GATES)), g2 = pick(r, Object.keys(GATES)), a = randInt(r, 0, 1), b = randInt(r, 0, 1), c = randInt(r, 0, 1);
+      const q = GATES[g2](GATES[g1](a, b), c);
+      return { prompt: [h('div', { class: 'sub' }, 'Was kommt am Ausgang Q heraus?'), h('div', { class: 'big mono gt-expr' }, `Q = ${g2}( ${g1}(${a}, ${b}), ${c} )`)],
+        choices: [{ label: '0', ok: q === 0 }, { label: '1', ok: q === 1 }], explain: gaEx(`${g1}(${a}, ${b}) = ${GATES[g1](a, b)}, dann ${g2}(…, ${c}) = `, h('b', {}, q)), explainWait: 1500 };
+    }
+    const g = pick(r, names);
+    if (g === 'NOT') { const a = randInt(r, 0, 1); return { prompt: [h('div', { class: 'sub' }, 'Was kommt heraus?'), h('div', { class: 'gt-box' }, h('span', { class: 'gt-in' }, 'A = ' + a), h('span', { class: 'gt-sym' }, GATE_SYM.NOT), h('span', { class: 'gt-name' }, 'NOT'))], choices: [{ label: '0', ok: a === 1 }, { label: '1', ok: a === 0 }] }; }
+    const a = randInt(r, 0, 1), b = randInt(r, 0, 1), q = GATES[g](a, b);
+    return { prompt: [h('div', { class: 'sub' }, 'Was kommt am Ausgang Q heraus?'), h('div', { class: 'gt-box' }, h('span', { class: 'gt-in' }, `A = ${a}`, h('br'), `B = ${b}`), h('span', { class: 'gt-sym' }, GATE_SYM[g]), h('span', { class: 'gt-name' }, g))],
+      choices: [{ label: '0', ok: q === 0 }, { label: '1', ok: q === 1 }], explain: gaEx(`${g}(${a}, ${b}) = `, h('b', {}, q)), explainWait: 1100 };
+  } });
+}
+
+// ---------- HTL: Ohmsches Gesetz ----------
+function ohmGame(seed, d) {
+  const fmt = (v, u) => {
+    if (d === 's') {
+      if (u === 'A' && v < 1) return gaDe(v * 1000, 1) + ' mA';
+      if (u === 'Ω' && v >= 1000) return gaDe(v / 1000, 2) + ' kΩ';
+      if (u === 'W' && v >= 1000) return gaDe(v / 1000, 2) + ' kW';
+    }
+    return gaDe(v, 2) + ' ' + u;
+  };
+  mcGame({ key: fullKey('ohm', d), title: 'Ohmsches Gesetz', seed, d, seconds: 90, gen: r => {
+    let R, I;
+    if (d === 'l') { R = pick(r, [2, 4, 5, 10, 20, 50, 100]); I = pick(r, [1, 2, 3, 4, 5]); }
+    else if (d === 'm') { R = pick(r, [2.2, 4.7, 10, 12, 22, 33, 47, 68, 100, 150, 220]); I = pick(r, [0.5, 1.5, 2, 2.5, 0.2, 0.1]); }
+    else { R = pick(r, [220, 330, 470, 680, 1000, 1500, 2200, 4700, 10000]); I = pick(r, [0.002, 0.005, 0.01, 0.02, 0.05, 0.1]); }
+    const U = R * I, P = U * I;
+    const type = d === 'l' ? pick(r, ['U', 'I', 'R']) : pick(r, ['U', 'I', 'R', 'P']);
+    let q, ans, unit, wrong;
+    if (type === 'U') { q = `R = ${fmt(R, 'Ω')}, I = ${fmt(I, 'A')}. Wie groß ist U?`; ans = U; unit = 'V'; wrong = [R / I, U * 10, U / 10, R + I]; }
+    if (type === 'I') { q = `U = ${fmt(U, 'V')}, R = ${fmt(R, 'Ω')}. Wie groß ist I?`; ans = I; unit = 'A'; wrong = [U * R, I * 10, I / 10, R / U]; }
+    if (type === 'R') { q = `U = ${fmt(U, 'V')}, I = ${fmt(I, 'A')}. Wie groß ist R?`; ans = R; unit = 'Ω'; wrong = [U * I, R * 10, R / 10, I / U]; }
+    if (type === 'P') { q = `U = ${fmt(U, 'V')}, I = ${fmt(I, 'A')}. Welche Leistung P?`; ans = P; unit = 'W'; wrong = [U / I, P * 10, P / 10, U + I]; }
+    const ok = fmt(ans, unit), labels = [ok];
+    for (const w of shuffle(r, wrong)) { const l = fmt(w, unit); if (!labels.includes(l) && labels.length < 4 && isFinite(w) && w > 0 && !/^0 /.test(l)) labels.push(l); }
+    while (labels.length < 4) { const l = fmt(ans * pick(r, [2, 3, 0.5, 4]), unit); if (!labels.includes(l)) labels.push(l); }
+    const rule = { U: 'U = R · I', I: 'I = U / R', R: 'R = U / I', P: 'P = U · I' }[type];
+    return { prompt: gaQ('Ohmsches Gesetz', q, 'big ohm-q'), choices: shuffle(r, labels).map(l => ({ label: l, ok: l === ok })), explain: gaEx(rule, ' → ', h('b', {}, ok)), explainWait: 1600 };
+  } });
+}
+
+// ---------- HTL: Was gibt der Code aus? (Python) ----------
+function codeTask(r, d) {
+  const T = [];
+  T.push(() => { const a = randInt(r, 7, 40), b = randInt(r, 2, 6); return [`a = ${a}\nb = ${b}\nprint(a // b, a % b)`, `${Math.floor(a / b)} ${a % b}`, [`${(a / b).toFixed(1).replace(/\.0$/, '')} ${a % b}`, `${Math.floor(a / b)} ${Math.floor(a / b)}`, `${a % b} ${Math.floor(a / b)}`, `${Math.floor(a / b) + 1} ${a % b}`]]; });
+  T.push(() => { const n = randInt(r, 3, 30); return [`n = ${n}\nif n % 2 == 0:\n    print("gerade")\nelse:\n    print("ungerade")`, n % 2 ? 'ungerade' : 'gerade', [n % 2 ? 'gerade' : 'ungerade', 'True', String(n % 2)]]; });
+  T.push(() => { const w = pick(r, ['ab', 'xy', 'Hi', 'na', '-']), k = randInt(r, 2, 4); return [`print("${w}" * ${k})`, w.repeat(k), [`${w}${k}`, w.repeat(k + 1), w.repeat(k - 1) || w, 'Fehler']]; });
+  T.push(() => { const s = pick(r, ['Hallo Welt', 'Brainix', 'HTL Villach', 'Python 3', 'Informatik']); return [`text = "${s}"\nprint(len(text))`, String(s.length), [String(s.length - 1), String(s.length + 1), String(s.replace(/ /g, '').length === s.length ? s.length + 2 : s.replace(/ /g, '').length)]]; });
+  T.push(() => { const a = randInt(r, 2, 6), b = randInt(r, 2, 5), c = randInt(r, 2, 4); return [`print(${a} + ${b} * ${c})`, String(a + b * c), [String((a + b) * c), String(a * b + c), String(a + b + c)]]; });
+  T.push(() => { const a = randInt(r, 2, 4), b = randInt(r, 2, 4), c = randInt(r, 1, 9); return [`print(${a} ** ${b} + ${c})`, String(a ** b + c), [String(a * b + c), String(a ** (b + c)), String(b ** a + c)]]; });
+  if (d !== 'l') {
+    T.push(() => { const s = pick(r, ['BRAINIX', 'PYTHON', 'VILLACH', 'KAERNTEN', 'NETZWERK']), i = randInt(r, 0, 2), j = randInt(r, i + 2, Math.min(s.length, i + 4)); return [`s = "${s}"\nprint(s[${i}:${j}])`, s.slice(i, j), [s.slice(i, j + 1), s.slice(i + 1, j + 1), s.slice(i + 1, j)]]; });
+    T.push(() => { const n = randInt(r, 3, 7); return [`x = 1\nfor i in range(${n}):\n    x = x * 2\nprint(x)`, String(2 ** n), [String(2 ** (n - 1)), String(2 ** (n + 1)), String(2 * n)]]; });
+    T.push(() => { const a = randInt(r, 1, 4), b = randInt(r, a + 3, a + 7); let t = 0; for (let i = a; i < b; i++) t += i; let t2 = 0; for (let i = a; i <= b; i++) t2 += i; return [`total = 0\nfor i in range(${a}, ${b}):\n    total += i\nprint(total)`, String(t), [String(t2), String(t - a), String(t + b)]]; });
+    T.push(() => { const s = pick(r, ['Villach', 'Graz', 'Linz', 'Salzburg']); return [`s = "${s}"\nprint(s[-1] + s[0])`, s.slice(-1) + s[0], [s[0] + s.slice(-1), s.slice(-2), s[1] + s[0]]]; });
+  }
+  if (d === 's') {
+    T.push(() => { const l = [randInt(r, 1, 9), randInt(r, 1, 9), randInt(r, 1, 9)], v = randInt(r, 10, 20); return [`zahlen = [${l.join(', ')}]\nzahlen.append(${v})\nprint(len(zahlen), zahlen[-2])`, `4 ${l[2]}`, [`3 ${l[2]}`, `4 ${v}`, `4 ${l[1]}`]]; });
+    T.push(() => { const n = randInt(r, 10, 60); let i = 0; while (i * i < n) i++; return [`n = ${n}\ni = 0\nwhile i * i < n:\n    i += 1\nprint(i)`, String(i), [String(i - 1), String(i + 1), String(i * i)]]; });
+    T.push(() => { const a = randInt(r, 2, 9), b = randInt(r, 2, 9); return [`def f(x, y=${b}):\n    return x * y - 1\nprint(f(${a}) + f(${a}, 1))`, String(a * b - 1 + a - 1), [String(a * b - 1), String(a * b + a), String(a * b + a - 1)]]; });
+    T.push(() => { const w = pick(r, ['Brainix', 'HTL', 'Netz']); return [`w = "${w}"\nprint(w.upper()[::-1])`, w.toUpperCase().split('').reverse().join(''), [w.toUpperCase(), w.split('').reverse().join(''), w.toLowerCase().split('').reverse().join('')]]; });
+  }
+  return pick(r, T)();
+}
+function codeGame(seed, d) {
+  mcGame({ key: fullKey('code', d), title: 'Was gibt der Code aus?', seed, d, seconds: 90, gen: r => {
+    const [src, ok, wrong] = codeTask(r, d);
+    const opts = [ok]; for (const w of wrong) if (!opts.includes(w) && opts.length < 4) opts.push(w);
+    return { prompt: [h('div', { class: 'sub' }, 'Was gibt dieses Python-Programm aus?'), h('pre', { class: 'code-src mono' }, src)], choices: shuffle(r, opts).map(x => ({ label: x, ok: x === ok })), explainWait: 1400, explain: gaEx('Ausgabe: ', h('b', { class: 'mono' }, ok)) };
+  } });
+}
+
+// ---------- HTL: Subnetting ----------
+const ipStr = n => [24, 16, 8, 0].map(s => (n >>> s) & 255).join('.');
+function subnetGame(seed, d) {
+  mcGame({ key: fullKey('subnet', d), title: 'Subnetting', seed, d, seconds: 90, gen: r => {
+    const base = pick(r, [[10, 8], [172, 12], [192, 16]]);
+    let ip = base[0] === 10 ? (10 << 24) | randInt(r, 0, 0xFFFFFF) : base[0] === 172 ? ((172 << 24) | (randInt(r, 16, 31) << 16) | randInt(r, 0, 0xFFFF)) : ((192 << 24) | (168 << 16) | randInt(r, 0, 0xFFFF));
+    ip >>>= 0;
+    const p = d === 'l' ? pick(r, [8, 16, 24]) : d === 'm' ? randInt(r, 24, 30) : randInt(r, 17, 30);
+    const mask = p === 0 ? 0 : (0xFFFFFFFF << (32 - p)) >>> 0, net = (ip & mask) >>> 0, bc = (net | (~mask >>> 0)) >>> 0, hosts = 2 ** (32 - p) - 2;
+    const type = pick(r, d === 'l' ? ['net', 'mask', 'hosts'] : ['net', 'bc', 'hosts', 'mask']);
+    const block = 2 ** (32 - p);
+    let q, ok, wrong;
+    if (type === 'net') { q = 'Netzadresse?'; ok = ipStr(net); wrong = [ipStr(ip), ipStr((net + block) >>> 0), ipStr(bc), ipStr((net - block) >>> 0)]; }
+    if (type === 'bc') { q = 'Broadcast-Adresse?'; ok = ipStr(bc); wrong = [ipStr(net), ipStr((bc - 1) >>> 0), ipStr((bc + block) >>> 0), ipStr((bc - block) >>> 0)]; }
+    if (type === 'hosts') { q = 'Wie viele nutzbare Host-Adressen?'; ok = String(hosts); wrong = [String(hosts + 2), String(hosts + 1), String(hosts * 2 + 2), String(Math.max(0, hosts / 2 - 1))]; }
+    if (type === 'mask') { q = 'Subnetzmaske?'; ok = ipStr(mask); wrong = [p > 1 ? ipStr((0xFFFFFFFF << (33 - p)) >>> 0) : '0.0.0.0', p < 32 ? ipStr((0xFFFFFFFF << (31 - p)) >>> 0) : '255.255.255.255', ipStr((~mask) >>> 0)]; }
+    const opts = [ok]; for (const w of shuffle(r, wrong)) if (!opts.includes(w) && opts.length < 4) opts.push(w);
+    return { prompt: [h('div', { class: 'sub' }, q), h('div', { class: 'big mono' }, `${ipStr(ip)} /${p}`)], choices: shuffle(r, opts).map(x => ({ label: x, ok: x === ok })),
+      explain: gaEx(`Maske ${ipStr(mask)} · Netz ${ipStr(net)} · Broadcast ${ipStr(bc)} · ${hosts} Hosts`), explainWait: 2200 };
+  } });
+}
+
+// ---------- Registrierung ----------
+{
+  Object.assign(KEYS, {
+    hilo: { label: 'Höher oder tiefer', unit: 'in Folge' }, austria: { label: 'Österreich-Quiz', unit: 'richtig' }, years: { label: 'Jahreszahl raten', unit: 'richtig' },
+    skyline: { label: 'Stadt-Silhouette', unit: 'richtig' }, geo_r: { label: 'Gebirge, Flüsse, Meere · Flüsse', unit: 'richtig' }, geo_b: { label: 'Gebirge, Flüsse, Meere · Berge', unit: 'richtig' },
+    geo_m: { label: 'Gebirge, Flüsse, Meere · Meere', unit: 'richtig' }, gates: { label: 'Logikgatter', unit: 'richtig' }, ohm: { label: 'Ohmsches Gesetz', unit: 'richtig' },
+    code: { label: 'Was gibt der Code aus?', unit: 'richtig' }, subnet: { label: 'Subnetting', unit: 'richtig' },
+  });
+  Object.assign(MODES, { hilo: hiloGame, austria: austriaGame, years: yearsGame, skyline: skylineGame, geo_r: geoGame('r'), geo_b: geoGame('b'), geo_m: geoGame('m'), gates: gatesGame, ohm: ohmGame, code: codeGame, subnet: subnetGame });
+  GAMES.push(
+    { t: 'Höher oder tiefer', p: 'Kommt eine höhere oder tiefere Karte? Wie lange hält deine Serie?', art: emo('🃏'), modes: [['hilo', 'Serie']] },
+    { t: 'Österreich-Quiz', p: 'Bundesländer, Berge, Seen, Geschichte und Kennzeichen – wie gut kennst du Österreich?', art: () => h('span', {}, '🇦🇹'), modes: [['austria', 'Sprint']] },
+    { t: 'Jahreszahl raten', p: 'Mondlandung, Mauerfall, Staatsvertrag: In welchem Jahr war das?', art: emo('📅'), modes: [['years', 'Sprint']] },
+    { t: 'Stadt-Silhouette', p: 'Nur der Umriss eines Wahrzeichens – welche Stadt ist das?', art: () => skySvg(SKY[0][2]), modes: [['skyline', 'Sprint']] },
+    { t: 'Gebirge, Flüsse, Meere', p: 'Welcher Fluss fließt durch Prag? Wo liegt der Elbrus? An welchem Meer liegt Triest?', art: emo('🏔️'), modes: [['geo_r', 'Flüsse'], ['geo_b', 'Gebirge & Berge'], ['geo_m', 'Meere & Ozeane']] },
+    { t: 'Logikgatter', p: 'AND, OR, XOR, NAND … Was kommt am Ausgang heraus?', art: () => h('span', { class: 'mono' }, '&', h('br'), '≥1'), modes: [['gates', 'Sprint']] },
+    { t: 'Ohmsches Gesetz', p: 'U = R · I und P = U · I im Kopf – mit mA und kΩ im schweren Modus.', art: () => h('span', {}, 'Ω'), modes: [['ohm', 'Sprint']] },
+    { t: 'Was gibt der Code aus?', p: 'Kurze Python-Programme lesen und die Ausgabe vorhersagen.', art: () => h('span', { class: 'mono' }, '>>>'), modes: [['code', 'Sprint']] },
+    { t: 'Subnetting', p: 'Netzadresse, Broadcast, Hosts und Maske für IPv4-Netze.', art: () => h('span', { class: 'mono' }, '/24'), modes: [['subnet', 'Sprint']] },
+  );
+  OR_CATS['Wissen & Quiz'].push('Höher oder tiefer', 'Jahreszahl raten');
+  OR_CATS['Geografie'].push('Österreich-Quiz', 'Stadt-Silhouette', 'Gebirge, Flüsse, Meere');
+  OR_CATS['Schule (HTL)'].push('Logikgatter', 'Ohmsches Gesetz', 'Was gibt der Code aus?', 'Subnetting');
+  LIVE_GAMES.push(['austria', 'Österreich-Quiz'], ['years', 'Jahreszahl raten'], ['skyline', 'Stadt-Silhouette'], ['geo_r', 'Flüsse'], ['geo_b', 'Gebirge & Berge'], ['geo_m', 'Meere & Ozeane'], ['gates', 'Logikgatter'], ['ohm', 'Ohmsches Gesetz'], ['code', 'Python-Code'], ['subnet', 'Subnetting']);
+  if (CATS['Wissen']) CATS['Wissen'].push('Österreich-Quiz', 'Jahreszahl raten', 'Stadt-Silhouette', 'Gebirge, Flüsse, Meere');
+  renderCards();
+}
+/*/BRX:spiele_a*/
+/*BRX:spiele_b*/
+// ==================================================================
+//  Neue Spiele 10b: Kakuro, KenKen, Futoshiki, Hashi, Flood-It, Code knacken,
+//  Logikgitter + eigene Kacheln für Schiebepuzzle und Lights Out
+//  Rätsel werden aus dem Seed erzeugt und nach den Regeln geprüft.
+// ==================================================================
+function pzStart(title, base, seed, d, build) {
+  const key = fullKey(base, d), run = openPlay(title, d), r = rng(seed);
+  const st = { run, key, seed, r, errors: 0, moves: 0, done: false };
+  hud('0 Fehler', '0:00'); stopwatch(run);
+  st.setHud = txt => { if (!run.dead) $('#hudA').textContent = txt; };
+  st.win = (s, extra) => { if (st.done) return; st.done = true; const t = Math.max(1, Math.round(run.elapsed())); try { sfx('win'); } catch (e) {} setTimeout(() => { if (!run.dead) finish(key, { s, t, ...(extra ? { extra } : {}) }, seed); }, 900); };
+  build(st);
+}
+function latin(r, n) {
+  const rows = shuffle(r, [...Array(n).keys()]), cols = shuffle(r, [...Array(n).keys()]), sym = shuffle(r, [...Array(n).keys()].map(i => i + 1));
+  return rows.map(i => cols.map(j => sym[(i + j) % n]));
+}
+// ---------- Zahlen-Gitter mit Eingabe (für KenKen, Futoshiki, Kakuro) ----------
+function numBoard(st, { n, cols, cellAt, max, check, label }) {
+  const vals = {}, cells = {};
+  let sel = null;
+  const grid = h('div', { class: 'pz-grid', style: `--cols:${cols}`, role: 'grid', 'aria-label': label });
+  const msg = h('p', { class: 'pz-msg', 'aria-live': 'polite' });
+  const pick = id => { if (sel != null && cells[sel]) cells[sel].classList.remove('sel'); sel = id; if (cells[id]) { cells[id].classList.add('sel'); cells[id].focus({ preventScroll: true }); } };
+  for (let i = 0; i < n; i++) {
+    const spec = cellAt(i); // { kind: 'in'|'fixed'|'deco', node?, value? }
+    if (spec.kind === 'deco') { grid.append(spec.node); continue; }
+    const c = h('button', { class: 'pz-c' + (spec.kind === 'fixed' ? ' fixed' : '') + (spec.cls ? ' ' + spec.cls : ''), type: 'button', 'aria-label': spec.aria || 'Feld', tabindex: '-1', onclick: () => spec.kind !== 'fixed' && pick(i) },
+      spec.top || null, h('span', { class: 'v' }, spec.kind === 'fixed' ? String(spec.value) : ''));
+    if (spec.kind === 'fixed') vals[i] = spec.value;
+    cells[i] = c; grid.append(c);
+  }
+  const set = v => {
+    if (sel == null || st.done) return;
+    if (v) vals[sel] = v; else delete vals[sel];
+    cells[sel].querySelector('.v').textContent = v ? String(v) : '';
+    st.moves++;
+    grid.querySelectorAll('.bad').forEach(x => x.classList.remove('bad'));
+    const res = check(vals);
+    if (res === true) { msg.textContent = 'Gelöst! 🎉'; grid.classList.add('won'); st.win(st.errors); }
+    else if (res && res.full) { st.errors++; st.setHud(st.errors + (st.errors === 1 ? ' Fehler' : ' Fehler')); msg.textContent = 'Alles ausgefüllt, aber noch nicht richtig – rot markierte Felder prüfen.'; (res.bad || []).forEach(i => cells[i] && cells[i].classList.add('bad')); try { sfx('bad'); } catch (e) {} }
+    else msg.textContent = '';
+  };
+  const pad = h('div', { class: 'pz-pad' }, ...Array.from({ length: max }, (_, k) => h('button', { class: 'btn', type: 'button', onclick: () => set(k + 1) }, String(k + 1))), h('button', { class: 'btn ghost', type: 'button', 'aria-label': 'Löschen', onclick: () => set(0) }, '⌫'));
+  const ids = Object.keys(cells).map(Number).filter(i => !cells[i].classList.contains('fixed'));
+  document.onkeydown = e => {
+    if (st.done) return;
+    if (/^[1-9]$/.test(e.key) && +e.key <= max) { e.preventDefault(); set(+e.key); }
+    else if (e.key === 'Backspace' || e.key === 'Delete' || e.key === '0') { e.preventDefault(); set(0); }
+    else if (e.key.startsWith('Arrow') && sel != null) {
+      e.preventDefault();
+      const dx = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0, dy = e.key === 'ArrowDown' ? 1 : e.key === 'ArrowUp' ? -1 : 0;
+      let j = sel; for (let k = 0; k < n; k++) { j += dx + dy * cols; if (j < 0 || j >= n) break; if (ids.includes(j)) { pick(j); break; } }
+    }
+  };
+  if (ids.length) pick(ids[0]);
+  const fillAll = solFn => { for (const i of ids) { pick(i); set(solFn(i)); } };
+  return { grid, pad, msg, fillAll };
+}
+
+// ---------- KenKen ----------
+function kenkenGame(seed, d) {
+  pzStart('KenKen', 'kenken', seed, d, st => {
+    const n = { l: 4, m: 5, s: 6 }[d], r = st.r, sol = latin(r, n), cage = Array(n * n).fill(-1), cages = [];
+    const maxSize = { l: 2, m: 3, s: 4 }[d];
+    for (const start of shuffle(r, [...Array(n * n).keys()])) {
+      if (cage[start] >= 0) continue;
+      const id = cages.length, cells = [start]; cage[start] = id;
+      const size = r() < .12 ? 1 : randInt(r, 2, maxSize);
+      while (cells.length < size) {
+        const opts = [];
+        for (const c of cells) { const x = c % n, y = Math.floor(c / n); for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const nx = x + dx, ny = y + dy, j = ny * n + nx; if (nx >= 0 && nx < n && ny >= 0 && ny < n && cage[j] < 0) opts.push(j); } }
+        if (!opts.length) break; const j = pick(r, opts); cage[j] = id; cells.push(j);
+      }
+      const v = cells.map(c => sol[Math.floor(c / n)][c % n]);
+      let op, target;
+      if (cells.length === 1) { op = ''; target = v[0]; }
+      else if (cells.length === 2) {
+        const [a, b] = [Math.max(...v), Math.min(...v)];
+        if (a % b === 0 && r() < .5) { op = '÷'; target = a / b; } else if (r() < .45) { op = '−'; target = a - b; } else if (r() < .5) { op = '×'; target = a * b; } else { op = '+'; target = a + b; }
+      } else { const prod = v.reduce((x, y) => x * y, 1); if (r() < .4 && prod <= 720) { op = '×'; target = prod; } else { op = '+'; target = v.reduce((x, y) => x + y, 0); } }
+      cages.push({ cells, op, target, head: Math.min(...cells) });
+    }
+    const check = vals => {
+      const bad = new Set(); let full = true;
+      for (let i = 0; i < n * n; i++) if (!vals[i]) full = false;
+      for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) { const v = vals[y * n + x]; if (!v) continue;
+        for (let k = 0; k < n; k++) { if (k !== x && vals[y * n + k] === v) bad.add(y * n + x); if (k !== y && vals[k * n + x] === v) bad.add(y * n + x); } }
+      for (const c of cages) {
+        const v = c.cells.map(i => vals[i]); if (v.some(x => !x)) continue;
+        const a = Math.max(...v), b = Math.min(...v);
+        const ok = c.op === '' ? v[0] === c.target : c.op === '+' ? v.reduce((x, y) => x + y, 0) === c.target : c.op === '×' ? v.reduce((x, y) => x * y, 1) === c.target : c.op === '−' ? a - b === c.target : a % b === 0 && a / b === c.target;
+        if (!ok) c.cells.forEach(i => bad.add(i));
+      }
+      if (full && !bad.size) return true;
+      return { full, bad: [...bad] };
+    };
+    const B = numBoard(st, { n: n * n, cols: n, max: n, label: 'KenKen-Gitter', check, cellAt: i => {
+      const c = cages[cage[i]], x = i % n, y = Math.floor(i / n), same = j => j >= 0 && j < n * n && cage[j] === cage[i];
+      const cls = ['kkc', !(y > 0 && same(i - n)) ? 'kk-t' : '', !(x > 0 && same(i - 1)) ? 'kk-l' : '', !(x < n - 1 && same(i + 1)) ? 'kk-r' : '', !(y < n - 1 && same(i + n)) ? 'kk-b' : ''].filter(Boolean).join(' ');
+      return { kind: 'in', cls, top: c.head === i ? h('small', { class: 'pz-lab' }, c.target + c.op) : null, aria: `Zeile ${y + 1}, Spalte ${x + 1}` + (c.head === i ? `, Käfig ${c.target}${c.op}` : '') };
+    } });
+    if (window.__brxTest) window.__pz = () => B.fillAll(i => sol[Math.floor(i / n)][i % n]);
+    stage.replaceChildren(h('div', { class: 'pz-wrap' }, h('p', { class: 'note' }, `Jede Zahl 1–${n} genau einmal pro Zeile und Spalte. Die Zahl im Käfig ergibt sich mit der Rechenart aus den Feldern.`), B.grid, B.pad, B.msg));
+  });
+}
+
+// ---------- Futoshiki ----------
+function futoshikiGame(seed, d) {
+  pzStart('Futoshiki', 'futoshiki', seed, d, st => {
+    const n = { l: 4, m: 5, s: 6 }[d], r = st.r, sol = latin(r, n);
+    const giveP = { l: .35, m: .2, s: .1 }[d], ineqP = { l: .35, m: .4, s: .45 }[d];
+    const given = new Set(); for (let i = 0; i < n * n; i++) if (r() < giveP) given.add(i);
+    const hIneq = {}, vIneq = {}; // zwischen (x,y) und (x+1,y) bzw. (x,y+1)
+    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+      if (x < n - 1 && r() < ineqP) hIneq[y * n + x] = sol[y][x] < sol[y][x + 1] ? '<' : '>';
+      if (y < n - 1 && r() < ineqP) vIneq[y * n + x] = sol[y][x] < sol[y + 1][x] ? '∧' : '∨';
+    }
+    const G = 2 * n - 1, map = {}; // Index im Anzeigegitter → Zellindex
+    const check = vals => {
+      const bad = new Set(); let full = true; const v = i => vals[map[i]];
+      for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) { const i = y * n + x, a = vals[gi(x, y)]; if (!a) { full = false; continue; }
+        for (let k = 0; k < n; k++) { if (k !== x && vals[gi(k, y)] === a) bad.add(gi(x, y)); if (k !== y && vals[gi(x, k)] === a) bad.add(gi(x, y)); }
+        if (hIneq[i]) { const b = vals[gi(x + 1, y)]; if (b && (hIneq[i] === '<' ? !(a < b) : !(a > b))) { bad.add(gi(x, y)); bad.add(gi(x + 1, y)); } }
+        if (vIneq[i]) { const b = vals[gi(x, y + 1)]; if (b && (vIneq[i] === '∧' ? !(a < b) : !(a > b))) { bad.add(gi(x, y)); bad.add(gi(x, y + 1)); } } }
+      if (full && !bad.size) return true;
+      return { full, bad: [...bad] };
+    };
+    const gi = (x, y) => 2 * y * G + 2 * x;
+    const B = numBoard(st, { n: G * G, cols: G, max: n, label: 'Futoshiki-Gitter', check, cellAt: i => {
+      const gx = i % G, gy = Math.floor(i / G);
+      if (gx % 2 === 0 && gy % 2 === 0) { const x = gx / 2, y = gy / 2; map[i] = y * n + x; return given.has(y * n + x) ? { kind: 'fixed', value: sol[y][x], aria: `Zeile ${y + 1}, Spalte ${x + 1}: ${sol[y][x]}` } : { kind: 'in', aria: `Zeile ${y + 1}, Spalte ${x + 1}` }; }
+      let t = '';
+      if (gx % 2 === 1 && gy % 2 === 0) t = hIneq[(gy / 2) * n + (gx - 1) / 2] || '';
+      if (gx % 2 === 0 && gy % 2 === 1) t = vIneq[((gy - 1) / 2) * n + gx / 2] || '';
+      return { kind: 'deco', node: h('span', { class: 'fu-s' + (gx % 2 && gy % 2 ? ' fu-x' : '') }, t) };
+    } });
+    B.grid.classList.add('fu');
+    if (window.__brxTest) window.__pz = () => B.fillAll(i => { const gx = i % G, gy = Math.floor(i / G); return sol[gy / 2][gx / 2]; });
+    stage.replaceChildren(h('div', { class: 'pz-wrap' }, h('p', { class: 'note' }, `Jede Zahl 1–${n} genau einmal pro Zeile und Spalte. Die Zeichen < > (bzw. ∧ ∨ senkrecht) zeigen, welche Zahl kleiner ist.`), B.grid, B.pad, B.msg));
+  });
+}
+
+// ---------- Kakuro ----------
+function kakuroGame(seed, d) {
+  pzStart('Kakuro', 'kakuro', seed, d, st => {
+    const r = st.r, [W, H] = { l: [4, 4], m: [5, 5], s: [7, 6] }[d], C = W + 1, R = H + 1;
+    let white, val;
+    for (let tries = 0; tries < 300; tries++) {
+      white = Array(C * R).fill(false);
+      for (let y = 1; y < R; y++) for (let x = 1; x < C; x++) white[y * C + x] = r() < { l: .9, m: .82, s: .78 }[d];
+      for (let changed = true; changed;) {
+        changed = false;
+        for (let y = 1; y < R; y++) for (let x = 1; x < C; x++) { const i = y * C + x; if (!white[i]) continue;
+          const hl = (white[i - 1] ? 1 : 0) + (x < C - 1 && white[i + 1] ? 1 : 0), vl = (white[i - C] ? 1 : 0) + (y < R - 1 && white[i + C] ? 1 : 0);
+          if (!hl || !vl) { white[i] = false; changed = true; } }
+      }
+      if (white.filter(Boolean).length < W * H * .55) continue;
+      // Ziffern verteilen (Backtracking)
+      val = Array(C * R).fill(0);
+      const cellsW = white.map((w, i) => w ? i : -1).filter(i => i >= 0);
+      const runOf = (i, step) => { let j = i; while (j - step >= 0 && white[j - step]) j -= step; const out = []; while (j < C * R && white[j]) { out.push(j); j += step; } return out; };
+      const used = (i, v) => runOf(i, 1).some(j => val[j] === v) || runOf(i, C).some(j => val[j] === v);
+      let steps = 0;
+      const fill = k => { if (k === cellsW.length) return true; if (++steps > 20000) return false; const i = cellsW[k]; for (const v of shuffle(r, [1, 2, 3, 4, 5, 6, 7, 8, 9])) { if (!used(i, v)) { val[i] = v; if (fill(k + 1)) return true; val[i] = 0; } } return false; };
+      if (fill(0)) break; white = null;
+    }
+    const clue = {};
+    for (let y = 0; y < R; y++) for (let x = 0; x < C; x++) { const i = y * C + x; if (white[i]) continue;
+      let a = 0, dn = 0;
+      if (x < C - 1 && white[i + 1]) { for (let j = i + 1; j < (y + 1) * C && white[j]; j++) a += val[j]; }
+      if (y < R - 1 && white[i + C]) { for (let j = i + C; j < C * R && white[j]; j += C) dn += val[j]; }
+      if (a || dn) clue[i] = { a, d: dn }; }
+    const runs = [];
+    for (const [i, c] of Object.entries(clue)) {
+      const k = +i;
+      if (c.a) { const cs = []; for (let j = k + 1; j < (Math.floor(k / C) + 1) * C && white[j]; j++) cs.push(j); runs.push({ sum: c.a, cells: cs }); }
+      if (c.d) { const cs = []; for (let j = k + C; j < C * R && white[j]; j += C) cs.push(j); runs.push({ sum: c.d, cells: cs }); }
+    }
+    const check = vals => {
+      const bad = new Set(); let full = true;
+      for (const run of runs) {
+        const v = run.cells.map(i => vals[i]);
+        if (v.some(x => !x)) { full = false; const f = v.filter(Boolean); if (new Set(f).size !== f.length) run.cells.forEach(i => vals[i] && bad.add(i)); continue; }
+        if (new Set(v).size !== v.length || v.reduce((a, b) => a + b, 0) !== run.sum) run.cells.forEach(i => bad.add(i));
+      }
+      if (full && !bad.size) return true;
+      return { full, bad: [...bad] };
+    };
+    const B = numBoard(st, { n: C * R, cols: C, max: 9, label: 'Kakuro-Gitter', check, cellAt: i => {
+      if (white[i]) return { kind: 'in', aria: `Zeile ${Math.floor(i / C)}, Spalte ${i % C}` };
+      const c = clue[i];
+      return { kind: 'deco', node: h('span', { class: 'ka-b' + (c ? ' clue' : '') }, c && c.d ? h('small', { class: 'ka-d', 'aria-label': 'Summe nach unten ' + c.d }, c.d) : null, c && c.a ? h('small', { class: 'ka-a', 'aria-label': 'Summe nach rechts ' + c.a }, c.a) : null) };
+    } });
+    B.grid.classList.add('ka');
+    if (window.__brxTest) window.__pz = () => B.fillAll(i => val[i]);
+    stage.replaceChildren(h('div', { class: 'pz-wrap' }, h('p', { class: 'note' }, 'Trage 1–9 ein. Jede Zahlenreihe ergibt die Summe im schwarzen Feld davor (rechts oben → waagrecht, links unten → senkrecht), ohne Ziffer doppelt.'), B.grid, B.pad, B.msg));
+  });
+}
+
+// ---------- Hashi (Brücken bauen) ----------
+function hashiGame(seed, d) {
+  pzStart('Hashi', 'hashi', seed, d, st => {
+    const r = st.r, N = { l: 7, m: 9, s: 11 }[d], target = { l: 8, m: 14, s: 22 }[d];
+    let isl, bridges, occ;
+    for (let attempt = 0; attempt < 50; attempt++) {
+      isl = []; bridges = new Map(); occ = Array(N * N).fill(null); // null | 'I' | 'h' | 'v'
+      const add = (x, y) => { isl.push({ x, y }); occ[y * N + x] = 'I'; return isl.length - 1; };
+      add(randInt(r, 0, N - 1), randInt(r, 0, N - 1));
+      for (let k = 0; k < 600 && isl.length < target; k++) {
+        const a = randInt(r, 0, isl.length - 1), [dx, dy] = pick(r, [[1, 0], [-1, 0], [0, 1], [0, -1]]), dist = randInt(r, 2, Math.max(2, Math.floor(N / 2)));
+        const tx = isl[a].x + dx * dist, ty = isl[a].y + dy * dist;
+        if (tx < 0 || ty < 0 || tx >= N || ty >= N || occ[ty * N + tx]) continue;
+        let clear = true; for (let s = 1; s < dist; s++) if (occ[(isl[a].y + dy * s) * N + isl[a].x + dx * s]) clear = false;
+        if (!clear) continue;
+        if ([[1, 0], [-1, 0], [0, 1], [0, -1]].some(([ex, ey]) => { const nx = tx + ex, ny = ty + ey; return nx >= 0 && ny >= 0 && nx < N && ny < N && occ[ny * N + nx] === 'I'; })) continue;
+        const b = add(tx, ty);
+        for (let s = 1; s < dist; s++) occ[(isl[a].y + dy * s) * N + isl[a].x + dx * s] = dx ? 'h' : 'v';
+        bridges.set(a < b ? a + '-' + b : b + '-' + a, r() < .35 ? 2 : 1);
+      }
+      if (isl.length >= target * .8) break;
+    }
+    const need = isl.map(() => 0); for (const [k, v] of bridges) { const [a, b] = k.split('-').map(Number); need[a] += v; need[b] += v; }
+    const mine = new Map(); let sel = -1;
+    const between = (a, b) => { const A = isl[a], Bb = isl[b]; if (A.x !== Bb.x && A.y !== Bb.y) return null; const dx = Math.sign(Bb.x - A.x), dy = Math.sign(Bb.y - A.y), cells = []; let x = A.x + dx, y = A.y + dy; while (x !== Bb.x || y !== Bb.y) { cells.push([x, y]); x += dx; y += dy; } return { cells, hor: !!dx }; };
+    const blocked = (a, b) => {
+      const bt = between(a, b); if (!bt) return true;
+      for (const [x, y] of bt.cells) if (isl.some(i => i.x === x && i.y === y)) return true;
+      for (const [k, v] of mine) { if (!v) continue; const [p, q] = k.split('-').map(Number); if ((p === a && q === b) || (p === b && q === a)) continue; const o = between(p, q); if (!o || o.hor === bt.hor) continue;
+        if (bt.cells.some(([x, y]) => o.cells.some(([u, w]) => u === x && w === y))) return true; }
+      return false;
+    };
+    const deg = i => { let s = 0; for (const [k, v] of mine) { const [a, b] = k.split('-').map(Number); if (a === i || b === i) s += v; } return s; };
+    const S = 40, svgNS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('viewBox', `0 0 ${N * S} ${N * S}`); svg.setAttribute('class', 'hs-svg'); svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', 'Hashi-Spielfeld');
+    const msg = h('p', { class: 'pz-msg', 'aria-live': 'polite' });
+    const draw = () => {
+      svg.replaceChildren();
+      const el = (tag, attrs, txt) => { const e = document.createElementNS(svgNS, tag); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); if (txt != null) e.textContent = txt; svg.append(e); return e; };
+      for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) el('circle', { cx: i * S + S / 2, cy: j * S + S / 2, r: 1.5, class: 'hs-dot' });
+      for (const [k, v] of mine) { if (!v) continue; const [a, b] = k.split('-').map(Number), A = isl[a], Bb = isl[b], hor = A.y === Bb.y;
+        const off = v === 2 ? [-4, 4] : [0];
+        for (const o of off) el('line', { x1: A.x * S + S / 2 + (hor ? 0 : o), y1: A.y * S + S / 2 + (hor ? o : 0), x2: Bb.x * S + S / 2 + (hor ? 0 : o), y2: Bb.y * S + S / 2 + (hor ? o : 0), class: 'hs-br' }); }
+      isl.forEach((p, i) => { const dg = deg(i);
+        const g = el('g', { class: 'hs-isl' + (i === sel ? ' sel' : '') + (dg === need[i] ? ' done' : dg > need[i] ? ' over' : ''), tabindex: '0', role: 'button', 'aria-label': `Insel ${need[i]}, ${dg} Brücken` });
+        const c = document.createElementNS(svgNS, 'circle'); c.setAttribute('cx', p.x * S + S / 2); c.setAttribute('cy', p.y * S + S / 2); c.setAttribute('r', S * .4); g.append(c);
+        const t = document.createElementNS(svgNS, 'text'); t.setAttribute('x', p.x * S + S / 2); t.setAttribute('y', p.y * S + S / 2 + 6); t.setAttribute('text-anchor', 'middle'); t.textContent = need[i]; g.append(t);
+        g.addEventListener('click', () => tap(i)); g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tap(i); } });
+      });
+    };
+    const solved = () => {
+      if (!isl.every((_, i) => deg(i) === need[i])) return false;
+      const seen = new Set([0]), q = [0];
+      while (q.length) { const a = q.pop(); for (const [k, v] of mine) { if (!v) continue; const [p, r2] = k.split('-').map(Number); const o = p === a ? r2 : r2 === a ? p : -1; if (o >= 0 && !seen.has(o)) { seen.add(o); q.push(o); } } }
+      return seen.size === isl.length;
+    };
+    const tap = i => {
+      if (st.done) return;
+      if (sel < 0 || sel === i) { sel = sel === i ? -1 : i; draw(); return; }
+      const a = Math.min(sel, i), b = Math.max(sel, i), k = a + '-' + b;
+      if (blocked(a, b)) { msg.textContent = 'Diese Inseln kann man nicht verbinden (nicht in einer Linie oder es kreuzt eine Brücke).'; sel = i; draw(); return; }
+      mine.set(k, ((mine.get(k) || 0) + 1) % 3); st.moves++; st.setHud(st.moves + ' Züge'); msg.textContent = ''; sel = -1; draw();
+      if (solved()) { msg.textContent = 'Alle Inseln verbunden! 🎉'; st.win(st.moves); }
+      else if (isl.every((_, j) => deg(j) === need[j])) msg.textContent = 'Alle Zahlen stimmen – aber noch nicht alle Inseln hängen zusammen.';
+    };
+    st.setHud('0 Züge');
+    draw();
+    if (window.__brxTest) window.__pz = () => { for (const [k, v] of bridges) { const [a, b] = k.split('-').map(Number); for (let t = 0; t < v; t++) { tap(a); tap(b); } } };
+    stage.replaceChildren(h('div', { class: 'pz-wrap' }, h('p', { class: 'note' }, 'Tippe zwei Inseln an, um eine Brücke zu bauen (nochmal = doppelt, nochmal = weg). Jede Insel braucht so viele Brücken wie ihre Zahl, Brücken dürfen sich nicht kreuzen, und alle Inseln müssen zusammenhängen.'), svg, msg));
+  });
+}
+
+// ---------- Flood-It ----------
+function floodGame(seed, d) {
+  pzStart('Flood-It', 'flood', seed, d, st => {
+    const r = st.r, N = { l: 8, m: 12, s: 14 }[d], K = { l: 4, m: 5, s: 6 }[d];
+    const COL = ['#E5484D', '#3E63DD', '#E9A23B', '#30A46C', '#8E4EC6', '#12A594'], NAMES = ['Rot', 'Blau', 'Gelb', 'Grün', 'Lila', 'Türkis'];
+    const start = Array.from({ length: N * N }, () => randInt(r, 0, K - 1));
+    const region = g => { const c = g[0], seen = new Set([0]), q = [0]; while (q.length) { const i = q.pop(), x = i % N, y = Math.floor(i / N); for (const j of [x > 0 ? i - 1 : -1, x < N - 1 ? i + 1 : -1, y > 0 ? i - N : -1, y < N - 1 ? i + N : -1]) if (j >= 0 && !seen.has(j) && g[j] === c) { seen.add(j); q.push(j); } } return seen; };
+    const flood = (g, c) => { const reg = region(g); const n = g.slice(); for (const i of reg) n[i] = c; return n; };
+    // Richtwert per gieriger Strategie
+    let par = 0; { let g = start.slice(); while (region(g).size < N * N && par < 80) { let best = -1, bc = 0; for (let c = 0; c < K; c++) { if (c === g[0]) continue; const s = region(flood(g, c)).size; if (s > best) { best = s; bc = c; } } g = flood(g, bc); par++; } }
+    let g = start.slice();
+    const grid = h('div', { class: 'fl-grid', style: `--n:${N}`, 'aria-hidden': 'true' }), cells = g.map(() => h('i'));
+    grid.append(...cells);
+    const msg = h('p', { class: 'pz-msg', 'aria-live': 'polite' });
+    const paint = () => { cells.forEach((c, i) => { c.style.background = COL[g[i]]; }); const reg = region(g).size; msg.textContent = `${st.moves} Züge · Richtwert ${par} · ${Math.round(100 * reg / (N * N))} % geflutet`; };
+    const play = c => { if (st.done || c === g[0]) return; g = flood(g, c); st.moves++; st.setHud(st.moves + ' Züge'); paint(); try { sfx('click'); } catch (e) {} if (region(g).size === N * N) { msg.textContent = `Geschafft in ${st.moves} Zügen (Richtwert ${par})! 🎉`; st.win(st.moves, `Richtwert ${par} Züge`); } };
+    const btns = h('div', { class: 'fl-btns' }, ...Array.from({ length: K }, (_, c) => h('button', { class: 'fl-b', type: 'button', style: 'background:' + COL[c], 'aria-label': `${NAMES[c]} (Taste ${c + 1})`, title: NAMES[c], onclick: () => play(c) }, String(c + 1))));
+    document.onkeydown = e => { const n = parseInt(e.key, 10); if (n >= 1 && n <= K) { e.preventDefault(); play(n - 1); } };
+    st.setHud('0 Züge'); paint();
+    if (window.__brxTest) window.__pz = () => { for (let k = 0; k < 200 && !st.done; k++) { let best = -1, bc = 0; for (let c = 0; c < K; c++) { if (c === g[0]) continue; const s2 = region(flood(g, c)).size; if (s2 > best) { best = s2; bc = c; } } play(bc); } };
+    stage.replaceChildren(h('div', { class: 'pz-wrap' }, h('p', { class: 'note' }, 'Färbe das Feld von links oben aus ein – wähle immer die nächste Farbe. Ziel: das ganze Feld in einer Farbe, mit möglichst wenigen Zügen.'), grid, btns, msg));
+  });
+}
+
+// ---------- Code knacken (Zahlen-Mastermind) ----------
+function codeknackGame(seed, d) {
+  pzStart('Code knacken', 'codeknack', seed, d, st => {
+    const r = st.r, L = { l: 3, m: 4, s: 5 }[d], MAX = 12, code = shuffle(r, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).slice(0, L);
+    let cur = [];
+    const list = h('ol', { class: 'ck-list', 'aria-live': 'polite' }), slot = h('div', { class: 'ck-slot', 'aria-label': 'Aktueller Versuch' }), msg = h('p', { class: 'pz-msg' });
+    const showCur = () => slot.replaceChildren(...Array.from({ length: L }, (_, i) => h('span', { class: 'ck-d' + (cur[i] != null ? ' on' : '') }, cur[i] != null ? String(cur[i]) : '·')));
+    const submit = () => {
+      if (cur.length !== L || st.done) return;
+      st.moves++; st.setHud(`${st.moves} / ${MAX} Versuche`);
+      const exact = cur.filter((v, i) => code[i] === v).length, near = cur.filter((v, i) => code[i] !== v && code.includes(v)).length;
+      list.append(h('li', {}, h('span', { class: 'mono ck-g' }, cur.join(' ')), h('span', { class: 'ck-fb', 'aria-label': `${exact} richtig an richtiger Stelle, ${near} richtig an falscher Stelle` }, '●'.repeat(exact) + '○'.repeat(near) || '–')));
+      cur = []; showCur();
+      if (exact === L) { msg.textContent = `Geknackt in ${st.moves} Versuchen! 🎉`; st.win(st.moves); }
+      else if (st.moves >= MAX) { st.done = true; msg.textContent = 'Keine Versuche mehr. Der Code war ' + code.join(' ') + '.'; setTimeout(() => { if (!st.run.dead) finish(st.key, { s: 99, t: Math.round(st.run.elapsed()), extra: 'nicht geknackt' }, st.seed); }, 1500); }
+    };
+    const press = v => { if (st.done) return; if (cur.includes(v)) { msg.textContent = 'Jede Ziffer kommt höchstens einmal vor.'; return; } if (cur.length < L) { cur.push(v); msg.textContent = ''; showCur(); } };
+    const pad = h('div', { class: 'pz-pad' }, ...[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map(v => h('button', { class: 'btn', type: 'button', onclick: () => press(v) }, String(v))),
+      h('button', { class: 'btn ghost', type: 'button', 'aria-label': 'Löschen', onclick: () => { cur.pop(); showCur(); } }, '⌫'), h('button', { class: 'btn main', type: 'button', onclick: submit }, 'Prüfen'));
+    document.onkeydown = e => { if (/^[0-9]$/.test(e.key)) { e.preventDefault(); press(+e.key); } else if (e.key === 'Backspace') { cur.pop(); showCur(); } else if (e.key === 'Enter') { e.preventDefault(); submit(); } };
+    st.setHud(`0 / ${MAX} Versuche`); showCur();
+    if (window.__brxTest) window.__pz = () => { press((code[0] + 1) % 10); for (let i = 1; i < L; i++) press(code[i] === (code[0] + 1) % 10 ? code[0] : code[i]); submit(); code.forEach(press); submit(); };
+    stage.replaceChildren(h('div', { class: 'pz-wrap' }, h('p', { class: 'note' }, `Errate den ${L}-stelligen Code (jede Ziffer höchstens einmal). ● = richtige Ziffer an richtiger Stelle, ○ = richtige Ziffer an falscher Stelle.`), slot, pad, list, msg));
+  });
+}
+
+// ---------- Logikgitter ----------
+const LG_CATS = {
+  Tier: ['Hund', 'Katze', 'Hase', 'Pferd', 'Papagei'], Farbe: ['Rot', 'Blau', 'Grün', 'Gelb', 'Lila'], Hobby: ['Fußball', 'Gitarre', 'Schach', 'Malen', 'Tanzen'],
+  Getränk: ['Tee', 'Kakao', 'Saft', 'Wasser', 'Limo'],
+};
+const LG_NAMES = ['Anna', 'Ben', 'Clara', 'David', 'Emil'];
+function perms(n) { const out = []; const rec = (a, used) => { if (a.length === n) { out.push(a.slice()); return; } for (let i = 0; i < n; i++) if (!used[i]) { used[i] = true; a.push(i); rec(a, used); a.pop(); used[i] = false; } }; rec([], []); return out; }
+function logicGame(seed, d) {
+  pzStart('Logikgitter', 'logic', seed, d, st => {
+    const r = st.r, n = { l: 3, m: 4, s: 5 }[d];
+    const [c1, c2] = shuffle(r, Object.keys(LG_CATS)).slice(0, 2);
+    const names = LG_NAMES.slice(0, n), A = shuffle(r, LG_CATS[c1]).slice(0, n), Bv = shuffle(r, LG_CATS[c2]).slice(0, n);
+    const P = perms(n), sol = [pick(r, P), pick(r, P)];
+    const TIER = { Hund: ['den Hund', 'keinen Hund'], Katze: ['die Katze', 'keine Katze'], Hase: ['den Hasen', 'keinen Hasen'], Pferd: ['das Pferd', 'kein Pferd'], Papagei: ['den Papagei', 'keinen Papagei'] };
+    const HOB = { Fußball: ['spielt Fußball', 'spielt nicht Fußball', 'Fußball spielt'], Gitarre: ['spielt Gitarre', 'spielt nicht Gitarre', 'Gitarre spielt'], Schach: ['spielt Schach', 'spielt nicht Schach', 'Schach spielt'], Malen: ['malt gern', 'malt nicht gern', 'gern malt'], Tanzen: ['tanzt gern', 'tanzt nicht gern', 'gern tanzt'] };
+    // Satzteile: pred = „… hat den Hund“ (Hauptsatz), rel = „… den Hund hat“ (Nebensatz)
+    const pred = (cat, v, neg) => cat === 'Tier' ? 'hat ' + TIER[v][neg ? 1 : 0] : cat === 'Farbe' ? `mag ${v} ${neg ? 'nicht ' : ''}am liebsten` : cat === 'Hobby' ? HOB[v][neg ? 1 : 0] : `trinkt ${neg ? 'nicht ' : ''}am liebsten ${v}`;
+    const rel = (cat, v) => cat === 'Tier' ? TIER[v][0] + ' hat' : cat === 'Farbe' ? `${v} am liebsten mag` : cat === 'Hobby' ? HOB[v][2] : `am liebsten ${v} trinkt`;
+    const holds = (cl, s1, s2) => {
+      if (cl.t === 'n') { const has = (cl.k === 0 ? s1 : s2)[cl.who] === cl.v; return cl.neg ? !has : has; }
+      const who = s1.indexOf(cl.a); const has = s2[who] === cl.b; return cl.neg ? !has : has;
+    };
+    // alle möglichen Lösungen; jeder Hinweis muss mindestens eine ausschließen
+    let cand = []; for (const s1 of P) for (const s2 of P) cand.push([s1, s2]);
+    const clues = [];
+    for (let k = 0; k < 600 && cand.length > 1; k++) {
+      let cl;
+      if (r() < .55) { const who = randInt(r, 0, n - 1), kk = randInt(r, 0, 1), truth = sol[kk][who], neg = r() < .5; cl = { t: 'n', who, k: kk, v: neg ? pick(r, [...Array(n).keys()].filter(x => x !== truth)) : truth, neg }; }
+      else { const a = randInt(r, 0, n - 1), who = sol[0].indexOf(a), truth = sol[1][who], neg = r() < .45; cl = { t: 'x', a, b: neg ? pick(r, [...Array(n).keys()].filter(x => x !== truth)) : truth, neg }; }
+      const next = cand.filter(([s1, s2]) => holds(cl, s1, s2));
+      if (next.length < cand.length) { cand = next; clues.push(cl); }
+    }
+    const all = []; for (const s1 of P) for (const s2 of P) all.push([s1, s2]);
+    const unique = cls => all.filter(([s1, s2]) => cls.every(cl => holds(cl, s1, s2))).length === 1;
+    // überflüssige Hinweise entfernen (macht es knackiger)
+    for (let i = clues.length - 1; i >= 0 && d !== 'l'; i--) { const t = clues.filter((_, j) => j !== i); if (unique(t)) clues.splice(i, 1); }
+    const text = cl => cl.t === 'n' ? `${names[cl.who]} ${pred(cl.k ? c2 : c1, (cl.k ? Bv : A)[cl.v], cl.neg)}.` : `Wer ${rel(c1, A[cl.a])}, ${pred(c2, Bv[cl.b], cl.neg)}.`;
+    const sels = names.map((nm, i) => [h('select', { class: 'field', 'aria-label': `${c1} von ${nm}` }, h('option', { value: '' }, '–'), A.map((v, j) => h('option', { value: j }, v))),
+      h('select', { class: 'field', 'aria-label': `${c2} von ${nm}` }, h('option', { value: '' }, '–'), Bv.map((v, j) => h('option', { value: j }, v)))]);
+    const msg = h('p', { class: 'pz-msg', 'aria-live': 'polite' });
+    const checkIt = () => {
+      if (st.done) return;
+      const a = sels.map(s => s[0].value), b = sels.map(s => s[1].value);
+      if (a.includes('') || b.includes('')) { msg.textContent = 'Bitte alles auswählen.'; return; }
+      const wrong = names.map((_, i) => +a[i] !== sol[0][i] || +b[i] !== sol[1][i]);
+      if (!wrong.some(Boolean)) { msg.textContent = 'Alles richtig kombiniert! 🎉'; st.win(st.errors); return; }
+      st.errors++; st.setHud(st.errors + ' Fehler'); try { sfx('bad'); } catch (e) {}
+      if (d === 'l') { rows.forEach((row, i) => row.classList.toggle('bad', wrong[i])); msg.textContent = 'Rot markierte Zeilen stimmen noch nicht.'; }
+      else msg.textContent = `${wrong.filter(Boolean).length} ${wrong.filter(Boolean).length === 1 ? 'Zeile stimmt' : 'Zeilen stimmen'} noch nicht.`;
+    };
+    const rows = names.map((nm, i) => h('tr', {}, h('th', {}, nm), h('td', {}, sels[i][0]), h('td', {}, sels[i][1])));
+    st.setHud('0 Fehler');
+    if (window.__brxTest) window.__pz = () => { sels.forEach((x, i) => { x[0].value = sol[0][i]; x[1].value = sol[1][i]; }); checkIt(); window.__lgClues = clues.length; };
+    stage.replaceChildren(h('div', { class: 'pz-wrap lg' }, h('p', { class: 'note' }, `Finde heraus, was zu wem gehört (${c1} und ${c2}). Jeder Wert kommt genau einmal vor.`),
+      h('ol', { class: 'lg-clues' }, clues.map(cl => h('li', {}, text(cl)))),
+      h('table', { class: 'lg-tab' }, h('thead', {}, h('tr', {}, h('th', {}, 'Name'), h('th', {}, c1), h('th', {}, c2))), h('tbody', {}, ...rows)),
+      h('div', { class: 'actions' }, h('button', { class: 'btn main', type: 'button', onclick: checkIt }, 'Prüfen')), msg));
+  });
+}
+
+// ---------- Registrierung ----------
+{
+  Object.assign(KEYS, {
+    kakuro: { label: 'Kakuro', unit: 'Fehler', low: true }, kenken: { label: 'KenKen', unit: 'Fehler', low: true }, futoshiki: { label: 'Futoshiki', unit: 'Fehler', low: true },
+    hashi: { label: 'Hashi', unit: 'Züge', low: true }, flood: { label: 'Flood-It', unit: 'Züge', lowS: true }, codeknack: { label: 'Code knacken', unit: 'Versuche', lowS: true },
+    logic: { label: 'Logikgitter', unit: 'Fehler', low: true },
+  });
+  Object.assign(MODES, { kakuro: kakuroGame, kenken: kenkenGame, futoshiki: futoshikiGame, hashi: hashiGame, flood: floodGame, codeknack: codeknackGame, logic: logicGame });
+  GAMES.push(
+    { t: 'Kakuro', p: 'Kreuzworträtsel mit Zahlen: Jede Reihe ergibt ihre Summe, keine Ziffer doppelt.', art: () => h('span', { class: 'mono' }, '⁹⁄₁₆'), modes: [['kakuro', 'Rätsel']] },
+    { t: 'KenKen', p: 'Lateinisches Quadrat mit Rechen-Käfigen: +, −, ×, ÷.', art: () => h('span', { class: 'mono' }, '6×'), modes: [['kenken', 'Rätsel']] },
+    { t: 'Futoshiki', p: 'Zahlen-Gitter mit Kleiner-/Größer-Zeichen zwischen den Feldern.', art: () => h('span', { class: 'mono' }, '3<4'), modes: [['futoshiki', 'Rätsel']] },
+    { t: 'Hashi', p: 'Verbinde alle Inseln mit Brücken – genau so viele, wie die Zahl sagt.', art: emo('🌉'), modes: [['hashi', 'Rätsel']] },
+    { t: 'Flood-It', p: 'Flute das Feld mit Farbe – in möglichst wenigen Zügen.', art: emo('🌊'), modes: [['flood', 'Spielen']] },
+    { t: 'Code knacken', p: 'Errate den Zahlencode mit Hinweisen: richtige Ziffer, richtige Stelle?', art: emo('🔐'), modes: [['codeknack', 'Spielen']] },
+    { t: 'Logikgitter', p: 'Wer hat welches Tier, wer mag welche Farbe? Aus Hinweisen kombinieren.', art: emo('🧩'), modes: [['logic', 'Rätsel']] },
+    { t: 'Schiebepuzzle', p: 'Schiebe die Plättchen in die richtige Reihenfolge.', art: () => h('span', { class: 'mono' }, '12', h('br'), '3_'), modes: [['slide', 'Spielen']] },
+    { t: 'Lights Out', p: 'Jeder Klick schaltet ein Licht und seine Nachbarn um. Mach alle aus!', art: emo('💡'), modes: [['lights', 'Spielen']] },
+  );
+  OR_CATS['Logik & Rätsel'].push('Kakuro', 'KenKen', 'Futoshiki', 'Hashi', 'Flood-It', 'Code knacken', 'Logikgitter', 'Schiebepuzzle', 'Lights Out');
+  if (CATS['Wörter & Rätsel']) CATS['Wörter & Rätsel'].push('Kakuro', 'KenKen', 'Futoshiki', 'Hashi', 'Flood-It', 'Code knacken', 'Logikgitter');
+  renderCards();
+}
+/*/BRX:spiele_b*/
+/*BRX:spiele_c*/
+// ==================================================================
+//  Neue Spiele 10c: Buchstabensalat, Wortkette, Wortleiter, Redewendungen,
+//  Englisch-Sprint (unregelmäßige Verben), Simon sagt, Schulte-Tabelle,
+//  Stroop-Test, Kim-Spiel, Rhythmus-Tippen
+// ==================================================================
+const W4 = ('ALLE AUCH BACH BAHN BALD BALL BAND BASE BAUM BEIN BERG BETT BIER BILD BLAU BOCK BOOT BOTE BUCH BUND BURG DACH DARM DEIN DICH DIEB DING DOCH DORN DORT DOSE DUFT FACH FAHL FALL FALZ FANG FAST FAUL FEIN FELD FELL FERN FEST FETT FILZ FLOH FLUG FORT FRAU FROH FUND GANG GANS GANZ GAST GAUL GELD GERN GIER GIFT GLAS GOLD GOTT GRAB GRAD GRAS GRAU HAAR HAFT HAHN HALL HALS HALT HAND HANG HASE HAST HAUS HEFT HEIL HELD HELL HELM HEMD HERD HERZ HIEB HIER HOHL HOHN HOLD HOLM HOLZ HORN HORT HOSE HUHN HUND JUNG KAHL KAHN KALT KAUM KEIL KEIN KERN KIEL KIND KLEE KLUG KOCH KOHL KOPF KORN KOST KULT KUSS LACK LAGE LAND LANG LAST LAUS LIEB LIST LOCH LOHN LOSE LUFT LUPE LUST MAHL MALZ MARK MAST MATT MAUL MAUS MEHL MEHR MEIN MICH MILD MILZ MINE MIST MOHN MOLE MOND MOOS MOST MUND MUSS NACH NASE NEST NETT NETZ NOCH NOTE NULL PAAR PACK PARK PEIN PELZ PEST PFAD PILZ POLE PORT POST PUTZ RAND RANG RAST RAUM RAUS REIN REIS REST RIND RING RITZ ROCK ROHR ROSE ROST RUHE RUHM RUND SAAL SACK SAFT SAGE SALZ SAND SANG SATT SATZ SAUM SEHR SEIL SEIN SICH SIEB SIEG SITZ SOHN SOLE STAB STAR TAGE TANZ TEER TEIG TEIL TEST TIER TOLL TOPF TUBA TUBE TUCH TURM VASE VIEL VIER VOLL WACH WAHL WAHN WALD WALL WAND WARE WARM WEIL WEIN WEIT WELT WERK WERT WEST WILD WIND WITZ WOHL WORT WURM ZAHL ZAHN ZEIT ZELT ZIEL ZIER ZOLL ZONE ZOPF ZORN').split(' ');
+const W4S = new Set(W4);
+const gcFmt = w => w.charAt(0) + w.slice(1).toLowerCase();
+function gcStart(title, base, seed, d) { const run = openPlay(title, d); return { run, key: fullKey(base, d), r: rng(seed), seed }; }
+
+// ---------- Buchstabensalat ----------
+function anagramGame(seed, d) {
+  const G = gcStart('Buchstabensalat', 'anagram', seed, d), { run, r } = G;
+  const pool = d === 'l' ? WORDS.slice() : d === 'm' ? C.map(c => c.n).filter(n => /^[A-Za-zÄÖÜäöü]{5,9}$/.test(n)).map(n => n.toUpperCase())
+    : (Array.isArray(HANG_ANIMALS) ? HANG_ANIMALS : String(HANG_ANIMALS).split(' ')).concat(HANG_WORDS.map(x => Array.isArray(x) ? x[0] : x)).filter(n => /^[A-Za-zÄÖÜäöüß]{6,12}$/.test(n)).map(n => n.toUpperCase());
+  let score = 0, word = '', built = [], tiles = [], ended = false;
+  const box = h('div', { class: 'an-tiles' }), out = h('div', { class: 'an-out', 'aria-live': 'polite' }), msg = h('p', { class: 'pz-msg' });
+  const end = () => { if (ended) return; ended = true; stopRun(); finish(G.key, { s: score }, seed); };
+  const next = () => {
+    word = pick(r, pool); let mix; do { mix = shuffle(r, word.split('')); } while (mix.join('') === word && word.length > 1);
+    built = []; tiles = mix.map((ch, i) => h('button', { class: 'an-t', type: 'button', 'aria-label': 'Buchstabe ' + ch, onclick: () => tap(i) }, ch));
+    box.replaceChildren(...tiles); draw(); msg.textContent = d === 'm' ? 'Tipp: ein Land' : d === 's' ? 'Tipp: Tier oder Fremdwort' : '';
+  };
+  const draw = () => out.replaceChildren(...word.split('').map((_, i) => h('span', { class: 'an-s' + (built[i] != null ? ' on' : '') }, built[i] != null ? tiles[built[i]].textContent : '')));
+  const tap = i => {
+    if (ended || built.includes(i)) return;
+    built.push(i); tiles[i].disabled = true; draw();
+    if (built.length === word.length) {
+      const guess = built.map(j => tiles[j].textContent).join('');
+      if (guess === word) { score++; hud(`${score} Wörter`, null); try { sfx('ok'); } catch (e) {} msg.textContent = '✓ ' + gcFmt(word); setTimeout(() => !ended && next(), 450); }
+      else { try { sfx('bad'); } catch (e) {} out.classList.add('shake'); setTimeout(() => { out.classList.remove('shake'); back(true); }, 400); }
+    }
+  };
+  const back = all => { const n = all ? built.length : 1; for (let k = 0; k < n && built.length; k++) tiles[built.pop()].disabled = false; draw(); };
+  document.onkeydown = e => {
+    if (e.key === 'Backspace') { e.preventDefault(); back(false); return; }
+    const ch = e.key.toUpperCase(); const i = tiles.findIndex((t, j) => t.textContent === ch && !built.includes(j)); if (i >= 0) { e.preventDefault(); tap(i); }
+  };
+  hud('0 Wörter', null); countdown(run, d === 's' ? 120 : 90, end);
+  stage.replaceChildren(h('div', { class: 'pz-wrap' }, h('p', { class: 'note' }, 'Bring die Buchstaben in die richtige Reihenfolge (tippen oder tippen auf der Tastatur).'), out, box,
+    h('div', { class: 'pz-pad' }, h('button', { class: 'btn ghost', type: 'button', onclick: () => back(false) }, '⌫ Zurück'), h('button', { class: 'btn ghost', type: 'button', onclick: () => { msg.textContent = 'Es war: ' + gcFmt(word); setTimeout(() => !ended && next(), 900); } }, 'Überspringen')), msg));
+  next();
+}
+
+// ---------- Wortkette (Länder bzw. Hauptstädte) ----------
+function chainGame(seed, d) {
+  const G = gcStart('Wortkette', 'chain', seed, d), { run, r } = G;
+  const caps = d === 's';
+  const norm = t => String(t || '').toLowerCase().replace(/ä/g, 'a').replace(/ö/g, 'o').replace(/ü/g, 'u').replace(/ß/g, 'ss').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]/g, '');
+  const items = C.map(c => ({ n: caps ? c.k : c.n, alts: caps ? [c.k] : [c.n, ...(c.alt || [])] })).filter(x => x.n);
+  const lookup = new Map(); items.forEach((it, i) => it.alts.forEach(a => { const k = norm(a); if (k && !lookup.has(k)) lookup.set(k, i); }));
+  const used = new Set(); let cur = null, score = 0, ended = false;
+  const lastL = s => norm(s).slice(-1), firstL = s => norm(s).charAt(0);
+  const left = L => items.filter((it, i) => !used.has(i) && firstL(it.n) === L).length;
+  const chainEl = h('div', { class: 'mp-route' }), inp = h('input', { class: 'field', type: 'text', autocomplete: 'off', 'aria-label': caps ? 'Hauptstadt' : 'Land' }), msg = h('p', { class: 'pz-msg', 'aria-live': 'polite' }), hint = h('p', { class: 'note' });
+  const end = () => { if (ended) return; ended = true; stopRun(); finish(G.key, { s: score }, seed); };
+  const setCur = i => {
+    cur = i; used.add(i);
+    chainEl.append(h('span', { class: 'mp-cty cur' }, items[i].n)); [...chainEl.children].slice(0, -1).forEach(c => c.classList.remove('cur'));
+    while (chainEl.children.length > 6) chainEl.firstChild.remove();
+    const L = lastL(items[i].n).toUpperCase();
+    inp.placeholder = `${caps ? 'Hauptstadt' : 'Land'} mit ${L} …`;
+    hint.textContent = d === 'l' ? `Noch ${left(L.toLowerCase())} passende ${caps ? 'Städte' : 'Länder'} übrig.` : '';
+    if (!left(L.toLowerCase())) { msg.textContent = `Mit ${L} gibt es nichts mehr – neuer Start!`; const free = items.map((_, j) => j).filter(j => !used.has(j)); if (free.length) setTimeout(() => !ended && setCur(pick(r, free)), 700); else end(); }
+  };
+  const submit = () => {
+    if (ended) return; const k = norm(inp.value); if (!k) return;
+    const i = lookup.get(k);
+    if (i == null) { msg.textContent = `„${inp.value}“ kenne ich nicht als ${caps ? 'Hauptstadt' : 'Land'}.`; try { sfx('bad'); } catch (e) {} return; }
+    if (used.has(i)) { msg.textContent = `${items[i].n} war schon dran.`; try { sfx('bad'); } catch (e) {} return; }
+    if (firstL(items[i].n) !== lastL(items[cur].n)) { msg.textContent = `${items[i].n} beginnt nicht mit ${lastL(items[cur].n).toUpperCase()}.`; try { sfx('bad'); } catch (e) {} return; }
+    score++; hud(`${score} ${caps ? 'Städte' : 'Länder'}`, null); msg.textContent = '✓'; inp.value = ''; try { sfx('ok'); } catch (e) {}
+    setCur(i);
+  };
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); submit(); } });
+  hud(`0 ${caps ? 'Städte' : 'Länder'}`, null); countdown(run, 120, end);
+  stage.replaceChildren(h('div', { class: 'pz-wrap' }, h('p', { class: 'note' }, `Nenne ${caps ? 'eine Hauptstadt' : 'ein Land'}, das mit dem letzten Buchstaben des vorigen beginnt. Jedes nur einmal!`), chainEl, h('div', { class: 'mp-row', style: 'width:100%' }, inp, h('button', { class: 'btn main', type: 'button', onclick: submit }, 'OK')), hint, msg));
+  setCur(pick(r, items.map((_, i) => i).filter(i => left(lastL(items[i].n)) > 3)));
+  setTimeout(() => inp.focus(), 50);
+}
+
+// ---------- Wortleiter ----------
+function ladderGame(seed, d) {
+  const G = gcStart('Wortleiter', 'ladder', seed, d), { run, r } = G;
+  const nb = w => { const out = []; for (let i = 0; i < 4; i++) for (const c of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') { const y = w.slice(0, i) + c + w.slice(i + 1); if (y !== w && W4S.has(y)) out.push(y); } return out; };
+  const bfs = a => { const dist = { [a]: 0 }, prev = {}, q = [a]; for (let k = 0; k < q.length; k++) for (const v of nb(q[k])) if (dist[v] == null) { dist[v] = dist[q[k]] + 1; prev[v] = q[k]; q.push(v); } return { dist, prev }; };
+  const want = { l: 3, m: 4, s: 5 }[d];
+  let A, B, path;
+  for (let t = 0; t < 500; t++) { A = pick(r, W4); const { dist, prev } = bfs(A); const goals = Object.keys(dist).filter(w => dist[w] === want); if (goals.length) { B = pick(r, goals); path = [B]; while (path[0] !== A) path.unshift(prev[path[0]]); break; } }
+  const steps = [A], list = h('ol', { class: 'ld-list' }), inp = h('input', { class: 'field mono', type: 'text', maxlength: 4, autocomplete: 'off', 'aria-label': 'Nächstes Wort', autocapitalize: 'characters' }), msg = h('p', { class: 'pz-msg', 'aria-live': 'polite' });
+  let errors = 0, hints = 0, done = false;
+  const draw = () => list.replaceChildren(...steps.map((w, i) => h('li', { class: i === steps.length - 1 ? 'cur' : '' }, w.split('').map((ch, j) => h('span', { class: 'ld-c' + (i > 0 && steps[i - 1][j] !== ch ? ' ch' : '') }, ch)))), h('li', { class: 'goal' }, B.split('').map(ch => h('span', { class: 'ld-c' }, ch))));
+  const diff1 = (a, b) => [...a].filter((c, i) => c !== b[i]).length === 1;
+  const submit = () => {
+    if (done) return;
+    const w = inp.value.trim().toUpperCase().replace(/Ä/g, 'AE').replace(/Ö/g, 'OE').replace(/Ü/g, 'UE');
+    const last = steps[steps.length - 1];
+    if (w.length !== 4) { msg.textContent = 'Das Wort braucht genau 4 Buchstaben.'; return; }
+    if (!diff1(last, w)) { msg.textContent = 'Ändere genau einen Buchstaben.'; errors++; try { sfx('bad'); } catch (e) {} return; }
+    if (!W4S.has(w)) { msg.textContent = `„${w}“ steht nicht in der Wortliste – probier ein anderes Wort.`; errors++; try { sfx('bad'); } catch (e) {} return; }
+    steps.push(w); inp.value = ''; msg.textContent = ''; try { sfx('ok'); } catch (e) {} hud(`${steps.length - 1} Schritte`, null); draw();
+    if (w === B) { done = true; clearInterval(run.iv); msg.textContent = `Geschafft in ${steps.length - 1} Schritten (kürzester Weg: ${want})! 🎉`; setTimeout(() => { if (!run.dead) finish(G.key, { s: steps.length - 1 + errors + 2 * hints, t: Math.round(run.elapsed()), extra: `${steps.length - 1} Schritte, ${errors} Fehlversuche, ${hints} Tipps` }, seed); }, 900); }
+  };
+  const tip = () => { if (done) return; const { dist } = bfs(B), last = steps[steps.length - 1]; const nx = nb(last).filter(w => dist[w] != null).sort((a, b) => dist[a] - dist[b])[0]; if (nx) { hints++; msg.textContent = `Tipp: ${nx}`; } else msg.textContent = 'Von hier aus kommst du nicht weiter – nimm „Zurück“.'; };
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); submit(); } });
+  hud('0 Schritte', '0:00'); stopwatch(run); draw();
+  stage.replaceChildren(h('div', { class: 'pz-wrap' }, h('p', { class: 'note' }, `Verwandle ${A} in ${B}: Ändere pro Schritt genau einen Buchstaben – jedes Zwischenwort muss ein echtes deutsches Wort sein.`), list,
+    h('div', { class: 'mp-row', style: 'width:100%' }, inp, h('button', { class: 'btn main', type: 'button', onclick: submit }, 'OK')),
+    h('div', { class: 'pz-pad' }, h('button', { class: 'btn ghost', type: 'button', onclick: () => { if (steps.length > 1 && !done) { steps.pop(); draw(); } } }, '↶ Zurück'), h('button', { class: 'btn ghost', type: 'button', onclick: tip }, 'Tipp (+2)')), msg));
+  setTimeout(() => inp.focus(), 50);
+}
+
+// ---------- Redewendungen ----------
+const IDIOMS = [
+  ['Jemandem einen Bären', 'aufbinden', 'jemanden anlügen, etwas Unwahres erzählen'],
+  ['Tomaten auf den', 'Augen haben', 'etwas Offensichtliches nicht bemerken'],
+  ['Den Nagel auf den', 'Kopf treffen', 'genau das Richtige sagen'],
+  ['Ins', 'Fettnäpfchen treten', 'sich ungeschickt oder taktlos verhalten'],
+  ['Die Katze im', 'Sack kaufen', 'etwas ungeprüft kaufen'],
+  ['Ich verstehe nur', 'Bahnhof', 'überhaupt nichts verstehen'],
+  ['Jemandem die', 'Daumen drücken', 'jemandem Erfolg wünschen'],
+  ['Den Kopf in den', 'Sand stecken', 'ein Problem nicht wahrhaben wollen'],
+  ['Eulen nach', 'Athen tragen', 'etwas Überflüssiges tun'],
+  ['Mit einem blauen', 'Auge davonkommen', 'glimpflich davonkommen'],
+  ['Etwas auf die lange', 'Bank schieben', 'etwas aufschieben'],
+  ['Jemandem reinen', 'Wein einschenken', 'jemandem die Wahrheit sagen'],
+  ['Um den heißen', 'Brei herumreden', 'nicht direkt zur Sache kommen'],
+  ['Jemandem auf den', 'Schlips treten', 'jemanden kränken'],
+  ['Die Flinte ins', 'Korn werfen', 'vorschnell aufgeben'],
+  ['Ein Brett vor dem', 'Kopf haben', 'etwas einfach nicht begreifen'],
+  ['Den Wald vor lauter', 'Bäumen nicht sehen', 'vor lauter Einzelheiten das Wesentliche übersehen'],
+  ['Jemanden auf den', 'Arm nehmen', 'jemanden zum Spaß veräppeln'],
+  ['Nicht alle Tassen im', 'Schrank haben', 'nicht ganz bei Verstand sein'],
+  ['Mit jemandem ein', 'Hühnchen rupfen', 'mit jemandem einen Streit austragen'],
+  ['Auf großem', 'Fuß leben', 'viel Geld ausgeben, teuer leben'],
+  ['Perlen vor die', 'Säue werfen', 'etwas Wertvolles an Leute geben, die es nicht schätzen'],
+  ['Die Kirche im', 'Dorf lassen', 'nicht übertreiben'],
+  ['Da steppt der', 'Bär', 'da ist viel los'],
+  ['Unter vier', 'Augen', 'vertraulich, nur zu zweit'],
+  ['Ins Gras', 'beißen', 'sterben'],
+  ['Sich zum', 'Affen machen', 'sich lächerlich machen'],
+  ['Das ist nicht mein', 'Bier', 'das ist nicht meine Angelegenheit'],
+  ['Alles in', 'Butter', 'alles in Ordnung'],
+  ['Der Groschen ist', 'gefallen', 'endlich hat man es verstanden'],
+  ['Jemandem den Kopf', 'waschen', 'jemanden scharf zurechtweisen'],
+  ['Kalte Füße', 'bekommen', 'Angst bekommen und einen Rückzieher machen'],
+  ['Etwas an die große', 'Glocke hängen', 'etwas überall herumerzählen'],
+  ['Die Nase', 'voll haben', 'genug von etwas haben'],
+  ['Jemandem die kalte', 'Schulter zeigen', 'jemanden abweisend behandeln'],
+  ['Zwei Fliegen mit einer', 'Klappe schlagen', 'zwei Dinge auf einmal erledigen'],
+  ['Öl ins', 'Feuer gießen', 'einen Streit noch verschärfen'],
+  ['Jemandem ein Loch in den', 'Bauch fragen', 'jemandem sehr viele Fragen stellen'],
+  ['Blau', 'machen', 'nicht zur Arbeit oder Schule gehen'],
+  ['Schwein', 'haben', 'Glück haben'],
+];
+function idiomGame(kind) {
+  return (seed, d) => mcGame({ key: fullKey(kind === 'f' ? 'idiom_f' : 'idiom_m', d), title: 'Redewendungen · ' + (kind === 'f' ? 'Ergänzen' : 'Bedeutung'), seed, d, seconds: d === 'l' ? 90 : 60, gen: r => {
+    const it = pick(r, IDIOMS);
+    if (kind === 'f') return { prompt: gaQ('Wie geht die Redewendung weiter?', it[0] + ' …', 'big at-q'), choices: gaChoices(r, it[1], IDIOMS.map(x => x[1]), d === 's' ? 5 : 4), explain: gaEx(h('b', {}, `${it[0]} ${it[1]}`), ' = ', it[2]), explainWait: 1800 };
+    return { prompt: gaQ('Was bedeutet …', `„${it[0]} ${it[1]}“`, 'big at-q'), choices: gaChoices(r, it[2], IDIOMS.map(x => x[2]), d === 's' ? 5 : 4) };
+  } });
+}
+
+// ---------- Englisch-Sprint: unregelmäßige Verben ----------
+const IRR = [['be', 'was/were', 'been', 'sein'], ['begin', 'began', 'begun', 'beginnen'], ['break', 'broke', 'broken', 'brechen'], ['bring', 'brought', 'brought', 'bringen'], ['build', 'built', 'built', 'bauen'],
+  ['buy', 'bought', 'bought', 'kaufen'], ['catch', 'caught', 'caught', 'fangen'], ['choose', 'chose', 'chosen', 'wählen'], ['come', 'came', 'come', 'kommen'], ['do', 'did', 'done', 'tun'], ['draw', 'drew', 'drawn', 'zeichnen'],
+  ['drink', 'drank', 'drunk', 'trinken'], ['drive', 'drove', 'driven', 'fahren'], ['eat', 'ate', 'eaten', 'essen'], ['fall', 'fell', 'fallen', 'fallen'], ['feel', 'felt', 'felt', 'fühlen'], ['fight', 'fought', 'fought', 'kämpfen'],
+  ['find', 'found', 'found', 'finden'], ['fly', 'flew', 'flown', 'fliegen'], ['forget', 'forgot', 'forgotten', 'vergessen'], ['give', 'gave', 'given', 'geben'], ['go', 'went', 'gone', 'gehen'], ['grow', 'grew', 'grown', 'wachsen'],
+  ['have', 'had', 'had', 'haben'], ['hear', 'heard', 'heard', 'hören'], ['hide', 'hid', 'hidden', 'verstecken'], ['hold', 'held', 'held', 'halten'], ['keep', 'kept', 'kept', 'behalten'], ['know', 'knew', 'known', 'wissen'],
+  ['leave', 'left', 'left', 'verlassen'], ['lend', 'lent', 'lent', 'leihen'], ['lose', 'lost', 'lost', 'verlieren'], ['make', 'made', 'made', 'machen'], ['meet', 'met', 'met', 'treffen'], ['pay', 'paid', 'paid', 'bezahlen'],
+  ['put', 'put', 'put', 'legen'], ['read', 'read', 'read', 'lesen'], ['ride', 'rode', 'ridden', 'reiten'], ['ring', 'rang', 'rung', 'läuten'], ['rise', 'rose', 'risen', 'steigen'], ['run', 'ran', 'run', 'laufen'],
+  ['say', 'said', 'said', 'sagen'], ['see', 'saw', 'seen', 'sehen'], ['sell', 'sold', 'sold', 'verkaufen'], ['send', 'sent', 'sent', 'schicken'], ['shake', 'shook', 'shaken', 'schütteln'], ['sing', 'sang', 'sung', 'singen'],
+  ['sit', 'sat', 'sat', 'sitzen'], ['sleep', 'slept', 'slept', 'schlafen'], ['speak', 'spoke', 'spoken', 'sprechen'], ['spend', 'spent', 'spent', 'ausgeben'], ['stand', 'stood', 'stood', 'stehen'], ['steal', 'stole', 'stolen', 'stehlen'],
+  ['swim', 'swam', 'swum', 'schwimmen'], ['take', 'took', 'taken', 'nehmen'], ['teach', 'taught', 'taught', 'unterrichten'], ['tell', 'told', 'told', 'erzählen'], ['think', 'thought', 'thought', 'denken'], ['throw', 'threw', 'thrown', 'werfen'],
+  ['understand', 'understood', 'understood', 'verstehen'], ['wake', 'woke', 'woken', 'aufwachen'], ['wear', 'wore', 'worn', 'tragen (Kleidung)'], ['win', 'won', 'won', 'gewinnen'], ['write', 'wrote', 'written', 'schreiben']];
+function irregularGame(seed, d) {
+  const pool = d === 'l' ? IRR.slice(0, 40) : IRR;
+  mcGame({ key: fullKey('irregular', d), title: 'Englisch-Sprint', seed, d, seconds: 60, gen: r => {
+    const v = pick(r, pool), type = d === 'l' ? 1 : pick(r, [1, 2]), ok = v[type];
+    const fakes = [v[0] + (v[0].endsWith('e') ? 'd' : 'ed'), v[3 - type], ...pool.map(x => x[type])];
+    const opts = [ok]; for (const f of (d === 's' ? fakes : shuffle(r, fakes.slice(2)).concat(fakes.slice(0, 2)))) if (!opts.includes(f) && f !== ok && opts.length < 4) opts.push(f);
+    return { prompt: [h('div', { class: 'sub' }, type === 1 ? 'Past Simple von …' : 'Past Participle (3. Form) von …'), h('div', { class: 'big' }, 'to ' + v[0]), h('div', { class: 'note' }, v[3])],
+      choices: shuffle(r, opts).map(x => ({ label: x, ok: x === ok })), explain: gaEx(h('b', {}, `${v[0]} – ${v[1]} – ${v[2]}`)), explainWait: 1400 };
+  } });
+}
+
+// ---------- Simon sagt ----------
+function simonSaysGame(seed, d) {
+  const G = gcStart('Simon sagt', 'simonsays', seed, d), { run, r } = G;
+  const COLS = [['Rot', '#E5484D'], ['Blau', '#3E63DD'], ['Grün', '#30A46C'], ['Gelb', '#E9A23B']];
+  const win = { l: 3200, m: 2400, s: 1700 }[d];
+  let score = 0, round = null, ended = false;
+  const cmd = h('div', { class: 'ss-cmd', 'aria-live': 'assertive' }), bar = h('div', { class: 'ss-bar' }, h('i'));
+  const btns = COLS.map(([n, c], i) => h('button', { class: 'ss-b', type: 'button', style: 'background:' + c, 'aria-label': n, onclick: () => tapC(i) }, n));
+  const end = why => { if (ended) return; ended = true; clearTimeout(round && round.t); cmd.textContent = why; try { sfx('lose'); } catch (e) {} setTimeout(() => { if (!run.dead) { stopRun(); finish(G.key, { s: score, extra: why }, seed); } }, 1300); };
+  const next = () => {
+    if (ended || run.dead) return;
+    const simon = r() < (d === 's' ? .6 : .7), c = randInt(r, 0, 3), w = Math.max(900, win - score * 40);
+    const verbs = d === 'l' ? ['Tippe'] : ['Tippe', 'Drück', 'Wähle'];
+    cmd.textContent = (simon ? 'Simon sagt: ' : '') + `${pick(r, verbs)} ${COLS[c][0]}!`;
+    cmd.classList.toggle('ss-on', simon);
+    const i = bar.firstChild; i.style.transition = 'none'; i.style.width = '100%'; void i.offsetWidth; i.style.transition = `width ${w}ms linear`; i.style.width = '0%';
+    round = { simon, c, t: setTimeout(() => { if (ended) return; if (simon) end('Zu langsam! Simon hat es gesagt.'); else { score++; hud(`${score} in Folge`, null); try { sfx('tick'); } catch (e) {} setTimeout(next, 350); } }, w) };
+  };
+  const tapC = i => {
+    if (ended || !round) return; clearTimeout(round.t);
+    if (!round.simon) return end('Reingefallen – Simon hat nichts gesagt!');
+    if (i !== round.c) return end(`Falsche Farbe – gesagt war ${COLS[round.c][0]}.`);
+    score++; hud(`${score} in Folge`, null); try { sfx('ok'); } catch (e) {} round = null; setTimeout(next, 350);
+  };
+  document.onkeydown = e => { const n = parseInt(e.key, 10); if (n >= 1 && n <= 4) { e.preventDefault(); tapC(n - 1); } };
+  hud('0 in Folge', null);
+  stage.replaceChildren(h('div', { class: 'pz-wrap' }, h('p', { class: 'note' }, 'Nur wenn „Simon sagt“ davor steht, tippst du die Farbe. Sonst: Finger weg, bis der Balken leer ist!'), cmd, bar, h('div', { class: 'ss-grid' }, ...btns)));
+  setTimeout(next, 900);
+}
+
+// ---------- Schulte-Tabelle ----------
+function schulteGame(seed, d) {
+  const G = gcStart('Schulte-Tabelle', 'schulte', seed, d), { run, r } = G, n = { l: 4, m: 5, s: 6 }[d];
+  const nums = shuffle(r, Array.from({ length: n * n }, (_, i) => i + 1));
+  let want = 1, errors = 0;
+  const msg = h('p', { class: 'pz-msg', 'aria-live': 'polite' }, 'Suche die 1');
+  const grid = h('div', { class: 'sc-grid', style: `--n:${n}` }, ...nums.map(v => h('button', { class: 'sc-c', type: 'button', onclick: e => {
+    if (v === want) { e.currentTarget.classList.add('ok'); want++; try { sfx('click'); } catch (er) {} msg.textContent = want > n * n ? 'Fertig!' : `Suche die ${want}`;
+      if (want > n * n) { clearInterval(run.iv); setTimeout(() => { if (!run.dead) finish(G.key, { s: errors, t: Math.round(run.elapsed() * 10) / 10 }, seed); }, 500); } }
+    else { errors++; hud(`${errors} Fehler`, fmtTime(run.elapsed())); e.currentTarget.classList.add('no'); const el = e.currentTarget; setTimeout(() => el.classList.remove('no'), 300); try { sfx('bad'); } catch (er) {} }
+  } }, String(v))));
+  hud('0 Fehler', '0:00'); stopwatch(run);
+  stage.replaceChildren(h('div', { class: 'pz-wrap' }, h('p', { class: 'note' }, `Tippe die Zahlen von 1 bis ${n * n} der Reihe nach – so schnell du kannst. Versuche, den Blick in der Mitte zu lassen.`), grid, msg));
+}
+
+// ---------- Stroop-Test ----------
+const STROOP = [['Rot', '#D93A3A'], ['Blau', '#2F5BD8'], ['Grün', '#1F9A55'], ['Gelb', '#D49A00'], ['Lila', '#8E44C9'], ['Orange', '#E5701A']];
+function stroopGame(seed, d) {
+  const k = { l: 4, m: 5, s: 6 }[d];
+  mcGame({ key: fullKey('stroop', d), title: 'Stroop-Test', seed, d, seconds: 60, gen: r => {
+    const cols = STROOP.slice(0, k), word = pick(r, cols); let ink; do { ink = pick(r, cols); } while (ink === word && r() < .85);
+    const askWord = d === 's' && r() < .3;
+    return { prompt: [h('div', { class: 'sub' }, askWord ? 'Welches WORT steht da?' : 'Welche FARBE hat die Schrift?'), h('div', { class: 'big stroop-w', style: 'color:' + ink[1] }, word[0].toUpperCase())],
+      choices: shuffle(r, cols).map(c => ({ label: c[0], ok: c === (askWord ? word : ink) })) };
+  } });
+}
+
+// ---------- Kim-Spiel ----------
+const KIM_ITEMS = ['🍎', '🔑', '⚽', '🎸', '📚', '🕶️', '🧦', '🌵', '🚲', '⏰', '🎈', '🧲', '🍕', '🐢', '🎲', '📱', '🖍️', '🧸', '🍌', '🔦', '🎩', '🦆', '🍩', '🪁', '🧩', '🔔', '📎', '🌂', '🥕', '🐟'];
+function kimGame(seed, d) {
+  const G = gcStart('Kim-Spiel', 'kim', seed, d), { run, r } = G;
+  let k = { l: 5, m: 7, s: 9 }[d], score = 0, ended = false;
+  const view = { l: 6000, m: 5000, s: 4000 }[d];
+  const area = h('div', { class: 'kim-area' }), msg = h('p', { class: 'pz-msg', 'aria-live': 'polite' });
+  const end = () => { if (ended) return; ended = true; try { sfx('lose'); } catch (e) {} setTimeout(() => { if (!run.dead) { stopRun(); finish(G.key, { s: score }, seed); } }, 1500); };
+  const roundGo = async () => {
+    if (ended || run.dead) return;
+    const items = shuffle(r, KIM_ITEMS).slice(0, k), gone = pick(r, items);
+    msg.textContent = `Merk dir die ${k} Dinge!`;
+    area.replaceChildren(h('div', { class: 'kim-grid' }, ...items.map(e => h('span', { class: 'kim-i' }, e))));
+    const bar = h('div', { class: 'ss-bar' }, h('i')); area.append(bar);
+    const i = bar.firstChild; i.style.width = '100%'; void i.offsetWidth; i.style.transition = `width ${view}ms linear`; i.style.width = '0%';
+    await sleep(view); if (run.dead || ended) return;
+    const rest = shuffle(r, items.filter(x => x !== gone));
+    area.replaceChildren(h('div', { class: 'kim-grid' }, ...rest.map(e => h('span', { class: 'kim-i' }, e)), h('span', { class: 'kim-i gone' }, '?')));
+    msg.textContent = 'Was fehlt?';
+    const opts = shuffle(r, [gone, ...shuffle(r, KIM_ITEMS.filter(x => x !== gone && !rest.includes(x))).slice(0, 2), ...shuffle(r, rest).slice(0, 1)]);
+    area.append(h('div', { class: 'kim-opts' }, ...opts.map(o => h('button', { class: 'choice', type: 'button', onclick: () => {
+      if (o === gone) { score++; hud(`${score} in Folge`, null); try { sfx('ok'); } catch (e) {} msg.textContent = 'Richtig!'; if (score % 3 === 0) k = Math.min(k + 1, 14); setTimeout(roundGo, 700); }
+      else { msg.textContent = `Leider nein – es fehlte ${gone}.`; end(); }
+    } }, o))));
+  };
+  hud('0 in Folge', null);
+  stage.replaceChildren(h('div', { class: 'pz-wrap' }, h('p', { class: 'note' }, 'Schau dir die Dinge genau an. Danach fehlt eines – welches?'), area, msg));
+  setTimeout(roundGo, 500);
+}
+
+// ---------- Rhythmus-Tippen ----------
+function rhythmGame(seed, d) {
+  const G = gcStart('Rhythmus-Tippen', 'rhythm', seed, d), { run, r } = G;
+  const beat = { l: 520, m: 440, s: 380 }[d], len = { l: 4, m: 5, s: 6 }[d], ROUNDS = 5;
+  let roundNo = 0, total = 0, taps = [], pattern = [], listening = false, ended = false, timer = null;
+  const pad = h('button', { class: 'rh-pad', type: 'button', 'aria-label': 'Hier im Rhythmus tippen (oder Leertaste)' }, 'TIPPEN');
+  const dots = h('div', { class: 'rh-dots', 'aria-hidden': 'true' }), msg = h('p', { class: 'pz-msg', 'aria-live': 'polite' });
+  const end = () => { ended = true; setTimeout(() => { if (!run.dead) finish(G.key, { s: total, extra: `${ROUNDS} Runden` }, seed); }, 600); };
+  const play = async () => {
+    if (ended || run.dead) return;
+    roundNo++; listening = false; taps = [];
+    const steps = Array.from({ length: len - 1 }, () => pick(r, d === 'l' ? [1, 1, 2] : [0.5, 1, 1, 2]));
+    pattern = [0]; steps.forEach(s => pattern.push(pattern[pattern.length - 1] + s * beat));
+    dots.replaceChildren(...pattern.map(() => h('i')));
+    msg.textContent = `Runde ${roundNo}/${ROUNDS}: Hör zu …`; pad.disabled = true;
+    await sleep(700);
+    const t0 = performance.now();
+    for (let i = 0; i < pattern.length; i++) { const wait = t0 + pattern[i] - performance.now(); if (wait > 0) await sleep(wait); if (run.dead) return; try { sfx('tick'); } catch (e) {} const el = dots.children[i]; el.classList.add('on'); setTimeout(() => el.classList.remove('on'), 160); }
+    await sleep(500); if (run.dead) return;
+    msg.textContent = 'Jetzt du! Tippe den gleichen Rhythmus.'; pad.disabled = false; listening = true; pad.focus({ preventScroll: true });
+    timer = setTimeout(() => { if (listening) score(); }, pattern[pattern.length - 1] + 4000);
+  };
+  const score = () => {
+    listening = false; clearTimeout(timer); pad.disabled = true;
+    let pts = 0;
+    if (taps.length === pattern.length) {
+      const ui = taps.slice(1).map((t, i) => t - taps[i]), ti = pattern.slice(1).map((t, i) => t - pattern[i]);
+      const sumU = ui.reduce((a, b) => a + b, 0), sumT = ti.reduce((a, b) => a + b, 0), k = sumU ? sumT / sumU : 1; // Tempo darf etwas abweichen
+      const err = ui.reduce((a, u, i) => a + Math.abs(u * k - ti[i]) / ti[i], 0) / ui.length;
+      pts = Math.max(0, Math.round(100 * (1 - err * 1.6))) - (Math.abs(1 - k) > .25 ? 15 : 0);
+      pts = Math.max(0, pts);
+    }
+    total += pts; hud(`${total} Punkte`, null);
+    msg.textContent = taps.length === pattern.length ? `${pts} von 100 Punkten` : `${taps.length} statt ${pattern.length} Schläge – 0 Punkte`;
+    try { sfx(pts >= 60 ? 'ok' : 'bad'); } catch (e) {}
+    if (roundNo >= ROUNDS) end(); else setTimeout(play, 1300);
+  };
+  const tap = () => { if (!listening) return; taps.push(performance.now()); const el = dots.children[taps.length - 1]; if (el) { el.classList.add('hit'); } try { sfx('click'); } catch (e) {} if (taps.length >= pattern.length) setTimeout(score, 150); };
+  pad.addEventListener('pointerdown', e => { e.preventDefault(); tap(); });
+  document.onkeydown = e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); if (!e.repeat) tap(); } };
+  hud('0 Punkte', null);
+  stage.replaceChildren(h('div', { class: 'pz-wrap' }, h('p', { class: 'note' }, 'Hör und schau dir den Rhythmus an, dann tippe ihn genauso nach (Feld oder Leertaste). Es zählt der Abstand zwischen den Schlägen.'), dots, pad, msg));
+  setTimeout(play, 600);
+}
+
+// ---------- Registrierung ----------
+{
+  Object.assign(KEYS, {
+    anagram: { label: 'Buchstabensalat', unit: 'Wörter' }, chain: { label: 'Wortkette', unit: 'Wörter' }, ladder: { label: 'Wortleiter', unit: 'Züge', low: true },
+    idiom_f: { label: 'Redewendungen · Ergänzen', unit: 'richtig' }, idiom_m: { label: 'Redewendungen · Bedeutung', unit: 'richtig' }, irregular: { label: 'Englisch-Sprint · Unregelmäßige Verben', unit: 'richtig' },
+    simonsays: { label: 'Simon sagt', unit: 'in Folge' }, schulte: { label: 'Schulte-Tabelle', unit: 'Fehler', low: true }, stroop: { label: 'Stroop-Test', unit: 'richtig' },
+    kim: { label: 'Kim-Spiel', unit: 'in Folge' }, rhythm: { label: 'Rhythmus-Tippen', unit: 'Punkte' },
+  });
+  Object.assign(MODES, { anagram: anagramGame, chain: chainGame, ladder: ladderGame, idiom_f: idiomGame('f'), idiom_m: idiomGame('m'), irregular: irregularGame, simonsays: simonSaysGame, schulte: schulteGame, stroop: stroopGame, kim: kimGame, rhythm: rhythmGame });
+  GAMES.push(
+    { t: 'Buchstabensalat', p: 'Die Buchstaben sind durcheinander – welches Wort steckt dahinter?', art: () => h('span', { class: 'mono' }, 'NBAR', h('br'), 'IXI'), modes: [['anagram', 'Sprint']] },
+    { t: 'Wortkette', p: 'Land an Land: Jedes beginnt mit dem letzten Buchstaben des vorigen. Schwer: Hauptstädte.', art: emo('🔗'), modes: [['chain', 'Spielen']] },
+    { t: 'Wortleiter', p: 'Von HAUS zu BAUM – pro Schritt nur einen Buchstaben ändern.', art: () => h('span', { class: 'mono' }, 'HAUS', h('br'), 'MAUS'), modes: [['ladder', 'Rätsel']] },
+    { t: 'Redewendungen', p: 'Jemandem einen Bären aufbinden? Ergänze Sprichwörter und erkläre ihre Bedeutung.', art: emo('🐻'), modes: [['idiom_f', 'Ergänzen'], ['idiom_m', 'Bedeutung']] },
+    { t: 'Englisch-Sprint', p: 'go – went – gone: unregelmäßige Verben im Schnelldurchlauf.', art: () => h('span', {}, 'went'), modes: [['irregular', 'Sprint']] },
+    { t: 'Simon sagt', p: 'Nur tippen, wenn Simon es sagt! Reaktion und Konzentration.', art: emo('🗣️'), modes: [['simonsays', 'Serie']] },
+    { t: 'Schulte-Tabelle', p: 'Zahlen der Reihe nach finden – trainiert den Blick.', art: () => h('span', { class: 'mono' }, '7 2', h('br'), '4 9'), modes: [['schulte', 'Spielen']] },
+    { t: 'Stroop-Test', p: 'ROT in blauer Schrift: Welche Farbe siehst du wirklich?', art: () => h('span', { style: 'color:#2F5BD8;font-weight:800' }, 'ROT'), modes: [['stroop', 'Sprint']] },
+    { t: 'Kim-Spiel', p: 'Merk dir alle Dinge – eines verschwindet. Welches?', art: emo('🧺'), modes: [['kim', 'Serie']] },
+    { t: 'Rhythmus-Tippen', p: 'Hören, merken, nachtippen: Wie genau triffst du den Takt?', art: emo('🥁'), modes: [['rhythm', 'Spielen']] },
+  );
+  OR_CATS['Sprache & Wörter'].push('Buchstabensalat', 'Wortkette', 'Wortleiter', 'Redewendungen', 'Englisch-Sprint');
+  OR_CATS['Gedächtnis & Reaktion'].push('Simon sagt', 'Schulte-Tabelle', 'Stroop-Test', 'Kim-Spiel', 'Rhythmus-Tippen');
+  LIVE_GAMES.push(['idiom_f', 'Redewendungen ergänzen'], ['idiom_m', 'Redewendungen: Bedeutung'], ['irregular', 'Unregelmäßige Verben'], ['stroop', 'Stroop-Test']);
+  if (CATS['Wörter & Rätsel']) CATS['Wörter & Rätsel'].push('Buchstabensalat', 'Wortkette', 'Wortleiter', 'Redewendungen');
+  if (CATS['Lernen & Merken']) CATS['Lernen & Merken'].push('Englisch-Sprint', 'Kim-Spiel', 'Schulte-Tabelle');
+  if (CATS['Arcade']) CATS['Arcade'].push('Simon sagt', 'Stroop-Test', 'Rhythmus-Tippen');
+  renderCards();
+}
+/*/BRX:spiele_c*/
+/*BRX:icons*/
+// ==================================================================
+//  SVG-Icons für alle Spielkacheln (Etappe 11) – eigenes Linien-Set,
+//  24×24, Strichstärke 2, passt zum ruhigen Design. Ersetzt die Buchstaben-Kürzel.
+// ==================================================================
+const ICO = {
+  globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
+  flag: '<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
+  city: '<path d="M3 21h18M5 21V10l7-5 7 5v11M10 21v-5h4v5"/>',
+  pin: '<path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+  mountain: '<path d="M3 20l6-10 4 6 3-4 5 8z"/>',
+  waves: '<path d="M3 9c2-2 4-2 6 0s4 2 6 0 4-2 6 0M3 15c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  bulb: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/>',
+  brain: '<path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 5 2V4.5A2.5 2.5 0 0 0 9 4zM15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-5 2V4.5A2.5 2.5 0 0 1 15 4z"/>',
+  puzzle: '<path d="M5 8h3a2 2 0 1 1 4 0h3v3a2 2 0 1 1 0 4v4h-4a2 2 0 1 0-4 0H5v-4a2 2 0 1 0 0-4z"/>',
+  grid: '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16"/>',
+  dice: '<rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="8.5" cy="8.5" r="1" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/>',
+  pad: '<path d="M7 8h10a5 5 0 0 1 5 5v1a3 3 0 0 1-5.4 1.8L15 14H9l-1.6 1.8A3 3 0 0 1 2 14v-1a5 5 0 0 1 5-5z"/><path d="M7 10v4M5 12h4"/><circle cx="16" cy="11" r=".8" fill="currentColor"/><circle cx="18" cy="13" r=".8" fill="currentColor"/>',
+  crown: '<path d="M4 18h16l1-10-5 4-4-7-4 7-5-4z"/>',
+  music: '<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>',
+  film: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 10h4M3 14h4M17 10h4M17 14h4"/>',
+  zap: '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+  calc: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 18h8"/>',
+  keyboard: '<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/>',
+  eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+  code: '<path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/>',
+  chip: '<rect x="7" y="7" width="10" height="10" rx="1"/><path d="M10 7V4M14 7V4M10 20v-3M14 20v-3M7 10H4M7 14H4M20 10h-3M20 14h-3"/>',
+  book: '<path d="M4 19V5a2 2 0 0 1 2-2h14v14H6a2 2 0 0 0-2 2zM4 19a2 2 0 0 0 2 2h14v-4"/>',
+  type: '<path d="M4 7V5h16v2M12 5v14M9 19h6"/>',
+  speech: '<path d="M21 12a8 8 0 0 1-12 7l-5 2 1.5-4.5A8 8 0 1 1 21 12z"/>',
+  shuffle: '<path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>',
+  link: '<path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/>',
+  hash: '<path d="M5 9h14M5 15h14M10 3L8 21M16 3l-2 18"/>',
+  binary: '<rect x="4" y="4" width="5" height="7" rx="1.5"/><path d="M15 4v7M14 4h1M7 14v7M6 14h1"/><rect x="13" y="14" width="5" height="7" rx="1.5"/>',
+  flask: '<path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3M7 15h10"/>',
+  planet: '<circle cx="12" cy="12" r="5"/><path d="M19.5 7.5C22 9 23 10.8 22 12c-1.6 2-7.5 1.4-13-1.6S.4 4 2 2c1-1.2 3.5-.8 6.4.6"/>',
+  paw: '<circle cx="7" cy="10" r="1.8"/><circle cx="10.5" cy="6.5" r="1.8"/><circle cx="14.5" cy="6.5" r="1.8"/><circle cx="18" cy="10" r="1.8"/><path d="M12 12c-3 0-5 3-5 5.5 0 1.5 1.5 2.5 3 2 1.3-.4 2.7-.4 4 0 1.5.5 3-.5 3-2C17 15 15 12 12 12z"/>',
+  calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  ruler: '<path d="M3 17L17 3l4 4L7 21zM7 13l2 2M10 10l2 2M13 7l2 2"/>',
+  lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  palette: '<path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-.9 2-2 0-1.5-1-2 0-3s2-1 3-1a4 4 0 0 0 4-4c0-4.4-4-8-9-8z"/><circle cx="7.5" cy="11" r="1" fill="currentColor"/><circle cx="10" cy="7" r="1" fill="currentColor"/><circle cx="15" cy="7" r="1" fill="currentColor"/>',
+  drum: '<ellipse cx="12" cy="9" rx="8" ry="3"/><path d="M4 9v7c0 1.7 3.6 3 8 3s8-1.3 8-3V9M3 3l7 7M21 3l-7 7"/>',
+  timer: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M10 2h4M12 2v3"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/>',
+  layers: '<path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5"/>',
+  network: '<circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v5M12 12l-6 5M12 12l6 5"/>',
+  sigma: '<path d="M18 4H6l6 8-6 8h12"/>',
+  pi: '<path d="M5 7h14M9 7v12M15 7v9a3 3 0 0 0 3 3"/>',
+  ship: '<path d="M3 16l2 4h14l2-4zM12 3v13M12 4l6 9h-6"/>',
+  shapes: '<circle cx="7.5" cy="7.5" r="3.5"/><rect x="13" y="13" width="7" height="7" rx="1"/><path d="M17 3l3.5 6h-7z"/>',
+  repeat: '<path d="M17 2l4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 0 1-3 3H3"/>',
+  compass: '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
+  trophy: '<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/>',
+  snake: '<path d="M4 20c4 0 4-4 8-4s4-4 8-4c0-3-3-4-5-3"/><circle cx="17.5" cy="9.5" r=".7" fill="currentColor"/>',
+  bird: '<path d="M16 7h.01M3 14c3 0 6-1 8-4 1.5-2.4 3-4 5.5-4A3.5 3.5 0 0 1 20 9.5L22 10l-2 .5C19.5 15 15 19 9 19H4a1 1 0 0 1-.7-1.7z"/>',
+  run: '<circle cx="14" cy="4.5" r="2"/><path d="M5 12l3-3 4 1 3 4 4 1M10 10l-2 5-4 1M13 14l-1 4 3 3"/>',
+  ball: '<circle cx="12" cy="12" r="5"/><path d="M3 21l4-4M21 3l-4 4"/>',
+  coins: '<circle cx="9" cy="9" r="6"/><path d="M14.5 6.5A6 6 0 1 1 10 18M9 6v6M7 8h3"/>',
+  phone: '<path d="M5 3h3l2 5-2.5 1.5a11 11 0 0 0 7 7L16 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/>',
+  car: '<path d="M5 16h14l-1.6-5.4A2 2 0 0 0 15.5 9h-7a2 2 0 0 0-1.9 1.6zM3 16h18v3H3z"/><circle cx="7.5" cy="19" r="1.5"/><circle cx="16.5" cy="19" r="1.5"/>',
+  hat: '<path d="M22 9L12 4 2 9l10 5zM6 11v5c3 2 9 2 12 0v-5M22 9v6"/>',
+  bridge: '<path d="M2 17h20M4 17V9M20 17V9M4 9c3 4 13 4 16 0M8 17v-4M12 17v-3M16 17v-4"/>',
+  drop: '<path d="M12 3s7 7.5 7 12a7 7 0 0 1-14 0c0-4.5 7-12 7-12z"/>',
+  ladder: '<path d="M7 3v18M17 3v18M7 7h10M7 12h10M7 17h10"/>',
+  memory: '<rect x="3" y="4" width="8" height="10" rx="1.5"/><rect x="13" y="10" width="8" height="10" rx="1.5"/><path d="M7 8h.01M17 14h.01"/>',
+  pencil: '<path d="M4 20l4-1 11-11-3-3L5 16zM14 6l3 3"/>',
+  mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+  thermo: '<path d="M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0z"/>',
+  scale: '<path d="M12 3v18M6 7h12M6 7l-3 7a3 3 0 0 0 6 0zM18 7l-3 7a3 3 0 0 0 6 0zM8 21h8"/>',
+  ohm: '<path d="M6 20h4v-2.5A7 7 0 1 1 14 17.5V20h4"/>',
+  gate: '<path d="M4 8h4M4 16h4M8 4h5a8 8 0 0 1 0 16H8zM21 12h-1"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  fire: '<path d="M12 21a6 6 0 0 0 6-6c0-4-3-6-4-10-1 2-2 3-4 4 0-1.5-.5-3-1-4-2 3-3 6-3 10a6 6 0 0 0 6 6z"/>',
+  bolt: '<path d="M6 3h12l-4 7h5L8 21l3-8H6z"/>',
+  bounce: '<circle cx="18" cy="6" r="3"/><path d="M3 20l5-9 4 6 3-5"/>',
+  cup: '<path d="M6 8h12l-1.5 12h-9zM5 5h14v3H5z"/>',
+  dino: '<path d="M4 20v-5l3-3V8a4 4 0 0 1 4-4h3a3 3 0 0 1 0 6h-2v4l5 2 3-2v4l-4 2H11l-2 2H7"/><circle cx="12.5" cy="7" r=".7" fill="currentColor"/>',
+  dog: '<path d="M10 5l-3-2-1 5c-1 1-2 3-2 5a8 8 0 0 0 16 0c0-2-1-4-2-5l-1-5-3 2z"/><circle cx="9.5" cy="12" r=".8" fill="currentColor"/><circle cx="14.5" cy="12" r=".8" fill="currentColor"/><path d="M11 16h2l-1 1z"/>',
+  hero: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+  table: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/>',
+  ear: '<path d="M6 9a6 6 0 1 1 12 0c0 3-2 4-3 5.5S14 19 11.5 20 7 19 7 17"/><path d="M10 9a2 2 0 1 1 4 0"/>',
+  qmark: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.7v.5M12 17h.01"/>',
+  checkq: '<path d="M4 6h16M4 12h10M4 18h7M16 16l2 2 4-4"/>',
+  quote: '<path d="M7 7H4v6h3l-1 4M17 7h-3v6h3l-1 4"/>',
+  sort: '<path d="M4 6h10M4 12h7M4 18h4M17 5v14M14 16l3 3 3-3"/>',
+};
+// Spiel → Icon (Titel wie auf den Kacheln)
+const GAME_ICO = {
+  'Tagesquiz': 'calendar', 'Wordle': 'grid', 'Connections': 'link', 'Kreuzworträtsel': 'table', 'Flaggen': 'flag', 'Hauptstädte': 'city', 'Länder-Umrisse': 'shapes',
+  'Größer oder kleiner?': 'sort', 'Weltkarte': 'globe', 'Zeitzonen': 'clock', 'Wer bin ich?': 'qmark', 'Allgemeinwissen': 'bulb', 'Periodensystem': 'flask', 'Zeitstrahl': 'calendar',
+  'Autokennzeichen': 'car', 'Weltall': 'planet', 'Dinosaurier': 'dino', 'Hunderassen': 'dog', 'Tier-Duell': 'paw', 'Vorwahlen': 'phone', 'Länderkürzel': 'type', 'Währungen': 'coins',
+  'Sprachen erkennen': 'speech', 'Alphabete': 'type', 'Maßeinheiten': 'ruler', 'Schätzfragen': 'target', 'Marvel-Quiz': 'hero', 'Song-Raten': 'music', 'Fermi-Schätzen': 'scale',
+  'Größenvergleich': 'scale', 'Fakt oder Fake': 'checkq', 'Blind-Ranking': 'sort', 'Kartenquiz': 'pin', 'Grenzen-Route': 'compass', 'Cover-Raten': 'music', 'Filmposter-Raten': 'film',
+  'Memory': 'memory', 'Pi': 'pi', 'Doomsday': 'calendar', 'Vokabeln Englisch': 'book', 'Zehnfinger': 'keyboard', 'Binär & Hex': 'binary', 'Zahlengedächtnis': 'hash',
+  'Farben merken': 'palette', 'Kopfrechnen': 'calc', 'Zahlen & Codes': 'hash', 'Zahlen-Sprints': 'sigma', 'Zähl-Becher': 'cup', 'Farbgedächtnis': 'palette', 'Galgenmännchen': 'pencil',
+  'Puzzles': 'puzzle', 'Sudoku': 'grid', 'Minesweeper': 'target', '2048': 'layers', 'Mastermind': 'lock', 'Flaggen malen': 'palette', 'Zahlenrätsel': 'calc', 'Nonogramm': 'grid',
+  'Wortspot': 'eye', 'Diktat': 'ear', 'Wortwärme': 'thermo', 'Schach': 'crown', 'Vier gewinnt': 'grid', 'Schiffe versenken': 'ship', 'Snake': 'snake', 'Blockfall': 'layers',
+  'Flappy Brain': 'bird', 'Reaktionstest': 'zap', 'Wüstenlauf': 'run', 'Abpraller': 'bounce',
+  // neu
+  'Höher oder tiefer': 'sort', 'Österreich-Quiz': 'mountain', 'Jahreszahl raten': 'calendar', 'Stadt-Silhouette': 'city', 'Gebirge, Flüsse, Meere': 'waves', 'Logikgatter': 'gate',
+  'Ohmsches Gesetz': 'ohm', 'Was gibt der Code aus?': 'code', 'Subnetting': 'network', 'Kakuro': 'table', 'KenKen': 'calc', 'Futoshiki': 'grid', 'Hashi': 'bridge', 'Flood-It': 'drop',
+  'Code knacken': 'lock', 'Logikgitter': 'checkq', 'Schiebepuzzle': 'puzzle', 'Lights Out': 'bulb', 'Buchstabensalat': 'shuffle', 'Wortkette': 'link', 'Wortleiter': 'ladder',
+  'Redewendungen': 'quote', 'Englisch-Sprint': 'speech', 'Simon sagt': 'mic', 'Schulte-Tabelle': 'grid', 'Stroop-Test': 'palette', 'Kim-Spiel': 'eye', 'Rhythmus-Tippen': 'drum',
+};
+const CAT_ICO = { 'Wissen & Quiz': 'bulb', 'Geografie': 'globe', 'Sprache & Wörter': 'type', 'Logik & Rätsel': 'puzzle', 'Zahlen & Mathe': 'calc', 'Gedächtnis & Reaktion': 'brain', 'Arcade': 'pad', 'Brett- & Duellspiele': 'crown', 'Schule (HTL)': 'hat', 'Musik, Film & Pop': 'music' };
+function icoEl(name, cls = 'ico-svg') {
+  const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('class', cls); s.setAttribute('aria-hidden', 'true'); s.setAttribute('focusable', 'false');
+  s.innerHTML = ICO[name] || ICO.star;
+  return s;
+}
+const icoFor = t => GAME_ICO[t] || CAT_ICO[Object.keys(OR_CATS).find(c => OR_CATS[c].includes(t))] || null;
+{
+  const mono0 = mono;
+  mono = function (t) { const n = icoFor(t); return n ? icoEl(n) : mono0(t); };
+  // Kategorie-Überschriften bekommen ebenfalls ein Icon
+  const rc = renderCards;
+  renderCards = function () {
+    rc.apply(this, arguments);
+    document.querySelectorAll('#cards .cat .rowh h2').forEach(h2 => {
+      const name = h2.textContent.replace(/^★\s*/, '').trim(), n = CAT_ICO[name];
+      if (n && !h2.querySelector('svg')) h2.prepend(icoEl(n, 'ico-svg ico-h'));
+    });
+    document.querySelectorAll('.orcatnav a').forEach(a => { const n = CAT_ICO[a.textContent.trim()]; if (n && !a.querySelector('svg')) a.prepend(icoEl(n, 'ico-svg ico-n')); });
+  };
+  renderCards(); renderHero();
+}
+
+// Weiche Trennstellen für lange Namen (sonst bricht der Browser mitten im Wort ohne Strich um)
+const SHY = { Allgemeinwissen: 'Allgemein-wissen', 'Größenvergleich': 'Größen-vergleich', 'Kreuzworträtsel': 'Kreuzwort-rätsel', 'Galgenmännchen': 'Galgen-männchen', Redewendungen: 'Rede-wendungen',
+  Buchstabensalat: 'Buchstaben-salat', Autokennzeichen: 'Auto-kennzeichen', 'Zahlengedächtnis': 'Zahlen-gedächtnis', 'Farbgedächtnis': 'Farb-gedächtnis', 'Zahlenrätsel': 'Zahlen-rätsel',
+  Minesweeper: 'Mine-sweeper', Periodensystem: 'Perioden-system', Logikgitter: 'Logik-gitter', Logikgatter: 'Logik-gatter', Hunderassen: 'Hunde-rassen', Dinosaurier: 'Dino-saurier',
+  'Schätzfragen': 'Schätz-fragen', Wortleiter: 'Wort-leiter', Wortkette: 'Wort-kette', Hauptstädte: 'Haupt-städte', Zeitstrahl: 'Zeit-strahl', Nonogramm: 'Nono-gramm', Mastermind: 'Master-mind',
+  Kartenquiz: 'Karten-quiz', Wortwärme: 'Wort-wärme', 'Länderkürzel': 'Länder-kürzel', 'Währungen': 'Währ-ungen', Alphabete: 'Alpha-bete', Subnetting: 'Sub-netting', Futoshiki: 'Futo-shiki' };
+const shyText = t => t.split(/(\s+|-)/).map(w => SHY[w] ? SHY[w].replace('-', '­') : w).join('');
+{
+  const gt1 = gameTile;
+  gameTile = function (g) { const el = gt1.apply(this, arguments); const b = el.querySelector ? (el.matches('.gt') ? el : el.querySelector('.gt')).querySelector('b') : null; if (b) b.textContent = shyText(g.t); return el; };
+  renderCards();
+}
+/*/BRX:icons*/
 })();
 </script>
