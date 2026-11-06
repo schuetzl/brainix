@@ -11665,7 +11665,7 @@ function mpPartyHost() {
   const players = Object.keys(st.players).filter(id => id !== st.host);
   const rank = mpPartyRank();
   if (Pt.stage === 'intro') {
-    stage.replaceChildren(h('div', { class: 'mp-party' }, h('div', { class: 'mp-code' }, h('span', {}, 'Mitspielen: brainix-games.netlify.app · Raum'), h('b', {}, st.code)),
+    stage.replaceChildren(h('div', { class: 'mp-party' }, h('div', { class: 'mp-code' }, h('span', {}, 'Mitspielen: ' + (/^https?:$/.test(location.protocol) ? location.host + location.pathname.replace(/index\.html$/, '') : 'Brainix') + ' · Raum'), h('b', {}, st.code)),
       h('h2', {}, T.title || 'Quiz-Party'), h('p', { class: 'note' }, `${Pt.n} Fragen · ${Pt.sec} s pro Frage · ${players.length} ${players.length === 1 ? 'Handy' : 'Handys'} verbunden`),
       mpPlayersEl(), h('div', { class: 'actions' }, h('button', { class: 'btn main', type: 'button', disabled: !T.gen, onclick: mpPartyNext }, T.gen ? 'Erste Frage' : 'Lade …'), h('button', { class: 'btn ghost', type: 'button', onclick: mpToLobby }, 'Abbrechen'))));
     return;
