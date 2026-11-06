@@ -1,6 +1,6 @@
 // Brainix Service Worker – macht die Seite installierbar und offline spielbar.
 // Die Version wird von einbauen.py bei jedem Einbau neu gesetzt → Updates kommen automatisch.
-const VERSION = 'a2c54f649b';
+const VERSION = 'f1fce87994';
 const CORE = 'brainix-core-' + VERSION;
 const LIBS = 'brainix-libs-v1';
 const CORE_FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './favicon-32.png'];

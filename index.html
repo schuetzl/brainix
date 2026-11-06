@@ -1636,6 +1636,26 @@ kbd { font-family: var(--f-mono, ui-monospace, monospace); font-size: .8rem; pad
 .pwa-steps { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
 @media (display-mode: standalone) { .pwa-card { display: none; } }
 /*/BRX:pwa*/
+/*BRX:sicherheit*/
+/* ===== Sicherheit & Datenschutz (Etappe 9) ===== */
+.sec-page { width: min(720px, 100%); margin: 0 auto; line-height: 1.6; }
+.sec-page h2 { margin: 0 0 6px; }
+.sec-sec { margin: 18px 0; }
+.sec-sec h3 { margin: 0 0 6px; font-size: 1.05rem; }
+.sec-sec p, .sec-sec ul { margin: 0 0 8px; }
+.sec-sec ul { padding-left: 20px; }
+.sec-check { display: flex !important; gap: 10px; align-items: flex-start; font-weight: 500 !important; color: var(--ink) !important; font-size: .88rem !important; }
+.sec-check input { margin-top: 3px; width: 18px; height: 18px; accent-color: var(--accent); flex: none; }
+.sec-check a { color: var(--accent); }
+.sec-danger { color: var(--bad-d, #C0392B) !important; }
+.btn.main.sec-danger { background: var(--bad, #D8453F) !important; border-color: var(--bad-d, #A9302B) !important; color: #fff !important; }
+.sec-danger-link { color: var(--bad-d, #C0392B) !important; }
+.sec-flag { padding: 2px 8px !important; font-size: .85rem; line-height: 1.2; color: var(--muted); }
+.sec-foot { text-align: center; font-size: .82rem; color: var(--muted); padding: 24px 16px 32px; }
+.sec-foot a { color: var(--muted); }
+.kt-dlg textarea.field { font: inherit; width: 100%; box-sizing: border-box; resize: vertical; background: var(--paper); color: var(--ink); border: 1px solid var(--edge2, var(--line)); border-radius: 10px; padding: 10px 12px; }
+.kt-dlg select.field { width: 100%; }
+/*/BRX:sicherheit*/
 </style>
 
 <div class="app" lang="de">
@@ -10841,6 +10861,8 @@ const ktErr = e => {
   if (/Password should be|at least 6/i.test(m)) return 'Das Passwort muss mindestens 6 Zeichen haben.';
   if (/rate limit|too many/i.test(m)) return 'Zu viele Versuche. Warte kurz und probiere es dann nochmal.';
   if (/duplicate key|profiles_username/i.test(m)) return 'Dieser Benutzername ist schon vergeben.';
+  if (/nicht erlaubt/i.test(m)) return m;
+  if (/unplausibel/i.test(m)) return 'Dieser Wert wurde als unplausibel abgelehnt.';
   if (/Failed to fetch|NetworkError/i.test(m)) return 'Keine Verbindung zum Server.';
   return m || 'Das hat nicht geklappt.';
 };
@@ -10922,8 +10944,13 @@ function ktOpen(mode) {
   if (!dlg.open) dlg.showModal();
   const first = form.querySelector('input'); if (first) first.focus();
 }
-// Einfacher Namensfilter (wird in Etappe 9 ausgebaut)
-const ktBadName = n => /(admin|moderator|brainix|nazi|hitler|fick|fuck|hure|nutte|wichs|arsch|schlampe|penis|vagina|sex)/i.test(n);
+// Namensfilter – gleiche Regeln wie in der Datenbank (brx_bad_name)
+const ktBadName = n => {
+  let x = String(n || '').toLowerCase();
+  const map = { '0': 'o', '1': 'i', '3': 'e', '4': 'a', '5': 's', '7': 't', '@': 'a', '$': 's', '€': 'e', '!': 'i', '|': 'i', 'ä': 'a', 'ö': 'o', 'ü': 'u', 'ß': 's' };
+  x = x.replace(/[013457@$€!|äöüß]/g, c => map[c]).replace(/[^a-z]/g, '').replace(/(.)\1+/g, '$1');
+  return /^(admin|moderator|support|brainix|offiziel)/.test(x) || /(nazi|hitler|siegheil|nsdap|kukluxklan|fick|fuck|hure|nutte|wichs|arsch|schlampe|fotze|penis|vagina|porn|bitch|shit|scheis|spast|behindert|neger|nigga|nigger|kanake|schwuchtel|retard|vergas|wixer|missgeburt|bastard)/.test(x);
+};
 async function ktLogout() {
   if (KT.pushT) await ktPush();
   await KT.sb.auth.signOut();
@@ -12485,6 +12512,7 @@ async function soAfterFinish(key, res) {
 async function soCreateGroup(name, msgEl) {
   name = String(name || '').trim();
   if (name.length < 2) { msgEl.hidden = false; msgEl.textContent = 'Name: mindestens 2 Zeichen.'; return; }
+  if (ktBadName(name)) { msgEl.hidden = false; msgEl.textContent = 'Dieser Gruppenname ist nicht erlaubt.'; return; }
   const { data, error } = await KT.sb.rpc('create_group', { gname: name.slice(0, 40) });
   if (error) { msgEl.hidden = false; msgEl.textContent = soErr(error); return; }
   SO.groupSel = data.id; toast('👥', `Gruppe „${data.name}“ erstellt`, 'Beitrittscode: ' + data.code); await soLoad(); soGroupLoad();
@@ -12567,7 +12595,7 @@ function soBoard(ids, mode, setMode, label) {
     .sort((a, b) => mode === 'wxp' ? b.w - a.w || b.xp - a.xp : b.xp - a.xp);
   return h('div', {},
     h('div', { class: 'mp-seg so-seg', role: 'radiogroup', 'aria-label': label }, [['wxp', 'Diese Woche'], ['xp', 'Gesamt']].map(([k, n]) => h('button', { type: 'button', role: 'radio', 'aria-checked': String(mode === k), onclick: () => setMode(k) }, n))),
-    h('table', { class: 'lb' }, h('tbody', {}, rows.map((r, i) => h('tr', { class: r.me ? 'me' : '' }, h('td', { class: 'r' }, i + 1), h('td', {}, r.av + ' ' + r.n + (r.me ? ' (du)' : '')),
+    h('table', { class: 'lb' }, h('tbody', {}, rows.map((r, i) => h('tr', { class: r.me ? 'me' : '', 'data-uid': r.id }, h('td', { class: 'r' }, i + 1), h('td', {}, r.av + ' ' + r.n + (r.me ? ' (du)' : '')),
       h('td', { class: 's' }, `Lv ${lvlOf(r.xp)}`), h('td', { class: 's' }, mode === 'wxp' ? `${fmtNum(r.w)} XP` : `${fmtNum(r.xp)} XP`))))));
 }
 function soRender() {
@@ -13022,5 +13050,174 @@ window.addEventListener('online', () => setTimeout(pwaBackOnline, 800));
   if (navigator.onLine) setTimeout(pwaFlush, 4000);
 }
 /*/BRX:pwa*/
+/*BRX:sicherheit*/
+// ==================================================================
+//  Sicherheit & Datenschutz (Etappe 9)
+//  Melden, Datenschutzseite, Einwilligung, Konto löschen, Daten herunterladen.
+//  Die eigentliche Prüfung (Punkte, Namen, Limits) passiert in der Datenbank
+//  (Supabase/03-sicherheit.sql) – der Client kann sie nicht umgehen.
+// ==================================================================
+const SEC_KINDS = [['name', 'Unpassender Name'], ['avatar', 'Unpassender Avatar'], ['gruppe', 'Unpassender Gruppenname'], ['punkte', 'Verdächtige Punkte (Schummeln)'], ['verhalten', 'Belästigung / Verhalten'], ['sonstiges', 'Sonstiges']];
+
+// ---------- Melden ----------
+function secReport({ uid = null, name = '', context = '', kind = 'name' } = {}) {
+  const dlg = $('#ktDlg'); if (!dlg) return;
+  if (!KT.user) { toast('🔒', 'Bitte anmelden', 'Melden geht nur mit Konto – so können wir Missbrauch der Melde-Funktion verhindern.'); return; }
+  if (uid && uid === KT.user.id) { toast('🙂', 'Das bist du selbst'); return; }
+  const sel = h('select', { class: 'field', name: 'kind', 'aria-label': 'Grund' }, SEC_KINDS.map(([k, n]) => h('option', { value: k, selected: k === kind }, n)));
+  const txt = h('textarea', { class: 'field', name: 'reason', rows: 3, maxlength: 500, placeholder: 'Was ist passiert? (freiwillig)', 'aria-label': 'Beschreibung' });
+  const msg = h('p', { class: 'kt-msg', hidden: true, 'aria-live': 'polite' });
+  const form = h('form', {}, h('h2', { id: 'ktTitle' }, 'Melden'), h('p', { class: 'kt-sub' }, name ? `Du meldest: ${name}` : 'Was möchtest du melden?'),
+    h('label', {}, 'Grund', sel), h('label', {}, 'Beschreibung', txt), msg,
+    h('p', { class: 'note' }, 'Meldungen sieht nur der Betreiber von Brainix. Die gemeldete Person erfährt nicht, wer gemeldet hat.'),
+    h('button', { class: 'btn main', type: 'submit' }, 'Meldung senden'));
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const b = form.querySelector('[type=submit]'); b.disabled = true;
+    const { error } = await KT.sb.from('reports').insert({ reporter: KT.user.id, target_user: uid, target_name: String(name).slice(0, 60), kind: sel.value, reason: txt.value.trim().slice(0, 500) || null, context: String(context).slice(0, 120) });
+    b.disabled = false;
+    if (error) { msg.hidden = false; msg.className = 'kt-msg err'; msg.textContent = /Zu viele/.test(error.message) ? 'Du hast heute schon viele Meldungen geschickt. Bitte morgen wieder.' : ktErr(error); return; }
+    form.replaceChildren(h('h2', { id: 'ktTitle' }, 'Danke!'), h('p', {}, 'Deine Meldung ist angekommen und wird angeschaut.'), h('button', { class: 'btn main', type: 'button', onclick: () => dlg.close() }, 'OK'));
+  });
+  dlg.replaceChildren(h('button', { class: 'kt-x', type: 'button', 'aria-label': 'Schließen', onclick: () => dlg.close() }, '×'), form);
+  if (!dlg.open) dlg.showModal();
+}
+const secFlag = (opts, label = 'Melden') => h('button', { class: 'btn ghost sec-flag', type: 'button', title: label, 'aria-label': label + (opts.name ? ': ' + opts.name : ''), onclick: e => { e.stopPropagation(); secReport(opts); } }, '⚑');
+
+// ---------- Datenschutzseite ----------
+function secPrivacy() {
+  openPlay('Datenschutz');
+  const sec = (title, ...kids) => h('section', { class: 'sec-sec' }, h('h3', {}, title), ...kids);
+  const li = items => h('ul', {}, items.map(t => h('li', {}, t)));
+  stage.replaceChildren(h('article', { class: 'sec-page' },
+    h('h2', {}, 'Datenschutz bei Brainix'),
+    h('p', { class: 'note' }, 'Stand: November 2026 · Brainix ist ein Schulprojekt von Leon Schütz (HTL Villach). Fragen und Anliegen über den Kontakt auf leonschuetz.netlify.app oder über „Melden“.'),
+    sec('Kurz gesagt', li(['Keine Werbung, kein Tracking, keine Analyse-Werkzeuge, keine Werbe-Cookies.', 'Ohne Konto bleibt alles nur auf deinem Gerät.', 'Mit Konto liegen deine Daten bei Supabase in Frankfurt (EU).', 'Du kannst deine Daten jederzeit herunterladen und dein Konto löschen.'])),
+    sec('Ohne Konto', h('p', {}, 'Dein Spielstand (XP, Rekorde, Einstellungen, Favoriten …) wird nur im Speicher deines Browsers (localStorage) auf diesem Gerät abgelegt. Löschst du die Website-Daten im Browser, ist er weg – vorher kannst du ihn unter ⚙ → „Spielstand exportieren“ sichern.')),
+    sec('Mit Konto', h('p', {}, 'Gespeichert werden bei Supabase (Supabase Inc., Server-Region Frankfurt, EU):'),
+      li(['E-Mail-Adresse und Passwort (das Passwort nur verschlüsselt, Brainix selbst kennt es nicht)', 'Benutzername, Avatar und Farbe', 'Spielstand, Bestwerte, XP, Statistik (Spielzeit, Genauigkeit) und Abzeichen', 'Freundschaften, Herausforderungen, Gruppen-Mitgliedschaften, Turnier-Ergebnisse', 'Meldungen, die du abschickst']),
+      h('p', {}, h('b', {}, 'Öffentlich sichtbar'), ' (in Ranglisten und deinem Profil-Link): Benutzername, Avatar, Level/XP, Bestwerte, Statistik, Abzeichen und Turnier-Ergebnisse. ',
+        h('b', {}, 'Nicht öffentlich: '), 'deine E-Mail-Adresse, Freundeslisten, Herausforderungen (nur für die Beteiligten) und Gruppen (nur für Mitglieder).')),
+    sec('Mehrspieler-Räume', h('p', {}, 'In einem Raum werden dein Name, Avatar und deine Spielzüge bzw. Punkte live an die anderen im Raum geschickt (Supabase Realtime). Räume werden nicht gespeichert.')),
+    sec('Dienste von Dritten', li(['Hosting: GitHub Pages bzw. Netlify – dabei fallen technische Zugriffsdaten an (z. B. IP-Adresse, Zeitpunkt).', 'Schriftart „Instrument Sans“ von Google Fonts sowie Programm-Bibliotheken von jsDelivr und cdnjs – beim Laden wird deine IP-Adresse an diese Anbieter übertragen.', 'Supabase für Konto, Ranglisten und Mehrspieler.'])),
+    sec('Wofür und auf welcher Grundlage', h('p', {}, 'Die Daten werden nur verwendet, damit Brainix funktioniert (Spielstand, Konto, Ranglisten, Mehrspieler) und um Missbrauch zu verhindern (z. B. Punkte-Prüfung, Namensfilter, Meldungen). Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Bereitstellung des Dienstes) und lit. f (Schutz vor Missbrauch).')),
+    sec('Alter', h('p', {}, 'In Österreich kannst du ab 14 Jahren selbst in die Verarbeitung deiner Daten einwilligen. Bist du jünger, frag bitte deine Eltern, bevor du ein Konto anlegst. Ohne Konto kannst du Brainix immer nutzen. Tipp: der Kinder-Modus unter ⚙.')),
+    sec('Speicherdauer', h('p', {}, 'Solange dein Konto besteht. Beim Löschen des Kontos werden alle zugehörigen Daten sofort entfernt (Gruppen, die du erstellt hast, ebenfalls). Bearbeitete Meldungen werden regelmäßig gelöscht.')),
+    sec('Deine Rechte', li(['Auskunft: „Meine Daten herunterladen“ (unten bzw. bei „Profil bearbeiten“)', 'Berichtigung: Benutzername, Avatar und Farbe unter „Profil bearbeiten“', 'Löschung: „Konto löschen“ (unten bzw. bei „Profil bearbeiten“)', 'Beschwerde: bei der österreichischen Datenschutzbehörde (dsb.gv.at)'])),
+    KT.user ? h('div', { class: 'actions' }, h('button', { class: 'btn', type: 'button', onclick: secDownload }, 'Meine Daten herunterladen'), h('button', { class: 'btn ghost sec-danger', type: 'button', onclick: secDelete }, 'Konto löschen')) : null,
+    h('div', { class: 'actions' }, h('button', { class: 'btn main', type: 'button', onclick: () => { showTab('spiele'); renderCards(); } }, 'Zurück'))));
+  window.scrollTo({ top: 0 });
+}
+
+// ---------- Daten herunterladen ----------
+async function secDownload() {
+  if (!KT.user) return;
+  const uid = KT.user.id, sb = KT.sb, q = (t, f = 'user_id') => sb.from(t).select('*').eq(f, uid);
+  try {
+    const [prof, prog, sc, fa, fb, ci, co, gm, tour, rep] = await Promise.all([
+      sb.from('profiles').select('*').eq('id', uid), q('progress'), q('scores'), q('friends', 'a'), q('friends', 'b'),
+      q('challenges', 'to_id'), q('challenges', 'from_id'), q('group_members'), q('tournament'), q('reports', 'reporter')]);
+    const gids = (gm.data || []).map(r => r.group_id);
+    const groups = gids.length ? (await sb.from('groups').select('id,name,code,owner,created_at').in('id', gids)).data : [];
+    const data = {
+      app: 'brainix', art: 'Datenauskunft', erstellt: new Date().toISOString(),
+      konto: { id: uid, email: KT.user.email, erstellt: KT.user.created_at, letzte_anmeldung: KT.user.last_sign_in_at },
+      profil: (prof.data || [])[0] || null, spielstand: (prog.data || [])[0] || null, bestwerte: sc.data || [],
+      freunde: [...(fa.data || []), ...(fb.data || [])], herausforderungen: [...(co.data || []), ...(ci.data || [])],
+      gruppen: groups || [], gruppen_mitgliedschaften: gm.data || [], turnier: tour.data || [], meine_meldungen: rep.data || [],
+      dieses_geraet: Object.fromEntries(Object.keys(localStorage).filter(k => k.startsWith('bwl-') && k !== 'bwl-konto').map(k => [k, localStorage.getItem(k)])),
+    };
+    const blob = new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' });
+    const a = h('a', { href: URL.createObjectURL(blob), download: `brainix-meine-daten-${todayStr()}.json` });
+    document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    toast('📦', 'Deine Daten sind heruntergeladen', 'Datei in deinen Downloads.');
+  } catch (e) { toast('⚠️', 'Download hat nicht geklappt', 'Bitte mit Internet nochmal versuchen.'); }
+}
+
+// ---------- Konto löschen ----------
+function secDelete() {
+  const dlg = $('#ktDlg'); if (!dlg || !KT.user) return;
+  const name = (KT.prof && KT.prof.username) || '';
+  const inp = h('input', { type: 'text', autocomplete: 'off', 'aria-label': 'Benutzername zur Bestätigung', placeholder: name });
+  const wipe = h('input', { type: 'checkbox' });
+  const msg = h('p', { class: 'kt-msg err', hidden: true, 'aria-live': 'polite' });
+  const form = h('form', {}, h('h2', { id: 'ktTitle' }, 'Konto löschen'),
+    h('p', {}, 'Dabei werden ', h('b', {}, 'sofort und endgültig'), ' gelöscht: dein Konto, Profil, Spielstand im Konto, Bestwerte, Freundschaften, Herausforderungen, Turnier-Ergebnisse und Gruppen, die du erstellt hast.'),
+    h('p', { class: 'note' }, 'Tipp: Lade vorher deine Daten herunter.'),
+    h('label', {}, `Zur Bestätigung „${name}“ eintippen`, inp),
+    h('label', { class: 'sec-check' }, wipe, ' Auch den Spielstand auf diesem Gerät löschen'), msg,
+    h('div', { class: 'mp-row' }, h('button', { class: 'btn ghost', type: 'button', onclick: secDownload }, 'Daten herunterladen'), h('button', { class: 'btn main sec-danger', type: 'submit' }, 'Endgültig löschen')));
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (inp.value.trim().toLowerCase() !== name.toLowerCase()) { msg.hidden = false; msg.textContent = 'Der Benutzername stimmt nicht.'; return; }
+    const b = form.querySelector('[type=submit]'); b.disabled = true;
+    const { error } = await KT.sb.rpc('delete_my_account');
+    if (error) { b.disabled = false; msg.hidden = false; msg.textContent = ktErr(error); return; }
+    clearTimeout(KT.pushT); KT.ready = false;
+    ktSetLink(null);
+    try { await KT.sb.auth.signOut(); } catch (er) {}
+    if (wipe.checked) { for (const k of Object.keys(localStorage)) if (k.startsWith('bwl-') || k.startsWith('brx-')) localStorage.removeItem(k); }
+    dlg.close();
+    alert('Dein Konto wurde gelöscht.');
+    location.reload();
+  });
+  dlg.replaceChildren(h('button', { class: 'kt-x', type: 'button', 'aria-label': 'Schließen', onclick: () => dlg.close() }, '×'), form);
+  if (!dlg.open) dlg.showModal();
+}
+
+// ---------- Einhängen ----------
+{
+  // Registrierung: Einwilligung + Alters-Hinweis (Pflichtfeld)
+  const ko0 = ktOpen;
+  ktOpen = function (mode) {
+    ko0.apply(this, arguments);
+    const form = $('#ktDlg form'); if (!form) return;
+    if (mode === 'register') {
+      const sub = form.querySelector('[type=submit]');
+      const box = h('label', { class: 'sec-check' }, h('input', { type: 'checkbox', required: true, name: 'consent' }),
+        h('span', {}, 'Ich habe den ', h('a', { href: '#', onclick: e => { e.preventDefault(); $('#ktDlg').close(); secPrivacy(); } }, 'Datenschutz'), ' gelesen. Ich bin mindestens 14 Jahre alt oder meine Eltern sind einverstanden.'));
+      sub.before(box);
+    }
+    if (mode === 'edit') {
+      const row = form.querySelector('.kt-row');
+      if (row) row.append(h('button', { class: 'kt-link', type: 'button', onclick: secDownload }, 'Meine Daten herunterladen'), h('button', { class: 'kt-link sec-danger-link', type: 'button', onclick: secDelete }, 'Konto löschen'));
+    }
+  };
+  // Öffentliches Profil: Melden
+  const pp0 = prPublic;
+  prPublic = async function (name) {
+    await pp0.apply(this, arguments);
+    const pub = $('.prpublic'); if (!pub) return;
+    let p = Object.values(SO.prof).find(x => x.username && x.username.toLowerCase() === String(name).toLowerCase());
+    if (!p && KT.sb) { try { p = (await KT.sb.from('profiles').select('id,username').ilike('username', String(name).replace(/[%_]/g, '')).maybeSingle()).data; } catch (e) {} }
+    const acts = pub.querySelector(':scope > .actions');
+    if (acts && !(KT.user && p && p.id === KT.user.id)) acts.append(h('button', { class: 'btn ghost', type: 'button', onclick: () => secReport({ uid: p ? p.id : null, name, context: 'Profil' }) }, '⚑ Profil melden'));
+  };
+  // Gruppen-Rangliste: Mitglieder melden
+  const sr0 = soRender;
+  soRender = function () {
+    sr0.apply(this, arguments);
+    document.querySelectorAll('.so-group tr[data-uid]').forEach(tr => {
+      const id = tr.dataset.uid; if (KT.user && id === KT.user.id) return;
+      const td = tr.lastElementChild; if (!td || td.querySelector('.sec-flag')) return;
+      td.append(' ', secFlag({ uid: id, name: soName(id), context: 'Gruppe', kind: 'name' }));
+    });
+  };
+  // Datenschutz erreichbar: Fußzeile, Einstellungen, Anleitung, ?datenschutz
+  const main = document.querySelector('main');
+  if (main && !$('#secFoot')) main.after(h('footer', { class: 'sec-foot', id: 'secFoot' }, h('a', { href: '?datenschutz', onclick: e => { e.preventDefault(); secPrivacy(); } }, 'Datenschutz'), ' · ', h('span', {}, 'Keine Werbung, kein Tracking'), ' · ', h('a', { href: '#', onclick: e => { e.preventDefault(); secReport({ kind: 'sonstiges', context: 'Fußzeile' }); } }, 'Problem melden')));
+  const so1 = setOpen;
+  setOpen = function () {
+    so1.apply(this, arguments);
+    const body = $('#setDlg .set-body'); if (!body) return;
+    const last = body.querySelector('.actions');
+    last.before(h('h3', {}, 'Datenschutz'), h('div', { class: 'mp-row' }, h('button', { class: 'btn ghost', type: 'button', onclick: () => { $('#setDlg').close(); secPrivacy(); } }, 'Datenschutz lesen'),
+      KT.user ? h('button', { class: 'btn ghost', type: 'button', onclick: () => { $('#setDlg').close(); secDownload(); } }, 'Meine Daten herunterladen') : null));
+  };
+  const gb = $('#setBtn'); if (gb) { const n = gb.cloneNode(true); n.addEventListener('click', () => setOpen()); gb.replaceWith(n); }
+  const q = new URLSearchParams(location.search);
+  if (q.has('datenschutz')) { q.delete('datenschutz'); history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : '') + location.hash); setTimeout(secPrivacy, 150); }
+}
+/*/BRX:sicherheit*/
 })();
 </script>
