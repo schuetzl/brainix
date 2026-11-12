@@ -10807,6 +10807,11 @@ const KT_NOSYNC = new Set([KT_LINK, 'bwl-theme']);
 const KT_AVATARS = ['🦊', '🐼', '🐸', '🦉', '🐙', '🦁', '🐧', '🐢', '🐝', '🦄', '🐳', '🐯', '🐨', '🦖', '🐬', '🦜', '🍀', '🚀', '⚡', '🎧', '🎲', '🧠', '⭐', '🔥'];
 const KT_COLORS = ['#0f766e', '#2563eb', '#7c3aed', '#db2777', '#dc2626', '#ea580c', '#ca8a04', '#16a34a', '#475569'];
 const KT_NAME_RE = /^[A-Za-z0-9ÄÖÜäöüß_.-]{3,20}$/;
+// Anmeldung nur mit Benutzername: Supabase braucht intern eine Adresse, die bauen wir aus dem Namen.
+const KT_MAIL_DOMAIN = 'konto.brainix.app';
+const ktMail = name => String(name || '').trim().toLowerCase().replace(/[äöüß]/g, c => ({ 'ä': 'ae', 'ö': 'oe', 'ü': 'ue', 'ß': 'ss' })[c]).replace(/[^a-z0-9_.-]/g, '').replace(/^\.+|\.+$/g, '').replace(/\.{2,}/g, '.') + '@' + KT_MAIL_DOMAIN;
+const ktLoginMail = v => v.includes('@') ? v.trim() : ktMail(v); // alte Konten mit echter E-Mail gehen weiterhin
+const ktRealMail = u => (u && u.email && !u.email.endsWith('@' + KT_MAIL_DOMAIN)) ? u.email : '';
 
 const ktLink = () => { try { return JSON.parse(localStorage.getItem(KT_LINK) || 'null'); } catch (e) { return null; } };
 const ktSetLink = v => { try { v ? localStorage.setItem(KT_LINK, JSON.stringify(v)) : localStorage.removeItem(KT_LINK); } catch (e) {} };
@@ -11012,7 +11017,7 @@ function ktRender() {
   const btn = (txt, cls, fn) => h('button', { class: 'btn ' + cls, type: 'button', onclick: fn }, txt);
   if (KT.user && KT.prof) {
     box.replaceChildren(h('div', { class: 'kt-card' }, ktAvatarEl(KT.prof),
-      h('div', { class: 'kt-txt' }, h('h3', {}, KT.prof.username), h('p', {}, KT.user.email || ''), h('span', { class: 'kt-sync' + (KT.syncState === 'ok' ? '' : ' warn'), id: 'ktSync' }, KT.syncState === 'ok' ? 'Synchronisiert' : 'Nicht synchronisiert – versuche es später')),
+      h('div', { class: 'kt-txt' }, h('h3', {}, KT.prof.username), h('p', {}, ktRealMail(KT.user) || 'Angemeldet'), h('span', { class: 'kt-sync' + (KT.syncState === 'ok' ? '' : ' warn'), id: 'ktSync' }, KT.syncState === 'ok' ? 'Synchronisiert' : 'Nicht synchronisiert – versuche es später')),
       h('div', { class: 'kt-btns' }, btn('Profil bearbeiten', 'ghost', () => ktOpen('edit')), btn('Abmelden', 'ghost', ktLogout))));
   } else if (!/^https?:$/.test(location.protocol)) {
     box.replaceChildren(h('div', { class: 'kt-card' }, h('div', { class: 'kt-txt' }, h('h3', {}, 'Konto'), h('p', {}, 'Anmelden geht in der Online-Version: brainix-games.netlify.app. Hier wird nur auf diesem Gerät gespeichert.'))));
@@ -11027,9 +11032,10 @@ function ktRender() {
 const ktMsg = (form, text, kind = 'err') => { const m = form.querySelector('.kt-msg'); m.hidden = !text; m.className = 'kt-msg ' + kind; m.textContent = text || ''; };
 const ktErr = e => {
   const m = String((e && (e.message || e.error_description)) || e || '');
-  if (/Invalid login credentials/i.test(m)) return 'E-Mail oder Passwort stimmt nicht.';
-  if (/Email not confirmed/i.test(m)) return 'Bitte bestätige zuerst deine E-Mail (Link in der Bestätigungs-Mail).';
-  if (/already registered|already exists/i.test(m)) return 'Für diese E-Mail gibt es schon ein Konto. Melde dich an.';
+  if (/Invalid login credentials/i.test(m)) return 'Benutzername oder Passwort stimmt nicht.';
+  if (/Email not confirmed/i.test(m)) return 'Dieses Konto ist noch nicht freigeschaltet.';
+  if (/already registered|already exists/i.test(m)) return 'Dieser Benutzername ist schon vergeben.';
+  if (/invalid.*email|email.*invalid/i.test(m)) return 'Dieser Benutzername kann nicht verwendet werden – probier einen anderen.';
   if (/Password should be|at least 6/i.test(m)) return 'Das Passwort muss mindestens 6 Zeichen haben.';
   if (/rate limit|too many/i.test(m)) return 'Zu viele Versuche. Warte kurz und probiere es dann nochmal.';
   if (/duplicate key|profiles_username/i.test(m)) return 'Dieser Benutzername ist schon vergeben.';
@@ -11051,20 +11057,19 @@ function ktOpen(mode) {
 
   if (mode === 'login') {
     form = h('form', {}, h('h2', { id: 'ktTitle' }, 'Anmelden'), h('p', { class: 'kt-sub' }, 'Willkommen zurück!'),
-      field('E-Mail', { type: 'email', name: 'email', autocomplete: 'email', required: true }),
+      field('Benutzername', { type: 'text', name: 'user', autocomplete: 'username', required: true, autocapitalize: 'off', spellcheck: 'false' }),
       field('Passwort', { type: 'password', name: 'pw', autocomplete: 'current-password', required: true, minlength: 6 }),
       msg, submit('Anmelden'),
       ...(KT.google ? [h('button', { class: 'btn ghost', type: 'button', onclick: () => KT.sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: here } }) }, 'Mit Google anmelden')] : []),
       h('div', { class: 'kt-row' }, sw('Passwort vergessen?', 'forgot'), sw('Neu hier? Registrieren', 'register')));
     form.addEventListener('submit', e => { e.preventDefault(); busy(async () => {
-      const { error } = await KT.sb.auth.signInWithPassword({ email: form.email.value.trim(), password: form.pw.value });
+      const { error } = await KT.sb.auth.signInWithPassword({ email: ktLoginMail(form.user.value), password: form.pw.value });
       if (error) throw error; dlg.close();
     }); });
   } else if (mode === 'register') {
     let av = KT_AVATARS[Math.floor(Math.random() * KT_AVATARS.length)];
     form = h('form', {}, h('h2', { id: 'ktTitle' }, 'Konto erstellen'), h('p', { class: 'kt-sub' }, 'Dein bisheriger Fortschritt wird übernommen.'),
-      field('Benutzername (3–20 Zeichen, ohne Leerzeichen)', { type: 'text', name: 'user', autocomplete: 'username', required: true, minlength: 3, maxlength: 20, pattern: '[A-Za-z0-9ÄÖÜäöüß_.\\-]{3,20}', value: (S.nick || '').replace(/[^A-Za-z0-9ÄÖÜäöüß_.-]/g, '').slice(0, 20) }),
-      field('E-Mail', { type: 'email', name: 'email', autocomplete: 'email', required: true }),
+      field('Benutzername (3–20 Zeichen, ohne Leerzeichen)', { type: 'text', name: 'user', autocomplete: 'username', required: true, minlength: 3, maxlength: 20, pattern: '[A-Za-z0-9ÄÖÜäöüß_.\\-]{3,20}', autocapitalize: 'off', spellcheck: 'false', value: (S.nick || '').replace(/[^A-Za-z0-9ÄÖÜäöüß_.-]/g, '').slice(0, 20) }),
       field('Passwort (mind. 8 Zeichen)', { type: 'password', name: 'pw', autocomplete: 'new-password', required: true, minlength: 8 }),
       msg, submit('Registrieren'), h('div', { class: 'kt-row' }, sw('Schon ein Konto? Anmelden', 'login')));
     form.addEventListener('submit', e => { e.preventDefault(); busy(async () => {
@@ -11073,19 +11078,19 @@ function ktOpen(mode) {
       if (ktBadName(user)) throw new Error('Bitte wähle einen anderen Benutzernamen.');
       const free = await KT.sb.rpc('username_free', { name: user });
       if (free.data === false) throw new Error('Dieser Benutzername ist schon vergeben.');
-      const { data, error } = await KT.sb.auth.signUp({ email: form.email.value.trim(), password: form.pw.value, options: { data: { username: user, avatar: av }, emailRedirectTo: here } });
+      if (ktMail(user).startsWith('@')) throw new Error('Dieser Benutzername kann nicht verwendet werden – probier einen anderen.');
+      const { data, error } = await KT.sb.auth.signUp({ email: ktMail(user), password: form.pw.value, options: { data: { username: user, avatar: av } } });
       if (error) throw error;
-      if (data.session) { dlg.close(); return; }
       if (data.user && Array.isArray(data.user.identities) && !data.user.identities.length) throw new Error('already registered');
-      form.replaceChildren(h('h2', { id: 'ktTitle' }, 'Fast geschafft!'), h('p', {}, `Wir haben dir eine E-Mail an ${form.email.value.trim()} geschickt. Klick auf den Link darin, dann bist du angemeldet.`), h('p', { class: 'kt-sub' }, 'Keine Mail? Schau im Spam-Ordner nach.'), h('button', { class: 'btn main', type: 'button', onclick: () => dlg.close() }, 'OK'));
+      if (data.session) { dlg.close(); toast('🎉', 'Willkommen, ' + user + '!', 'Dein Konto ist fertig. Merk dir dein Passwort gut – es gibt keine E-Mail zum Zurücksetzen.'); return; }
+      throw new Error('Das Konto wurde angelegt, aber die Anmeldung hat nicht geklappt. Versuch es gleich nochmal über „Anmelden“.');
     }); });
   } else if (mode === 'forgot') {
-    form = h('form', {}, h('h2', { id: 'ktTitle' }, 'Passwort vergessen'), h('p', { class: 'kt-sub' }, 'Wir schicken dir einen Link, mit dem du ein neues Passwort festlegst.'),
-      field('E-Mail', { type: 'email', name: 'email', autocomplete: 'email', required: true }), msg, submit('Link schicken'), h('div', { class: 'kt-row' }, sw('Zurück zur Anmeldung', 'login')));
-    form.addEventListener('submit', e => { e.preventDefault(); busy(async () => {
-      const { error } = await KT.sb.auth.resetPasswordForEmail(form.email.value.trim(), { redirectTo: here });
-      if (error) throw error; ktMsg(form, 'Falls es ein Konto mit dieser E-Mail gibt, ist der Link unterwegs.', 'ok');
-    }); });
+    form = h('form', {}, h('h2', { id: 'ktTitle' }, 'Passwort vergessen'),
+      h('p', {}, 'Brainix-Konten haben keine E-Mail-Adresse, darum gibt es keinen Link zum Zurücksetzen. Probier Passwörter, die du sonst verwendest – oder leg mit einem neuen Benutzernamen ein neues Konto an.'),
+      h('p', { class: 'kt-sub' }, 'Tipp: Solange du angemeldet bist, kannst du dein Passwort unter „Profil bearbeiten“ ändern. Dein Spielstand auf diesem Gerät bleibt in jedem Fall erhalten.'),
+      h('div', { class: 'kt-row' }, sw('Zurück zur Anmeldung', 'login'), sw('Neues Konto', 'register')));
+    form.addEventListener('submit', e => e.preventDefault());
   } else if (mode === 'newpw') {
     form = h('form', {}, h('h2', { id: 'ktTitle' }, 'Neues Passwort'),
       field('Neues Passwort (mind. 8 Zeichen)', { type: 'password', name: 'pw', autocomplete: 'new-password', required: true, minlength: 8 }), msg, submit('Speichern'));
@@ -13267,9 +13272,9 @@ function secPrivacy() {
     sec('Kurz gesagt', li(['Keine Werbung, kein Tracking, keine Analyse-Werkzeuge, keine Werbe-Cookies.', 'Ohne Konto bleibt alles nur auf deinem Gerät.', 'Mit Konto liegen deine Daten bei Supabase in Frankfurt (EU).', 'Du kannst deine Daten jederzeit herunterladen und dein Konto löschen.'])),
     sec('Ohne Konto', h('p', {}, 'Dein Spielstand (XP, Rekorde, Einstellungen, Favoriten …) wird nur im Speicher deines Browsers (localStorage) auf diesem Gerät abgelegt. Löschst du die Website-Daten im Browser, ist er weg – vorher kannst du ihn unter ⚙ → „Spielstand exportieren“ sichern.')),
     sec('Mit Konto', h('p', {}, 'Gespeichert werden bei Supabase (Supabase Inc., Server-Region Frankfurt, EU):'),
-      li(['E-Mail-Adresse und Passwort (das Passwort nur verschlüsselt, Brainix selbst kennt es nicht)', 'Benutzername, Avatar und Farbe', 'Spielstand, Bestwerte, XP, Statistik (Spielzeit, Genauigkeit) und Abzeichen', 'Freundschaften, Herausforderungen, Gruppen-Mitgliedschaften, Turnier-Ergebnisse', 'Meldungen, die du abschickst']),
+      li(['Benutzername und Passwort (das Passwort nur verschlüsselt, Brainix selbst kennt es nicht). Eine E-Mail-Adresse wird nicht abgefragt.', 'Benutzername, Avatar und Farbe', 'Spielstand, Bestwerte, XP, Statistik (Spielzeit, Genauigkeit) und Abzeichen', 'Freundschaften, Herausforderungen, Gruppen-Mitgliedschaften, Turnier-Ergebnisse', 'Meldungen, die du abschickst']),
       h('p', {}, h('b', {}, 'Öffentlich sichtbar'), ' (in Ranglisten und deinem Profil-Link): Benutzername, Avatar, Level/XP, Bestwerte, Statistik, Abzeichen und Turnier-Ergebnisse. ',
-        h('b', {}, 'Nicht öffentlich: '), 'deine E-Mail-Adresse, Freundeslisten, Herausforderungen (nur für die Beteiligten) und Gruppen (nur für Mitglieder).')),
+        h('b', {}, 'Nicht öffentlich: '), 'Freundeslisten, Herausforderungen (nur für die Beteiligten) und Gruppen (nur für Mitglieder).')),
     sec('Mehrspieler-Räume', h('p', {}, 'In einem Raum werden dein Name, Avatar und deine Spielzüge bzw. Punkte live an die anderen im Raum geschickt (Supabase Realtime). Räume werden nicht gespeichert.')),
     sec('Dienste von Dritten', li(['Hosting: GitHub Pages bzw. Netlify – dabei fallen technische Zugriffsdaten an (z. B. IP-Adresse, Zeitpunkt).', 'Schriftart „Instrument Sans“ von Google Fonts sowie Programm-Bibliotheken von jsDelivr und cdnjs – beim Laden wird deine IP-Adresse an diese Anbieter übertragen.', 'Supabase für Konto, Ranglisten und Mehrspieler.'])),
     sec('Wofür und auf welcher Grundlage', h('p', {}, 'Die Daten werden nur verwendet, damit Brainix funktioniert (Spielstand, Konto, Ranglisten, Mehrspieler) und um Missbrauch zu verhindern (z. B. Punkte-Prüfung, Namensfilter, Meldungen). Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Bereitstellung des Dienstes) und lit. f (Schutz vor Missbrauch).')),
@@ -13293,7 +13298,7 @@ async function secDownload() {
     const groups = gids.length ? (await sb.from('groups').select('id,name,code,owner,created_at').in('id', gids)).data : [];
     const data = {
       app: 'brainix', art: 'Datenauskunft', erstellt: new Date().toISOString(),
-      konto: { id: uid, email: KT.user.email, erstellt: KT.user.created_at, letzte_anmeldung: KT.user.last_sign_in_at },
+      konto: { id: uid, email: ktRealMail(KT.user) || null, erstellt: KT.user.created_at, letzte_anmeldung: KT.user.last_sign_in_at },
       profil: (prof.data || [])[0] || null, spielstand: (prog.data || [])[0] || null, bestwerte: sc.data || [],
       freunde: [...(fa.data || []), ...(fb.data || [])], herausforderungen: [...(co.data || []), ...(ci.data || [])],
       gruppen: groups || [], gruppen_mitgliedschaften: gm.data || [], turnier: tour.data || [], meine_meldungen: rep.data || [],
