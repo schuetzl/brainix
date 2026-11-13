@@ -1,8 +1,9 @@
 // Brainix Service Worker – macht die Seite installierbar und offline spielbar.
 // Die Version wird von einbauen.py bei jedem Einbau neu gesetzt → Updates kommen automatisch.
-const VERSION = 'd24f01a621';
+const VERSION = '4d98402dc2';
 const CORE = 'brainix-core-' + VERSION;
 const LIBS = 'brainix-libs-v1';
+const IMGS = 'brainix-img-v1';
 const CORE_FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './favicon-32.png'];
 // Bibliotheken und Schriften von CDNs, die offline gebraucht werden
 const LIB_HOSTS = ['cdn.jsdelivr.net', 'cdnjs.cloudflare.com', 'fonts.googleapis.com', 'fonts.gstatic.com', 'unpkg.com'];
@@ -38,9 +39,15 @@ self.addEventListener('fetch', e => {
     })());
     return;
   }
-  // eigene Dateien (Icons, Manifest): Cache zuerst
+  // eigene Dateien (Icons, Manifest, Spielbilder): Cache zuerst, Bilder beim ersten Laden merken
   if (url.origin === location.origin) {
-    e.respondWith(caches.match(req, { ignoreSearch: true }).then(r => r || fetch(req)));
+    e.respondWith((async () => {
+      const hit = await caches.match(req, { ignoreSearch: true });
+      if (hit) return hit;
+      const net = await fetch(req);
+      if (net && net.ok && url.pathname.includes('/img/')) { const c = await caches.open(IMGS); c.put(req, net.clone()); }
+      return net;
+    })());
     return;
   }
   // CDN-Bibliotheken & Schriften: Cache, im Hintergrund aktualisieren
