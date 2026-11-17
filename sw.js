@@ -1,6 +1,6 @@
 // Brainix Service Worker – macht die Seite installierbar und offline spielbar.
 // Die Version wird von einbauen.py bei jedem Einbau neu gesetzt → Updates kommen automatisch.
-const VERSION = '61397ae1de';
+const VERSION = 'e7dbb57b69';
 const CORE = 'brainix-core-' + VERSION;
 const LIBS = 'brainix-libs-v1';
 const IMGS = 'brainix-img-v1';
